@@ -87,8 +87,7 @@ class Csv
      *
      * @static
      * @access public
-     * @param  mixed $value
-     * @return int
+     * @return integer
      */
     public static function getBooleanValue($value)
     {

@@ -12,7 +12,7 @@ class App extends \Kanboard\Core\Base
 {
     public function getTimezone()
     {
-        return $this->timezone->getCurrentTimezone();
+        return $this->config->get('application_timezone');
     }
 
     public function getVersion()
@@ -33,15 +33,5 @@ class App extends \Kanboard\Core\Base
     public function getColorList()
     {
         return $this->color->getList();
-    }
-
-    public function getApplicationRoles()
-    {
-        return $this->role->getApplicationRoles();
-    }
-
-    public function getProjectRoles()
-    {
-        return $this->role->getProjectRoles();
     }
 }

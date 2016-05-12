@@ -17,7 +17,7 @@ body {
 body {
     margin-left: 10px;
     margin-right: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     color: #333;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-rendering: optimizeLegibility;
@@ -47,6 +47,11 @@ hr {
     min-height: 27px; /* Reserve some space to avoid re-layout due to chosen */
 }
 
+.avatar {
+    float: left;
+    margin-right: 10px;
+}
+
 #ui-datepicker-div {
     font-size: 0.8em;
 }
@@ -66,6 +71,3 @@ hr {
     color: #000;
 }
 
-.smaller {
-    font-size: 0.85em;
-}

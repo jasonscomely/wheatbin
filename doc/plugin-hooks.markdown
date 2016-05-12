@@ -28,6 +28,15 @@ Some hooks can have only one listener:
     - `$start` (DateTime)
     - `$end` (DateTime)
 
+#### model:subtask-time-tracking:calendar:events
+
+- Override subtask time tracking events to display the calendar
+- Arguments:
+    - `$user_id` (integer)
+    - `$events` (array)
+    - `$start` (string, ISO-8601 format)
+    - `$end` (string, ISO-8601 format)
+
 ### Merge hooks
 
 "Merge hooks" act in the same way as the function `array_merge`. The hook callback must return an array. This array will be merged with the default one.
@@ -49,27 +58,7 @@ class Plugin extends Base
 }
 ```
 
-Example to override default values for task forms:
-
-```php
-class Plugin extends Base
-{
-    public function initialize()
-    {
-        $this->hook->on('controller:task:form:default', function (array $default_values) {
-            return empty($default_values['score']) ? array('score' => 4) : array();
-        });
-    }
-}
-```
-
 List of merging hooks:
-
-#### controller:task:form:default
-
-- Override default values for task forms
-- Arguments:
-    - `$default_values`: actual default values (array)
 
 #### controller:calendar:project:events
 
@@ -142,59 +131,24 @@ Template names without prefix are core templates.
 
 List of template hooks:
 
-| Hook                                       | Description                                        |
-|--------------------------------------------|----------------------------------------------------|
-| `template:analytic:sidebar`                | Sidebar on analytic pages                          |
-| `template:app:filters-helper:before`       | Filter helper dropdown (top)                       |
-| `template:app:filters-helper:after`        | Filter helper dropdown (bottom)                    |
-| `template:auth:login-form:before`          | Login page (top)                                   |
-| `template:auth:login-form:after`           | Login page (bottom)                                |
-| `template:board:private:task:before-title` | Task in private board: before title                |
-| `template:board:private:task:after-title`  | Task in private board: after title                 |
-| `template:board:public:task:before-title`  | Task in public board: before title                 |
-| `template:board:public:task:after-title`   | Task in public board: after title                  |
-| `template:board:task:footer`               | Task in board: footer                              |
-| `template:board:task:icons`                | Task in board: tooltip icon                        |
-| `template:config:sidebar`                  | Sidebar on settings page                           |
-| `template:config:application `             | Application settings form                          |
-| `template:config:integrations`             | Integration page in global settings                |
-| `template:dashboard:sidebar`               | Sidebar on dashboard page                          |
-| `template:export:sidebar`                  | Sidebar on export pages                            |
-| `template:layout:head`                     | Page layout `<head/>` tag                          |
-| `template:layout:top`                      | Page layout top header                             |
-| `template:layout:bottom`                   | Page layout footer                                 |
-| `template:project:dropdown`                | "Actions" menu on left in different project views  |
-| `template:project:header:before`           | Project filters (before)                           |
-| `template:project:header:after`            | Project filters (after)                            |
-| `template:project:integrations`            | Integration page in projects settings              |
-| `template:project:sidebar`                 | Sidebar in project settings                        |
-| `template:project-user:sidebar`            | Sidebar on project user overview page              |
-| `template:task:layout:top`                 | Task layout top (after page header)                |
-| `template:task:details:top`                | Task summary top                                   |
-| `template:task:details:bottom`             | Task summary bottom                                |
-| `template:task:details:first-column`       | Task summary first column                          |
-| `template:task:details:second-column`      | Task summary second column                         |
-| `template:task:details:third-column`       | Task summary third column                          |
-| `template:task:details:fourth-column`      | Task summary fourth column                         |
-| `template:task:dropdown`                   | Task dropdown menu in listing pages                |
-| `template:task:sidebar:actions`            | Sidebar on task page (section actions)             |
-| `template:task:sidebar:information`        | Sidebar on task page (section information)         |
-| `template:task:form:left-column`           | Left column in task form                           |
-| `template:task:form:right-column`          | Right column in task form                          |
-| `template:task:show:top   `                | Show task page: top                                |
-| `template:task:show:bottom`                | Show task page: bottom                             |
-| `template:task:show:before-description`    | Show task page: before description                 |
-| `template:task:show:before-tasklinks`      | Show task page: before tasklinks                   |
-| `template:task:show:before-subtasks`       | Show task page: before subtasks                    |
-| `template:task:show:before-timetracking`   | Show task page: before timetracking                |
-| `template:task:show:before-attachments`    | Show task page: before attachments                 |
-| `template:task:show:before-comments`       | Show task page: before comments                    |
-| `template:user:authentication:form`        | "Edit authentication" form in user profile         |
-| `template:user:create-remote:form`         | "Create remote user" form                          |
-| `template:user:external`                   | "External authentication" page in user profile     |
-| `template:user:integrations`               | Integration page in user profile                   |
-| `template:user:sidebar:actions`            | Sidebar in user profile (section actions)          |
-| `template:user:sidebar:information`        | Sidebar in user profile (section information)      |
-
+- `template:auth:login-form:before`
+- `template:auth:login-form:after`
+- `template:dashboard:sidebar`
+- `template:config:sidebar`
+- `template:config:integrations`
+- `template:project:integrations`
+- `template:user:integrations`
+- `template:export:sidebar`
+- `template:layout:head`
+- `template:layout:top`
+- `template:layout:bottom`
+- `template:project:dropdown`: "Actions" menu on left in different project views
+- `template:project:header:before`
+- `template:project:header:after`
+- `template:project-user:sidebar`
+- `template:task:sidebar:information`
+- `template:task:sidebar:actions`
+- `template:user:sidebar:information`
+- `template:user:sidebar:actions`
 
 Another template hooks can be added if necessary, just ask on the issue tracker.

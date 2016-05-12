@@ -21,11 +21,13 @@ class Comment extends Base
         $comment = $this->comment->getById($this->request->getIntegerParam('comment_id'));
 
         if (empty($comment)) {
-            return $this->notfound();
+            $this->notfound();
         }
 
         if (! $this->userSession->isAdmin() && $comment['user_id'] != $this->userSession->getId()) {
-            return $this->forbidden();
+            $this->response->html($this->template->layout('comment/forbidden', array(
+                'title' => t('Access Forbidden')
+            )));
         }
 
         return $comment;
@@ -39,6 +41,7 @@ class Comment extends Base
     public function create(array $values = array(), array $errors = array())
     {
         $task = $this->getTask();
+        $ajax = $this->request->isAjax() || $this->request->getIntegerParam('ajax');
 
         if (empty($values)) {
             $values = array(
@@ -47,10 +50,20 @@ class Comment extends Base
             );
         }
 
-        $this->response->html($this->template->render('comment/create', array(
+        if ($ajax) {
+            $this->response->html($this->template->render('comment/create', array(
+                'values' => $values,
+                'errors' => $errors,
+                'task' => $task,
+                'ajax' => $ajax,
+            )));
+        }
+
+        $this->response->html($this->taskLayout('comment/create', array(
             'values' => $values,
             'errors' => $errors,
             'task' => $task,
+            'title' => t('Add a comment'),
         )));
     }
 
@@ -63,8 +76,9 @@ class Comment extends Base
     {
         $task = $this->getTask();
         $values = $this->request->getValues();
+        $ajax = $this->request->isAjax() || $this->request->getIntegerParam('ajax');
 
-        list($valid, $errors) = $this->commentValidator->validateCreation($values);
+        list($valid, $errors) = $this->comment->validateCreation($values);
 
         if ($valid) {
             if ($this->comment->create($values)) {
@@ -73,7 +87,11 @@ class Comment extends Base
                 $this->flash->failure(t('Unable to create your comment.'));
             }
 
-            return $this->response->redirect($this->helper->url->to('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), 'comments'), true);
+            if ($ajax) {
+                $this->response->redirect($this->helper->url->to('board', 'show', array('project_id' => $task['project_id'])));
+            }
+
+            $this->response->redirect($this->helper->url->to('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), 'comments'));
         }
 
         $this->create($values, $errors);
@@ -89,7 +107,7 @@ class Comment extends Base
         $task = $this->getTask();
         $comment = $this->getComment();
 
-        $this->response->html($this->template->render('comment/edit', array(
+        $this->response->html($this->taskLayout('comment/edit', array(
             'values' => empty($values) ? $comment : $values,
             'errors' => $errors,
             'comment' => $comment,
@@ -106,10 +124,10 @@ class Comment extends Base
     public function update()
     {
         $task = $this->getTask();
-        $this->getComment();
+        $comment = $this->getComment();
 
         $values = $this->request->getValues();
-        list($valid, $errors) = $this->commentValidator->validateModification($values);
+        list($valid, $errors) = $this->comment->validateModification($values);
 
         if ($valid) {
             if ($this->comment->update($values)) {
@@ -118,7 +136,7 @@ class Comment extends Base
                 $this->flash->failure(t('Unable to update your comment.'));
             }
 
-            return $this->response->redirect($this->helper->url->to('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])), false);
+            $this->response->redirect($this->helper->url->to('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), 'comment-'.$comment['id']));
         }
 
         $this->edit($values, $errors);
@@ -134,7 +152,7 @@ class Comment extends Base
         $task = $this->getTask();
         $comment = $this->getComment();
 
-        $this->response->html($this->template->render('comment/remove', array(
+        $this->response->html($this->taskLayout('comment/remove', array(
             'comment' => $comment,
             'task' => $task,
             'title' => t('Remove a comment')
@@ -173,6 +191,6 @@ class Comment extends Base
         $order = $this->userSession->getCommentSorting() === 'ASC' ? 'DESC' : 'ASC';
         $this->userSession->setCommentSorting($order);
 
-        $this->response->redirect($this->helper->url->to('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), 'comments'));
+        $this->response->redirect($this->helper->url->href('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), false, 'comments'));
     }
 }

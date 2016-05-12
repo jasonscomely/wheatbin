@@ -3,37 +3,32 @@
         <?= $task['is_active'] == 1 ? ($this->user->hasProjectAccess('board', 'save', $task['project_id']) ? 'draggable-item ' : '').'task-board-status-open '.($task['date_modification'] > (time() - $board_highlight_period) ? 'task-board-recent' : '') : 'task-board-status-closed' ?>
         color-<?= $task['color_id'] ?>"
      data-task-id="<?= $task['id'] ?>"
-     data-column-id="<?= $task['column_id'] ?>"
-     data-swimlane-id="<?= $task['swimlane_id'] ?>"
-     data-position="<?= $task['position'] ?>"
      data-owner-id="<?= $task['owner_id'] ?>"
      data-category-id="<?= $task['category_id'] ?>"
      data-due-date="<?= $task['date_due'] ?>"
      data-task-url="<?= $this->url->href('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>">
 
-    <div class="task-board-sort-handle" style="display: none;"><i class="fa fa-arrows-alt"></i></div>
+    <div class="task-board-sort-handle" style="display: none;"><!--<i class="fa fa-arrows-alt"></i>--></div>
 
     <?php if ($this->board->isCollapsed($task['project_id'])): ?>
         <div class="task-board-collapsed">
-            <div class="task-board-saving-icon" style="display: none;"><i class="fa fa-spinner fa-pulse"></i></div>
             <?php if ($this->user->hasProjectAccess('taskmodification', 'edit', $task['project_id'])): ?>
-                <?= $this->render('task/dropdown', array('task' => $task)) ?>
+                <?= $this->render('board/task_menu', array('task' => $task)) ?>
             <?php else: ?>
                 <strong><?= '#'.$task['id'] ?></strong>
             <?php endif ?>
 
             <?php if (! empty($task['assignee_username'])): ?>
-                <span title="<?= $this->text->e($task['assignee_name'] ?: $task['assignee_username']) ?>">
-                    <?= $this->text->e($this->user->getInitials($task['assignee_name'] ?: $task['assignee_username'])) ?>
+                <span title="<?= $this->e($task['assignee_name'] ?: $task['assignee_username']) ?>">
+                    <?= $this->e($this->user->getInitials($task['assignee_name'] ?: $task['assignee_username'])) ?>
                 </span> -
             <?php endif ?>
-            <?= $this->url->link($this->text->e($task['title']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), false, 'task-board-collapsed-title tooltip', $this->text->e($task['title'])) ?>
+            <?= $this->url->link($this->e($task['title']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), false, 'task-board-collapsed-title tooltip', $this->e($task['title'])) ?>
         </div>
     <?php else: ?>
         <div class="task-board-expanded">
-            <div class="task-board-saving-icon" style="display: none;"><i class="fa fa-spinner fa-pulse fa-2x"></i></div>
             <?php if ($this->user->hasProjectAccess('taskmodification', 'edit', $task['project_id'])): ?>
-                <?= $this->render('task/dropdown', array('task' => $task)) ?>
+                <?= $this->render('board/task_menu', array('task' => $task)) ?>
             <?php else: ?>
                 <strong><?= '#'.$task['id'] ?></strong>
             <?php endif ?>
@@ -44,18 +39,40 @@
             </span>
             <?php endif ?>
 
-            <?= $this->render('board/task_avatar', array('task' => $task)) ?>
+            <?php if (! empty($task['owner_id'])): ?>
+            <span class="task-board-user <?= $this->user->isCurrentUser($task['owner_id']) ? 'task-board-current-user' : '' ?>">
+                <?php if ($this->user->hasProjectAccess('taskmodification', 'edit', $task['project_id'])): ?>
+                    <?= $this->url->link(
+                        $task['assignee_name'] ?: $task['assignee_username'],
+                        'BoardPopover',
+                        'changeAssignee',
+                        array('task_id' => $task['id'], 'project_id' => $task['project_id']),
+                        false,
+                        'popover',
+                        t('Change assignee')
+                    ) ?>
+                <?php else: ?>
+                    <?= $this->e($task['assignee_name'] ?: $task['assignee_username']) ?>
+                <?php endif ?>
+            </span>
+            <?php endif ?>
 
-            <?= $this->hook->render('template:board:private:task:before-title', array('task' => $task)) ?>
-            <div class="task-board-title">
-                <?= $this->url->link($this->text->e($task['title']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), false, '', t('View this task')) ?>
+            <?php if ($task['is_active'] == 1): ?>
+            <div class="task-board-days">
+                <span title="<?= t('Task age in days')?>" class="task-days-age"><?= $this->dt->age($task['date_creation']) ?></span>
+                <span title="<?= t('Days in this column')?>" class="task-days-incolumn"><?= $this->dt->age($task['date_moved']) ?></span>
             </div>
-            <?= $this->hook->render('template:board:private:task:after-title', array('task' => $task)) ?>
+            <?php else: ?>
+                <div class="task-board-closed"><i class="fa fa-ban fa-fw"></i><?= t('Closed') ?></div>
+            <?php endif ?>
+
+            <div class="task-board-title">
+                <?= $this->url->link($this->e($task['title']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), false, '', t('View this task')) ?>
+            </div>
 
             <?= $this->render('board/task_footer', array(
-                'task' => $task,
-                'not_editable' => $not_editable,
-                'project' => $project,
+                    'task' => $task,
+                    'not_editable' => $not_editable,
             )) ?>
         </div>
     <?php endif ?>

@@ -25,16 +25,15 @@ class Comment extends \Kanboard\Core\Base
         return $this->comment->remove($comment_id);
     }
 
-    public function createComment($task_id, $user_id, $content, $reference = '')
+    public function createComment($task_id, $user_id, $content)
     {
         $values = array(
             'task_id' => $task_id,
             'user_id' => $user_id,
             'comment' => $content,
-            'reference' => $reference,
         );
 
-        list($valid, ) = $this->commentValidator->validateCreation($values);
+        list($valid, ) = $this->comment->validateCreation($values);
 
         return $valid ? $this->comment->create($values) : false;
     }
@@ -46,7 +45,7 @@ class Comment extends \Kanboard\Core\Base
             'comment' => $content,
         );
 
-        list($valid, ) = $this->commentValidator->validateModification($values);
+        list($valid, ) = $this->comment->validateModification($values);
         return $valid && $this->comment->update($values);
     }
 }

@@ -20,19 +20,7 @@ class ProjectUserRole extends Base
     const TABLE = 'project_has_users';
 
     /**
-     * Get the list of active project for the given user
-     *
-     * @access public
-     * @param  integer  $user_id
-     * @return array
-     */
-    public function getActiveProjectsByUser($user_id)
-    {
-        return $this->getProjectsByUser($user_id, array(Project::ACTIVE));
-    }
-
-    /**
-     * Get the list of project visible for the given user
+     * Get the list of project visible by the given user
      *
      * @access public
      * @param  integer  $user_id
@@ -52,11 +40,11 @@ class ProjectUserRole extends Base
             ->getAll(Project::TABLE.'.id', Project::TABLE.'.name');
 
         $groupProjects = $this->projectGroupRole->getProjectsByUser($user_id, $status);
-        $projects = $userProjects + $groupProjects;
+        $groups = $userProjects + $groupProjects;
 
-        asort($projects);
+        asort($groups);
 
-        return $projects;
+        return $groups;
     }
 
     /**
@@ -69,13 +57,8 @@ class ProjectUserRole extends Base
      */
     public function getUserRole($project_id, $user_id)
     {
-        $projectInfo = $this->db->table(Project::TABLE)
-            ->eq('id', $project_id)
-            ->columns('owner_id', 'is_everybody_allowed')
-            ->findOne();
-
-        if ($projectInfo['is_everybody_allowed'] == 1) {
-            return $projectInfo['owner_id'] == $user_id ? Role::PROJECT_MANAGER : Role::PROJECT_MEMBER;
+        if ($this->projectPermission->isEverybodyAllowed($project_id)) {
+            return Role::PROJECT_MEMBER;
         }
 
         $role = $this->db->table(self::TABLE)->eq('user_id', $user_id)->eq('project_id', $project_id)->findOneColumn('role');
@@ -157,14 +140,13 @@ class ProjectUserRole extends Base
     public function getAssignableUsers($project_id)
     {
         if ($this->projectPermission->isEverybodyAllowed($project_id)) {
-            return $this->user->getActiveUsersList();
+            return $this->user->getList();
         }
 
         $userMembers = $this->db->table(self::TABLE)
             ->columns(User::TABLE.'.id', User::TABLE.'.username', User::TABLE.'.name')
             ->join(User::TABLE, 'id', 'user_id')
-            ->eq(User::TABLE.'.is_active', 1)
-            ->eq(self::TABLE.'.project_id', $project_id)
+            ->eq('project_id', $project_id)
             ->in(self::TABLE.'.role', array(Role::PROJECT_MANAGER, Role::PROJECT_MEMBER))
             ->findAll();
 
@@ -256,8 +238,8 @@ class ProjectUserRole extends Base
     /**
      * Copy user access from a project to another one
      *
-     * @param  integer $project_src_id
-     * @param  integer $project_dst_id
+     * @param  integer   $project_src_id  Project Template
+     * @return integer   $project_dst_id  Project that receives the copy
      * @return boolean
      */
     public function duplicate($project_src_id, $project_dst_id)

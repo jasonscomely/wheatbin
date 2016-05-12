@@ -1,5 +1,10 @@
 <section id="main">
-    <?= $this->projectHeader->render($project, 'Gantt', 'project') ?>
+    <?= $this->render('project/filters', array(
+        'project' => $project,
+        'filters' => $filters,
+        'users_list' => $users_list,
+    )) ?>
+
     <div class="menu-inline">
         <ul>
             <li <?= $sorting === 'board' ? 'class="active"' : '' ?>>

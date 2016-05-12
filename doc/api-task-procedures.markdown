@@ -1,7 +1,7 @@
 API Task Procedures
 ===================
 
-## createTask
+### createTask
 
 - Purpose: **Create a new task**
 - Parameters:
@@ -16,7 +16,6 @@ API Task Procedures
     - **category_id** (integer, optional)
     - **score** (integer, optional)
     - **swimlane_id** (integer, optional)
-    - **priority** (integer, optional)
     - **recurrence_status**  (integer, optional)
     - **recurrence_trigger**  (integer, optional)
     - **recurrence_factor**  (integer, optional)
@@ -62,7 +61,7 @@ Response example:
 }
 ```
 
-## getTask
+### getTask
 
 - Purpose: **Get task by the unique id**
 - Parameters:
@@ -129,7 +128,7 @@ Response example:
 }
 ```
 
-## getTaskByReference
+### getTaskByReference
 
 - Purpose: **Get task by the external reference**
 - Parameters:
@@ -193,7 +192,7 @@ Response example:
 }
 ```
 
-## getAllTasks
+### getAllTasks
 
 - Purpose: **Get all available tasks**
 - Parameters:
@@ -292,7 +291,7 @@ Response example:
 }
 ```
 
-## getOverdueTasks
+### getOverdueTasks
 
 - Purpose: **Get all overdue tasks**
 - Result on success: **List of tasks**
@@ -338,7 +337,7 @@ Response example:
 }
 ```
 
-## getOverdueTasksByProject
+### getOverdueTasksByProject
 
 - Purpose: **Get all overdue tasks for a special project**
 - Result on success: **List of tasks**
@@ -387,7 +386,7 @@ Response example:
 }
 ```
 
-## updateTask
+### updateTask
 
 - Purpose: **Update a task**
 - Parameters:
@@ -399,7 +398,6 @@ Response example:
     - **description** Markdown content (string, optional)
     - **category_id** (integer, optional)
     - **score** (integer, optional)
-    - **priority** (integer, optional)
     - **recurrence_status**  (integer, optional)
     - **recurrence_trigger**  (integer, optional)
     - **recurrence_factor**  (integer, optional)
@@ -432,7 +430,7 @@ Response example:
 }
 ```
 
-## openTask
+### openTask
 
 - Purpose: **Set a task to the status open**
 - Parameters:
@@ -463,7 +461,7 @@ Response example:
 }
 ```
 
-## closeTask
+### closeTask
 
 - Purpose: **Set a task to the status close**
 - Parameters:
@@ -494,7 +492,7 @@ Response example:
 }
 ```
 
-## removeTask
+### removeTask
 
 - Purpose: **Remove a task**
 - Parameters:
@@ -525,9 +523,9 @@ Response example:
 }
 ```
 
-## moveTaskPosition
+### moveTaskPosition
 
-- Purpose: **Move a task to another column, position or swimlane inside the same board**
+- Purpose: **Move a task to another column or another position**
 - Parameters:
     - **project_id** (integer, required)
     - **task_id** (integer, required)
@@ -560,138 +558,5 @@ Response example:
     "jsonrpc": "2.0",
     "id": 117211800,
     "result": true
-}
-```
-
-## moveTaskToProject
-
-- Purpose: **Move a task to another project**
-- Parameters:
-    - **task_id** (integer, required)
-    - **project_id** (integer, required)
-    - **swimlane_id** (integer, optional)
-    - **column_id** (integer, optional)
-    - **category_id** (integer, optional)
-    - **owner_id** (integer, optional)
-- Result on success: **true**
-- Result on failure: **false**
-
-Request example:
-
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "moveTaskToProject",
-    "id": 15775829,
-    "params": [
-        4,
-        5
-    ]
-}
-```
-
-Response example:
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 15775829,
-    "result": true
-}
-```
-
-## duplicateTaskToProject
-
-- Purpose: **Move a task to another column or another position**
-- Parameters:
-    - **task_id** (integer, required)
-    - **project_id** (integer, required)
-    - **swimlane_id** (integer, optional)
-    - **column_id** (integer, optional)
-    - **category_id** (integer, optional)
-    - **owner_id** (integer, optional)
-- Result on success: **task_id**
-- Result on failure: **false**
-
-Request example:
-
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "duplicateTaskToProject",
-    "id": 1662458687,
-    "params": [
-        5,
-        7
-    ]
-}
-```
-
-Response example:
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1662458687,
-    "result": 6
-}
-```
-
-## searchTasks
-
-- Purpose: **Find tasks by using the search engine**
-- Parameters:
-    - **project_id** (integer, required)
-    - **query** (string, required)
-- Result on success: **list of tasks**
-- Result on failure: **false**
-
-Request example:
-
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "searchTasks",
-    "id": 1468511716,
-    "params": {
-        "project_id": 2,
-        "query": "assignee:nobody"
-    }
-}
-```
-
-Response example:
-
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1468511716,
-    "result": [
-        {
-            "nb_comments": "0",
-            "nb_files": "0",
-            "nb_subtasks": "0",
-            "nb_completed_subtasks": "0",
-            "nb_links": "0",
-            "nb_external_links": "0",
-            "is_milestone": null,
-            "id": "3",
-            "reference": "",
-            "title": "T3",
-            "description": "",
-            "date_creation": "1461365164",
-            "date_modification": "1461365164",
-            "date_completed": null,
-            "date_started": null,
-            "date_due": "0",
-            "color_id": "yellow",
-            "project_id": "2",
-            "column_id": "5",
-            "swimlane_id": "0",
-            "owner_id": "0",
-            "creator_id": "0"
-            // ...
-         }
-    ]
 }
 ```

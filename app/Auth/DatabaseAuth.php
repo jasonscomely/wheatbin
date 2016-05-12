@@ -19,26 +19,26 @@ class DatabaseAuth extends Base implements PasswordAuthenticationProviderInterfa
     /**
      * User properties
      *
-     * @access protected
+     * @access private
      * @var array
      */
-    protected $userInfo = array();
+    private $userInfo = array();
 
     /**
      * Username
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $username = '';
+    private $username = '';
 
     /**
      * Password
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $password = '';
+    private $password = '';
 
     /**
      * Get authentication provider name
@@ -65,7 +65,6 @@ class DatabaseAuth extends Base implements PasswordAuthenticationProviderInterfa
             ->eq('username', $this->username)
             ->eq('disable_login_form', 0)
             ->eq('is_ldap_user', 0)
-            ->eq('is_active', 1)
             ->findOne();
 
         if (! empty($user) && password_verify($this->password, $user['password'])) {
@@ -84,7 +83,7 @@ class DatabaseAuth extends Base implements PasswordAuthenticationProviderInterfa
      */
     public function isValidSession()
     {
-        return $this->user->isActive($this->userSession->getId());
+        return $this->user->exists($this->userSession->getId());
     }
 
     /**

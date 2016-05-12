@@ -6,21 +6,21 @@ Each project have an analytics section. Depending on how you are using Kanboard,
 User repartition
 ----------------
 
-![User repartition](https://kanboard.net/screenshots/documentation/user-repartition.png)
+![User repartition](http://kanboard.net/screenshots/documentation/user-repartition.png)
 
 This pie chart show the number of open tasks assigned per user.
 
 Task distribution
 -----------------
 
-![Task distribution](https://kanboard.net/screenshots/documentation/task-distribution.png)
+![Task distribution](http://kanboard.net/screenshots/documentation/task-distribution.png)
 
 This pie chart gives an overview of the number of open tasks per column.
 
 Cumulative flow diagram
 -----------------------
 
-![Cumulative flow diagram](https://kanboard.net/screenshots/documentation/cfd.png)
+![Cumulative flow diagram](http://kanboard.net/screenshots/documentation/cfd.png)
 
 - This chart shows the number of tasks cumulatively for each column over the time.
 - Every day, the total number of tasks is recorded for each column.
@@ -31,7 +31,7 @@ Note: You need to have at least two days of data to see the graph.
 Burn down chart
 ---------------
 
-![Burndown chart](https://kanboard.net/screenshots/documentation/burndown-chart.png)
+![Burndown chart](http://kanboard.net/screenshots/documentation/burndown-chart.png)
 
 The [burn down chart](http://en.wikipedia.org/wiki/Burn_down_chart) is available for each project.
 
@@ -42,7 +42,7 @@ The [burn down chart](http://en.wikipedia.org/wiki/Burn_down_chart) is available
 Average time spent into each column
 -----------------------------------
 
-![Average time spent into each column](https://kanboard.net/screenshots/documentation/average-time-spent-into-each-column.png)
+![Average time spent into each column](http://kanboard.net/screenshots/documentation/average-time-spent-into-each-column.png)
 
 This chart shows the average time spent into each column for the last 1000 tasks.
 
@@ -52,7 +52,7 @@ This chart shows the average time spent into each column for the last 1000 tasks
 Average Lead and Cycle time
 ---------------------------
 
-![Average time spent into each column](https://kanboard.net/screenshots/documentation/average-lead-cycle-time.png)
+![Average time spent into each column](http://kanboard.net/screenshots/documentation/average-lead-cycle-time.png)
 
 This chart show the average lead and cycle time for the last 1000 tasks over time.
 
@@ -62,4 +62,9 @@ This chart show the average lead and cycle time for the last 1000 tasks over tim
 
 Those metrics are calculated and recorded every day for the whole project.
 
-Note: Don't forget to run the [daily cronjob](cronjob.markdown) to have accurate statistics.
+Don't forget to run the daily job for statistics calculation
+-------------------------------------------------------
+
+To generate accurate analytic data, you should run the daily cronjob **project daily statistics**.
+
+[Read the documentation of Kanboard CLI](cli.markdown)

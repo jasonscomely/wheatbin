@@ -15,6 +15,27 @@ use Kanboard\Core\Security\Role;
 class User extends Base
 {
     /**
+     * Common layout for user views
+     *
+     * @access protected
+     * @param  string    $template   Template name
+     * @param  array     $params     Template parameters
+     * @return string
+     */
+    protected function layout($template, array $params)
+    {
+        $content = $this->template->render($template, $params);
+        $params['user_content_for_layout'] = $content;
+        $params['board_selector'] = $this->projectUserRole->getProjectsByUser($this->userSession->getId());
+
+        if (isset($params['user'])) {
+            $params['title'] = ($params['user']['name'] ?: $params['user']['username']).' (#'.$params['user']['id'].')';
+        }
+
+        return $this->template->layout('user/layout', $params);
+    }
+
+    /**
      * List all users
      *
      * @access public
@@ -29,32 +50,11 @@ class User extends Base
                 ->calculate();
 
         $this->response->html(
-            $this->helper->layout->app('user/index', array(
+            $this->template->layout('user/index', array(
+                'board_selector' => $this->projectUserRole->getProjectsByUser($this->userSession->getId()),
                 'title' => t('Users').' ('.$paginator->getTotal().')',
                 'paginator' => $paginator,
-            )
-        ));
-    }
-
-    /**
-     * Public user profile
-     *
-     * @access public
-     */
-    public function profile()
-    {
-        $user = $this->user->getById($this->request->getIntegerParam('user_id'));
-
-        if (empty($user)) {
-            $this->notfound();
-        }
-
-        $this->response->html(
-            $this->helper->layout->app('user/profile', array(
-                'title' => $user['name'] ?: $user['username'],
-                'user' => $user,
-            )
-        ));
+        )));
     }
 
     /**
@@ -66,10 +66,11 @@ class User extends Base
     {
         $is_remote = $this->request->getIntegerParam('remote') == 1 || (isset($values['is_ldap_user']) && $values['is_ldap_user'] == 1);
 
-        $this->response->html($this->helper->layout->app($is_remote ? 'user/create_remote' : 'user/create_local', array(
-            'timezones' => $this->timezone->getTimezones(true),
-            'languages' => $this->language->getLanguages(true),
+        $this->response->html($this->template->layout($is_remote ? 'user/create_remote' : 'user/create_local', array(
+            'timezones' => $this->config->getTimezones(true),
+            'languages' => $this->config->getLanguages(true),
             'roles' => $this->role->getApplicationRoles(),
+            'board_selector' => $this->projectUserRole->getProjectsByUser($this->userSession->getId()),
             'projects' => $this->project->getList(),
             'errors' => $errors,
             'values' => $values + array('role' => Role::APP_USER),
@@ -85,7 +86,7 @@ class User extends Base
     public function save()
     {
         $values = $this->request->getValues();
-        list($valid, $errors) = $this->userValidator->validateCreation($values);
+        list($valid, $errors) = $this->user->validateCreation($values);
 
         if ($valid) {
             $project_id = empty($values['project_id']) ? 0 : $values['project_id'];
@@ -119,10 +120,10 @@ class User extends Base
     public function show()
     {
         $user = $this->getUser();
-        $this->response->html($this->helper->layout->user('user/show', array(
+        $this->response->html($this->layout('user/show', array(
             'user' => $user,
-            'timezones' => $this->timezone->getTimezones(true),
-            'languages' => $this->language->getLanguages(true),
+            'timezones' => $this->config->getTimezones(true),
+            'languages' => $this->config->getLanguages(true),
         )));
     }
 
@@ -143,22 +144,8 @@ class User extends Base
             ->setQuery($this->subtaskTimeTracking->getUserQuery($user['id']))
             ->calculateOnlyIf($this->request->getStringParam('pagination') === 'subtasks');
 
-        $this->response->html($this->helper->layout->user('user/timesheet', array(
+        $this->response->html($this->layout('user/timesheet', array(
             'subtask_paginator' => $subtask_paginator,
-            'user' => $user,
-        )));
-    }
-
-    /**
-     * Display last password reset
-     *
-     * @access public
-     */
-    public function passwordReset()
-    {
-        $user = $this->getUser();
-        $this->response->html($this->helper->layout->user('user/password_reset', array(
-            'tokens' => $this->passwordReset->getAll($user['id']),
             'user' => $user,
         )));
     }
@@ -171,7 +158,7 @@ class User extends Base
     public function last()
     {
         $user = $this->getUser();
-        $this->response->html($this->helper->layout->user('user/last', array(
+        $this->response->html($this->layout('user/last', array(
             'last_logins' => $this->lastLogin->getAll($user['id']),
             'user' => $user,
         )));
@@ -185,7 +172,7 @@ class User extends Base
     public function sessions()
     {
         $user = $this->getUser();
-        $this->response->html($this->helper->layout->user('user/sessions', array(
+        $this->response->html($this->layout('user/sessions', array(
             'sessions' => $this->rememberMeSession->getAll($user['id']),
             'user' => $user,
         )));
@@ -220,7 +207,7 @@ class User extends Base
             $this->response->redirect($this->helper->url->to('user', 'notifications', array('user_id' => $user['id'])));
         }
 
-        $this->response->html($this->helper->layout->user('user/notifications', array(
+        $this->response->html($this->layout('user/notifications', array(
             'projects' => $this->projectUserRole->getProjectsByUser($user['id'], array(ProjectModel::ACTIVE)),
             'notifications' => $this->userNotification->readSettings($user['id']),
             'types' => $this->userNotificationType->getTypes(),
@@ -245,9 +232,9 @@ class User extends Base
             $this->response->redirect($this->helper->url->to('user', 'integrations', array('user_id' => $user['id'])));
         }
 
-        $this->response->html($this->helper->layout->user('user/integrations', array(
+        $this->response->html($this->layout('user/integrations', array(
             'user' => $user,
-            'values' => $this->userMetadata->getAll($user['id']),
+            'values' => $this->userMetadata->getall($user['id']),
         )));
     }
 
@@ -259,7 +246,7 @@ class User extends Base
     public function external()
     {
         $user = $this->getUser();
-        $this->response->html($this->helper->layout->user('user/external', array(
+        $this->response->html($this->layout('user/external', array(
             'last_logins' => $this->lastLogin->getAll($user['id']),
             'user' => $user,
         )));
@@ -287,7 +274,7 @@ class User extends Base
             $this->response->redirect($this->helper->url->to('user', 'share', array('user_id' => $user['id'])));
         }
 
-        $this->response->html($this->helper->layout->user('user/share', array(
+        $this->response->html($this->layout('user/share', array(
             'user' => $user,
             'title' => t('Public access'),
         )));
@@ -306,7 +293,7 @@ class User extends Base
 
         if ($this->request->isPost()) {
             $values = $this->request->getValues();
-            list($valid, $errors) = $this->userValidator->validatePasswordModification($values);
+            list($valid, $errors) = $this->user->validatePasswordModification($values);
 
             if ($valid) {
                 if ($this->user->update($values)) {
@@ -319,7 +306,7 @@ class User extends Base
             }
         }
 
-        $this->response->html($this->helper->layout->user('user/password', array(
+        $this->response->html($this->layout('user/password', array(
             'values' => $values,
             'errors' => $errors,
             'user' => $user,
@@ -348,7 +335,7 @@ class User extends Base
                 }
             }
 
-            list($valid, $errors) = $this->userValidator->validateModification($values);
+            list($valid, $errors) = $this->user->validateModification($values);
 
             if ($valid) {
                 if ($this->user->update($values)) {
@@ -361,12 +348,12 @@ class User extends Base
             }
         }
 
-        $this->response->html($this->helper->layout->user('user/edit', array(
+        $this->response->html($this->layout('user/edit', array(
             'values' => $values,
             'errors' => $errors,
             'user' => $user,
-            'timezones' => $this->timezone->getTimezones(true),
-            'languages' => $this->language->getLanguages(true),
+            'timezones' => $this->config->getTimezones(true),
+            'languages' => $this->config->getLanguages(true),
             'roles' => $this->role->getApplicationRoles(),
         )));
     }
@@ -386,7 +373,7 @@ class User extends Base
 
         if ($this->request->isPost()) {
             $values = $this->request->getValues() + array('disable_login_form' => 0, 'is_ldap_user' => 0);
-            list($valid, $errors) = $this->userValidator->validateModification($values);
+            list($valid, $errors) = $this->user->validateModification($values);
 
             if ($valid) {
                 if ($this->user->update($values)) {
@@ -399,9 +386,35 @@ class User extends Base
             }
         }
 
-        $this->response->html($this->helper->layout->user('user/authentication', array(
+        $this->response->html($this->layout('user/authentication', array(
             'values' => $values,
             'errors' => $errors,
+            'user' => $user,
+        )));
+    }
+
+    /**
+     * Remove a user
+     *
+     * @access public
+     */
+    public function remove()
+    {
+        $user = $this->getUser();
+
+        if ($this->request->getStringParam('confirmation') === 'yes') {
+            $this->checkCSRFParam();
+
+            if ($this->user->remove($user['id'])) {
+                $this->flash->success(t('User removed successfully.'));
+            } else {
+                $this->flash->failure(t('Unable to remove this user.'));
+            }
+
+            $this->response->redirect($this->helper->url->to('user', 'index'));
+        }
+
+        $this->response->html($this->layout('user/remove', array(
             'user' => $user,
         )));
     }

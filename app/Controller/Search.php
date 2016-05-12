@@ -2,8 +2,6 @@
 
 namespace Kanboard\Controller;
 
-use Kanboard\Filter\TaskProjectsFilter;
-
 /**
  * Search controller
  *
@@ -25,18 +23,21 @@ class Search extends Base
                 ->setDirection('DESC');
 
         if ($search !== '' && ! empty($projects)) {
+            $query = $this
+                ->taskFilter
+                ->search($search)
+                ->filterByProjects(array_keys($projects))
+                ->getQuery();
+
             $paginator
-                ->setQuery($this->taskLexer
-                    ->build($search)
-                    ->withFilter(new TaskProjectsFilter(array_keys($projects)))
-                    ->getQuery()
-                )
+                ->setQuery($query)
                 ->calculate();
 
             $nb_tasks = $paginator->getTotal();
         }
 
-        $this->response->html($this->helper->layout->app('search/index', array(
+        $this->response->html($this->template->layout('search/index', array(
+            'board_selector' => $projects,
             'values' => array(
                 'search' => $search,
                 'controller' => 'search',
@@ -44,24 +45,6 @@ class Search extends Base
             ),
             'paginator' => $paginator,
             'title' => t('Search tasks').($nb_tasks > 0 ? ' ('.$nb_tasks.')' : '')
-        )));
-    }
-
-    public function activity()
-    {
-        $search = urldecode($this->request->getStringParam('search'));
-        $events = $this->helper->projectActivity->searchEvents($search);
-        $nb_events = count($events);
-
-        $this->response->html($this->helper->layout->app('search/activity', array(
-            'values' => array(
-                'search' => $search,
-                'controller' => 'search',
-                'action' => 'activity',
-            ),
-            'title' => t('Search in activity stream').($nb_events > 0 ? ' ('.$nb_events.')' : ''),
-            'nb_events' => $nb_events,
-            'events' => $events,
         )));
     }
 }

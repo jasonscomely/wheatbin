@@ -3,7 +3,6 @@
 namespace Kanboard\User;
 
 use Kanboard\Core\User\UserProviderInterface;
-use Kanboard\Model\Language;
 
 /**
  * LDAP User Provider
@@ -16,66 +15,50 @@ class LdapUserProvider implements UserProviderInterface
     /**
      * LDAP DN
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $dn;
+    private $dn;
 
     /**
      * LDAP username
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $username;
+    private $username;
 
     /**
      * User name
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * Email
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $email;
+    private $email;
 
     /**
      * User role
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $role;
+    private $role;
 
     /**
      * Group LDAP DNs
      *
-     * @access protected
+     * @access private
      * @var string[]
      */
-    protected $groupIds;
-
-    /**
-     * User photo
-     *
-     * @access protected
-     * @var string
-     */
-    protected $photo = '';
-
-    /**
-     * User language
-     *
-     * @access protected
-     * @var string
-     */
-    protected $language = '';
+    private $groupIds;
 
     /**
      * Constructor
@@ -86,10 +69,9 @@ class LdapUserProvider implements UserProviderInterface
      * @param  string   $name
      * @param  string   $email
      * @param  string   $role
-     * @param  string[] $groupIds
-     * @param  string   $photo
+     * @param  string[]
      */
-    public function __construct($dn, $username, $name, $email, $role, array $groupIds, $photo = '', $language = '')
+    public function __construct($dn, $username, $name, $email, $role, array $groupIds)
     {
         $this->dn = $dn;
         $this->username = $username;
@@ -97,8 +79,6 @@ class LdapUserProvider implements UserProviderInterface
         $this->email = $email;
         $this->role = $role;
         $this->groupIds = $groupIds;
-        $this->photo = $photo;
-        $this->language = $language;
     }
 
     /**
@@ -190,10 +170,10 @@ class LdapUserProvider implements UserProviderInterface
     }
 
     /**
-     * Get groups DN
+     * Get groups
      *
      * @access public
-     * @return string[]
+     * @return array
      */
     public function getExternalGroupIds()
     {
@@ -208,13 +188,9 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function getExtraAttributes()
     {
-        $attributes = array('is_ldap_user' => 1);
-
-        if (! empty($this->language)) {
-            $attributes['language'] = Language::findCode($this->language);
-        }
-
-        return $attributes;
+        return array(
+            'is_ldap_user' => 1,
+        );
     }
 
     /**
@@ -226,16 +202,5 @@ class LdapUserProvider implements UserProviderInterface
     public function getDn()
     {
         return $this->dn;
-    }
-
-    /**
-     * Get user photo
-     *
-     * @access public
-     * @return string
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
     }
 }

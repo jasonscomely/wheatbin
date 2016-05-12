@@ -14,7 +14,7 @@ interface PasswordAuthenticationProviderInterface extends AuthenticationProvider
      * Get user object
      *
      * @access public
-     * @return \Kanboard\Core\User\UserProviderInterface
+     * @return UserProviderInterface
      */
     public function getUser();
 

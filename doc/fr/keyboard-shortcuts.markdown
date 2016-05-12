@@ -18,18 +18,9 @@ Vue tableau
 - Étendre / replier une tâche = **s**
 - Vue compacte / vue étendue = **c**
 
-Vue détaillée d'une tâche
--------------------------
-
-- Modifier une tâche = **e**
-- Nouvelle sous-tâche = **s**
-- Nouveau commentaire = **c**
-- Nouveau lien interne = **l**
-
 Application
 -----------
 
-- Afficher la liste des raccourcis clavier = **?**
 - Ouvrir le changement de tableau = **b**
 - Aller au moteur de recherche = **f**
 - Restaurer la boîte de recherche = **r**

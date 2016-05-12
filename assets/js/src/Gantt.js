@@ -1,5 +1,5 @@
 // Based on jQuery.ganttView v.0.8.8 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com - MIT License
-Kanboard.Gantt = function(app) {
+function Gantt(app) {
     this.app = app;
     this.data = [];
 
@@ -13,16 +13,10 @@ Kanboard.Gantt = function(app) {
         slideWidth: 1000,
         vHeaderWidth: 200
     };
-};
-
-Kanboard.Gantt.prototype.execute = function() {
-    if (this.app.hasId("gantt-chart")) {
-        this.show();
-    }
-};
+}
 
 // Save record after a resize or move
-Kanboard.Gantt.prototype.saveRecord = function(record) {
+Gantt.prototype.saveRecord = function(record) {
     this.app.showLoadingIcon();
 
     $.ajax({
@@ -37,7 +31,7 @@ Kanboard.Gantt.prototype.saveRecord = function(record) {
 };
 
 // Build the Gantt chart
-Kanboard.Gantt.prototype.show = function() {
+Gantt.prototype.execute = function() {
     this.data = this.prepareData($(this.options.container).data('records'));
 
     var minDays = Math.floor((this.options.slideWidth / this.options.cellWidth) + 5);
@@ -66,7 +60,7 @@ Kanboard.Gantt.prototype.show = function() {
 };
 
 // Render record list on the left
-Kanboard.Gantt.prototype.renderVerticalHeader = function() {
+Gantt.prototype.renderVerticalHeader = function() {
     var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
     var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });
     var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
@@ -77,7 +71,7 @@ Kanboard.Gantt.prototype.renderVerticalHeader = function() {
             .append("&nbsp;");
 
         if (this.data[i].type == "task") {
-            content.append(jQuery("<a>", {"href": this.data[i].link, "title": this.data[i].title}).append(this.data[i].title));
+            content.append(jQuery("<a>", {"href": this.data[i].link, "target": "_blank", "title": this.data[i].title}).append(this.data[i].title));
         }
         else {
             content
@@ -98,7 +92,7 @@ Kanboard.Gantt.prototype.renderVerticalHeader = function() {
 };
 
 // Render right part of the chart (top header + grid + bars)
-Kanboard.Gantt.prototype.renderSlider = function(startDate, endDate) {
+Gantt.prototype.renderSlider = function(startDate, endDate) {
     var slideDiv = jQuery("<div>", {"class": "ganttview-slide-container"});
     var dates = this.getDates(startDate, endDate);
 
@@ -111,7 +105,7 @@ Kanboard.Gantt.prototype.renderSlider = function(startDate, endDate) {
 };
 
 // Render top header (days)
-Kanboard.Gantt.prototype.renderHorizontalHeader = function(dates) {
+Gantt.prototype.renderHorizontalHeader = function(dates) {
     var headerDiv = jQuery("<div>", { "class": "ganttview-hzheader" });
     var monthsDiv = jQuery("<div>", { "class": "ganttview-hzheader-months" });
     var daysDiv = jQuery("<div>", { "class": "ganttview-hzheader-days" });
@@ -141,7 +135,7 @@ Kanboard.Gantt.prototype.renderHorizontalHeader = function(dates) {
 };
 
 // Render grid
-Kanboard.Gantt.prototype.renderGrid = function(dates) {
+Gantt.prototype.renderGrid = function(dates) {
     var gridDiv = jQuery("<div>", { "class": "ganttview-grid" });
     var rowDiv = jQuery("<div>", { "class": "ganttview-grid-row" });
 
@@ -168,7 +162,7 @@ Kanboard.Gantt.prototype.renderGrid = function(dates) {
 };
 
 // Render bar containers
-Kanboard.Gantt.prototype.addBlockContainers = function() {
+Gantt.prototype.addBlockContainers = function() {
     var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks" });
 
     for (var i = 0; i < this.data.length; i++) {
@@ -179,7 +173,7 @@ Kanboard.Gantt.prototype.addBlockContainers = function() {
 };
 
 // Render bars
-Kanboard.Gantt.prototype.addBlocks = function(slider, start) {
+Gantt.prototype.addBlocks = function(slider, start) {
     var rows = jQuery("div.ganttview-blocks div.ganttview-block-container", slider);
     var rowIdx = 0;
 
@@ -225,7 +219,7 @@ Kanboard.Gantt.prototype.addBlocks = function(slider, start) {
 };
 
 // Get tooltip for vertical header
-Kanboard.Gantt.prototype.getVerticalHeaderTooltip = function(record) {
+Gantt.prototype.getVerticalHeaderTooltip = function(record) {
     var tooltip = "";
 
     if (record.type == "task") {
@@ -252,7 +246,7 @@ Kanboard.Gantt.prototype.getVerticalHeaderTooltip = function(record) {
 };
 
 // Get tooltip for bars
-Kanboard.Gantt.prototype.getBarTooltip = function(record) {
+Gantt.prototype.getBarTooltip = function(record) {
     var tooltip = "";
 
     if (record.not_defined) {
@@ -272,7 +266,7 @@ Kanboard.Gantt.prototype.getBarTooltip = function(record) {
 };
 
 // Set bar color
-Kanboard.Gantt.prototype.setBarColor = function(block, record) {
+Gantt.prototype.setBarColor = function(block, record) {
     if (record.not_defined) {
         block.addClass("ganttview-block-not-defined");
     }
@@ -283,7 +277,7 @@ Kanboard.Gantt.prototype.setBarColor = function(block, record) {
 };
 
 // Setup jquery-ui resizable
-Kanboard.Gantt.prototype.listenForBlockResize = function(startDate) {
+Gantt.prototype.listenForBlockResize = function(startDate) {
     var self = this;
 
     jQuery("div.ganttview-block", this.options.container).resizable({
@@ -299,7 +293,7 @@ Kanboard.Gantt.prototype.listenForBlockResize = function(startDate) {
 };
 
 // Setup jquery-ui drag and drop
-Kanboard.Gantt.prototype.listenForBlockMove = function(startDate) {
+Gantt.prototype.listenForBlockMove = function(startDate) {
     var self = this;
 
     jQuery("div.ganttview-block", this.options.container).draggable({
@@ -315,7 +309,7 @@ Kanboard.Gantt.prototype.listenForBlockMove = function(startDate) {
 };
 
 // Update the record data and the position on the chart
-Kanboard.Gantt.prototype.updateDataAndPosition = function(block, startDate) {
+Gantt.prototype.updateDataAndPosition = function(block, startDate) {
     var container = jQuery("div.ganttview-slide-container", this.options.container);
     var scroll = container.scrollLeft();
     var offset = block.offset().left - container.offset().left - 1 + scroll;
@@ -355,7 +349,7 @@ Kanboard.Gantt.prototype.updateDataAndPosition = function(block, startDate) {
 
 // Creates a 3 dimensional array [year][month][day] of every day
 // between the given start and end dates
-Kanboard.Gantt.prototype.getDates = function(start, end) {
+Gantt.prototype.getDates = function(start, end) {
     var dates = [];
     dates[start.getFullYear()] = [];
     dates[start.getFullYear()][start.getMonth()] = [start];
@@ -380,7 +374,7 @@ Kanboard.Gantt.prototype.getDates = function(start, end) {
 };
 
 // Convert data to Date object
-Kanboard.Gantt.prototype.prepareData = function(data) {
+Gantt.prototype.prepareData = function(data) {
     for (var i = 0; i < data.length; i++) {
         var start = new Date(data[i].start[0], data[i].start[1] - 1, data[i].start[2], 0, 0, 0, 0);
         data[i].start = start;
@@ -393,7 +387,7 @@ Kanboard.Gantt.prototype.prepareData = function(data) {
 };
 
 // Get the start and end date from the data provided
-Kanboard.Gantt.prototype.getDateRange = function(minDays) {
+Gantt.prototype.getDateRange = function(minDays) {
     var minStart = new Date();
     var maxEnd = new Date();
 
@@ -431,7 +425,7 @@ Kanboard.Gantt.prototype.getDateRange = function(minDays) {
 };
 
 // Returns the number of day between 2 dates
-Kanboard.Gantt.prototype.daysBetween = function(start, end) {
+Gantt.prototype.daysBetween = function(start, end) {
     if (! start || ! end) {
         return 0;
     }
@@ -447,17 +441,17 @@ Kanboard.Gantt.prototype.daysBetween = function(start, end) {
 };
 
 // Return true if it's the weekend
-Kanboard.Gantt.prototype.isWeekend = function(date) {
+Gantt.prototype.isWeekend = function(date) {
     return date.getDay() % 6 == 0;
 };
 
 // Clone Date object
-Kanboard.Gantt.prototype.cloneDate = function(date) {
+Gantt.prototype.cloneDate = function(date) {
     return new Date(date.getTime());
 };
 
 // Add days to a Date object
-Kanboard.Gantt.prototype.addDays = function(date, value) {
+Gantt.prototype.addDays = function(date, value) {
     date.setDate(date.getDate() + value * 1);
     return date;
 };
@@ -469,7 +463,7 @@ Kanboard.Gantt.prototype.addDays = function(date, value) {
  * 0 = values are equal
  * 1 = date1 is greaterthan date2.
  */
-Kanboard.Gantt.prototype.compareDate = function(date1, date2) {
+Gantt.prototype.compareDate = function(date1, date2) {
     if (isNaN(date1) || isNaN(date2)) {
         throw new Error(date1 + " - " + date2);
     } else if (date1 instanceof Date && date2 instanceof Date) {

@@ -44,14 +44,10 @@ class UserProperty
      */
     public static function filterProperties(array $profile, array $properties)
     {
-        $excludedProperties = array('username');
         $values = array();
 
         foreach ($properties as $property => $value) {
-            if (self::isNotEmptyValue($value) &&
-                ! in_array($property, $excludedProperties) &&
-                array_key_exists($property, $profile) &&
-                $value !== $profile[$property]) {
+            if (array_key_exists($property, $profile) && ! self::isNotEmptyValue($profile[$property])) {
                 $values[$property] = $value;
             }
         }

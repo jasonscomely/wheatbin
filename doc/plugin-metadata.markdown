@@ -1,13 +1,13 @@
 Metadata
 ========
 
-You can attach metadata for each project, task, user or for the whole application.
+You can attach metadata for each project, task and user.
 Metadata are custom fields, it's a key/value table.
 
 For example your plugin can store external information for a task or new settings for a project.
 Basically that allow you to extend the default fields without having to create new tables.
 
-Attach metadata to tasks and remove them
+Attach metadata to tasks
 ------------------------
 
 ```php
@@ -23,9 +23,6 @@ $this->taskMetadata->exists($task_id, 'my_plugin_variable');
 
 // Create or update metadata for the task
 $this->taskMetadata->save($task_id, ['my_plugin_variable' => 'something']);
-
-// Remove a metadata from a project
-$this->projectMetadata->remove($project_id, my_plugin_variable);
 ```
 
 Metadata types
@@ -34,7 +31,6 @@ Metadata types
 - TaskMetadata: `$this->taskMetadata`
 - ProjectMetadata: `$this->projectMetadata`
 - UserMetadata: `$this->userMetadata`
-- Settings/Config: `$this->config`
 
 Notes
 -----

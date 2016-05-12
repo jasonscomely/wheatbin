@@ -5,8 +5,8 @@ namespace Kanboard\Core\Plugin;
 /**
  * Plugin Base class
  *
- * @package Kanboard\Core\Plugin
- * @author  Frederic Guillot
+ * @package  plugin
+ * @author   Frederic Guillot
  */
 abstract class Base extends \Kanboard\Core\Base
 {
@@ -41,17 +41,6 @@ abstract class Base extends \Kanboard\Core\Base
     }
 
     /**
-     * Returns all helper classes that needs to be stored in the DI container
-     *
-     * @access public
-     * @return array
-     */
-    public function getHelpers()
-    {
-        return array();
-    }
-
-    /**
      * Listen on internal events
      *
      * @access public
@@ -62,7 +51,7 @@ abstract class Base extends \Kanboard\Core\Base
     {
         $container = $this->container;
 
-        $this->dispatcher->addListener($event, function () use ($container, $callback) {
+        $this->container['dispatcher']->addListener($event, function () use ($container, $callback) {
             call_user_func($callback, $container);
         });
     }
@@ -70,7 +59,7 @@ abstract class Base extends \Kanboard\Core\Base
     /**
      * Get plugin name
      *
-     * This method should be overridden by your Plugin class
+     * This method should be overrided by your Plugin class
      *
      * @access public
      * @return string
@@ -83,7 +72,7 @@ abstract class Base extends \Kanboard\Core\Base
     /**
      * Get plugin description
      *
-     * This method should be overridden by your Plugin class
+     * This method should be overrided by your Plugin class
      *
      * @access public
      * @return string
@@ -96,7 +85,7 @@ abstract class Base extends \Kanboard\Core\Base
     /**
      * Get plugin author
      *
-     * This method should be overridden by your Plugin class
+     * This method should be overrided by your Plugin class
      *
      * @access public
      * @return string
@@ -109,7 +98,7 @@ abstract class Base extends \Kanboard\Core\Base
     /**
      * Get plugin version
      *
-     * This method should be overridden by your Plugin class
+     * This method should be overrided by your Plugin class
      *
      * @access public
      * @return string
@@ -122,7 +111,7 @@ abstract class Base extends \Kanboard\Core\Base
     /**
      * Get plugin homepage
      *
-     * This method should be overridden by your Plugin class
+     * This method should be overrided by your Plugin class
      *
      * @access public
      * @return string

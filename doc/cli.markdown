@@ -4,7 +4,7 @@ Command Line Interface
 Kanboard provides a simple command line interface that can be used from any Unix terminal.
 This tool can be used only on the local machine.
 
-This feature is useful to run commands outside of the web server processes.
+This feature is useful to run commands outside the web server process by example running a huge report.
 
 Usage
 -----
@@ -28,7 +28,6 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
-  cronjob                            Execute daily cronjob
   help                               Displays help for a command
   list                               Lists commands
  export
@@ -43,11 +42,6 @@ Available commands:
   notification:overdue-tasks         Send notifications for overdue tasks
  projects
   projects:daily-stats               Calculate daily statistics for all projects
- trigger
-  trigger:tasks                      Trigger scheduler event for all tasks
- user
-  user:reset-2fa                     Remove two-factor authentication for a user
-  user:reset-password                Change user password
 ```
 
 Available commands
@@ -119,16 +113,10 @@ Emails will be sent to all users with notifications enabled.
 ./kanboard notification:overdue-tasks
 ```
 
-Optional parameters:
-
-- `--show`: Display notifications sent
-- `--group`: Group all overdue tasks for one user (from all projects) in one email
-- `--manager`: Send all overdue tasks to project manager(s) in one email
-
 You can also display the overdue tasks with the flag `--show`:
 
 ```bash
-./kanboard notification:overdue-tasks --show
+$ ./kanboard notification:overdue-tasks --show
 +-----+---------+------------+------------+--------------+----------+
 | Id  | Title   | Due date   | Project Id | Project name | Assignee |
 +-----+---------+------------+------------+--------------+----------+
@@ -137,36 +125,20 @@ You can also display the overdue tasks with the flag `--show`:
 +-----+---------+------------+------------+--------------+----------+
 ```
 
-### Run daily project stats calculation
-
-This command calculate the statistics of each project:
+Cronjob example:
 
 ```bash
-./kanboard projects:daily-stats
+# Everyday at 8am we check for due tasks
+0 8 * * *  cd /path/to/kanboard && ./kanboard notification:overdue-tasks >/dev/null 2>&1
+```
+
+### Run daily project stats calculation
+
+You can add a background task to calculate the project statistics every day:
+
+```bash
+$ ./kanboard projects:daily-stats
 Run calculation for Project #0
 Run calculation for Project #1
 Run calculation for Project #10
-```
-
-### Trigger for tasks
-
-This command send a "daily cronjob event" to all open tasks of each project.
-
-```bash
-./kanboard trigger:tasks
-Trigger task event: project_id=2, nb_tasks=1
-```
-
-### Reset user password
-
-```bash
-./kanboard user:reset-password my_user
-```
-
-You will be prompted for a password and confirmation. Characters are not printed to the screen.
-
-### Remove two-factor authentication for a user
-
-```bash
-./kanboard user:reset-2fa my_user
 ```

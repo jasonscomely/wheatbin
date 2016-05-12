@@ -19,21 +19,7 @@ class BoardTooltip extends Base
     {
         $task = $this->getTask();
         $this->response->html($this->template->render('board/tooltip_tasklinks', array(
-            'links' => $this->taskLink->getAllGroupedByLabel($task['id']),
-            'task' => $task,
-        )));
-    }
-
-    /**
-     * Get links on mouseover
-     *
-     * @access public
-     */
-    public function externallinks()
-    {
-        $task = $this->getTask();
-        $this->response->html($this->template->render('board/tooltip_external_links', array(
-            'links' => $this->taskExternalLink->getAll($task['id']),
+            'links' => $this->taskLink->getAll($task['id']),
             'task' => $task,
         )));
     }
@@ -62,7 +48,7 @@ class BoardTooltip extends Base
         $task = $this->getTask();
 
         $this->response->html($this->template->render('board/tooltip_files', array(
-            'files' => $this->taskFile->getAll($task['id']),
+            'files' => $this->file->getAll($task['id']),
             'task' => $task,
         )));
     }
@@ -77,7 +63,6 @@ class BoardTooltip extends Base
         $task = $this->getTask();
 
         $this->response->html($this->template->render('board/tooltip_comments', array(
-            'task' => $task,
             'comments' => $this->comment->getAll($task['id'], $this->userSession->getCommentSorting())
         )));
     }
@@ -105,7 +90,7 @@ class BoardTooltip extends Base
     {
         $task = $this->getTask();
 
-        $this->response->html($this->template->render('task_recurrence/info', array(
+        $this->response->html($this->template->render('task/recurring_info', array(
             'task' => $task,
             'recurrence_trigger_list' => $this->task->getRecurrenceTriggerList(),
             'recurrence_timeframe_list' => $this->task->getRecurrenceTimeframeList(),

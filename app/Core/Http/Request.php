@@ -29,12 +29,7 @@ class Request extends Base
      * Constructor
      *
      * @access public
-     * @param \Pimple\Container $container
-     * @param array $server
-     * @param array $get
-     * @param array $post
-     * @param array $files
-     * @param array $cookies
+     * @param  \Pimple\Container   $container
      */
     public function __construct(Container $container, array $server = array(), array $get = array(), array $post = array(), array $files = array(), array $cookies = array())
     {
@@ -44,16 +39,6 @@ class Request extends Base
         $this->post = empty($post) ? $_POST : $post;
         $this->files = empty($files) ? $_FILES : $files;
         $this->cookies = empty($cookies) ? $_COOKIE : $cookies;
-    }
-
-    /**
-     * Set GET parameters
-     *
-     * @param array $params
-     */
-    public function setParams(array $params)
-    {
-        $this->get = array_merge($this->get, $params);
     }
 
     /**
@@ -162,29 +147,6 @@ class Request extends Base
     }
 
     /**
-     * Get info of an uploaded file
-     *
-     * @access public
-     * @param  string   $name   Form file name
-     * @return array
-     */
-    public function getFileInfo($name)
-    {
-        return isset($this->files[$name]) ? $this->files[$name] : array();
-    }
-
-    /**
-     * Return HTTP method
-     *
-     * @access public
-     * @return bool
-     */
-    public function getMethod()
-    {
-        return $this->getServerVariable('REQUEST_METHOD');
-    }
-
-    /**
      * Return true if the HTTP request is sent with the POST method
      *
      * @access public
@@ -192,7 +154,7 @@ class Request extends Base
      */
     public function isPost()
     {
-        return $this->getServerVariable('REQUEST_METHOD') === 'POST';
+        return isset($this->server['REQUEST_METHOD']) && $this->server['REQUEST_METHOD'] === 'POST';
     }
 
     /**
@@ -216,11 +178,7 @@ class Request extends Base
      */
     public function isHTTPS()
     {
-        if ($this->getServerVariable('HTTP_X_FORWARDED_PROTO') === 'https') {
-            return true;
-        }
-
-        return $this->getServerVariable('HTTPS') !== '' && $this->server['HTTPS'] !== 'off';
+        return isset($this->server['HTTPS']) && $this->server['HTTPS'] !== '' && $this->server['HTTPS'] !== 'off';
     }
 
     /**
@@ -245,7 +203,7 @@ class Request extends Base
     public function getHeader($name)
     {
         $name = 'HTTP_'.str_replace('-', '_', strtoupper($name));
-        return $this->getServerVariable($name);
+        return isset($this->server[$name]) ? $this->server[$name] : '';
     }
 
     /**
@@ -256,18 +214,18 @@ class Request extends Base
      */
     public function getRemoteUser()
     {
-        return $this->getServerVariable(REVERSE_PROXY_USER_HEADER);
+        return isset($this->server[REVERSE_PROXY_USER_HEADER]) ? $this->server[REVERSE_PROXY_USER_HEADER] : '';
     }
 
     /**
-     * Returns query string
+     * Returns current request's query string, useful for redirecting
      *
      * @access public
      * @return string
      */
     public function getQueryString()
     {
-        return $this->getServerVariable('QUERY_STRING');
+        return isset($this->server['QUERY_STRING']) ? $this->server['QUERY_STRING'] : '';
     }
 
     /**
@@ -278,7 +236,7 @@ class Request extends Base
      */
     public function getUri()
     {
-        return $this->getServerVariable('REQUEST_URI');
+        return isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
     }
 
     /**
@@ -311,7 +269,7 @@ class Request extends Base
         );
 
         foreach ($keys as $key) {
-            if ($this->getServerVariable($key) !== '') {
+            if (! empty($this->server[$key])) {
                 foreach (explode(',', $this->server[$key]) as $ipAddress) {
                     return trim($ipAddress);
                 }
@@ -329,18 +287,6 @@ class Request extends Base
      */
     public function getStartTime()
     {
-        return $this->getServerVariable('REQUEST_TIME_FLOAT') ?: 0;
-    }
-
-    /**
-     * Get server variable
-     *
-     * @access public
-     * @param  string $variable
-     * @return string
-     */
-    public function getServerVariable($variable)
-    {
-        return isset($this->server[$variable]) ? $this->server[$variable] : '';
+        return isset($this->server['REQUEST_TIME_FLOAT']) ? $this->server['REQUEST_TIME_FLOAT'] : 0;
     }
 }

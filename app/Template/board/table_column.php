@@ -24,31 +24,13 @@
                 </span>
             <?php endif ?>
 
-            <span class="board-column-title">
-                <?php if ($not_editable): ?>
-                    <?= $this->text->e($column['title']) ?>
-                <?php else: ?>
-                    <span class="dropdown">
-                        <a href="#" class="dropdown-menu"><?= $this->text->e($column['title']) ?> <i class="fa fa-caret-down"></i></a>
-                        <ul>
-                            <li>
-                                <i class="fa fa-minus-square fa-fw"></i>
-                                <a href="#" class="board-toggle-column-view" data-column-id="<?= $column['id'] ?>"><?= t('Hide this column') ?></a>
-                            </li>
-                            <?php if ($this->user->hasProjectAccess('BoardPopover', 'closeColumnTasks', $column['project_id']) && $column['nb_tasks'] > 0): ?>
-                                <li>
-                                    <i class="fa fa-close fa-fw"></i>
-                                    <?= $this->url->link(t('Close all tasks of this column'), 'BoardPopover', 'confirmCloseColumnTasks', array('project_id' => $column['project_id'], 'column_id' => $column['id'], 'swimlane_id' => $swimlane['id']), false, 'popover') ?>
-                                </li>
-                            <?php endif ?>
-                        </ul>
-                    </span>
-                <?php endif ?>
+            <span class="board-column-title" data-column-id="<?= $column['id'] ?>" title="<?= t('Hide this column') ?>">
+                <?= $this->e($column['title']) ?>
             </span>
 
             <?php if (! $not_editable && ! empty($column['description'])): ?>
-                <span class="tooltip pull-right" title="<?= $this->text->markdownAttribute($column['description']) ?>">
-                    &nbsp;<i class="fa fa-info-circle"></i>
+                <span class="tooltip pull-right" title='<?= $this->e($this->text->markdown($column['description'])) ?>'>
+                    <i class="fa fa-info-circle"></i>
                 </span>
             <?php endif ?>
 
@@ -60,7 +42,7 @@
 
             <?php if ($column['task_limit']): ?>
                 <span title="<?= t('Task limit') ?>">
-                    (<span id="task-number-column-<?= $column['id'] ?>"><?= $column['nb_tasks'] ?></span>/<?= $this->text->e($column['task_limit']) ?>)
+                    (<span id="task-number-column-<?= $column['id'] ?>"><?= $column['nb_tasks'] ?></span>/<?= $this->e($column['task_limit']) ?>)
                 </span>
             <?php else: ?>
                 <span title="<?= t('Task count') ?>" class="board-column-header-task-count">

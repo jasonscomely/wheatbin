@@ -14,6 +14,23 @@ use Kanboard\Core\Security\Role;
  */
 class Projectuser extends Base
 {
+    /**
+     * Common layout for users overview views
+     *
+     * @access private
+     * @param  string    $template   Template name
+     * @param  array     $params     Template parameters
+     * @return string
+     */
+    private function layout($template, array $params)
+    {
+        $params['board_selector'] = $this->projectUserRole->getProjectsByUser($this->userSession->getId());
+        $params['content_for_sublayout'] = $this->template->render($template, $params);
+        $params['filter'] = array('user_id' => $params['user_id']);
+
+        return $this->template->layout('project_user/layout', $params);
+    }
+
     private function common()
     {
         $user_id = $this->request->getIntegerParam('user_id', UserModel::EVERYBODY_ID);
@@ -24,7 +41,7 @@ class Projectuser extends Base
             $project_ids = $this->projectPermission->getActiveProjectIds($this->userSession->getId());
         }
 
-        return array($user_id, $project_ids, $this->user->getActiveUsersList(true));
+        return array($user_id, $project_ids, $this->user->getList(true));
     }
 
     private function role($role, $action, $title, $title_user)
@@ -33,7 +50,7 @@ class Projectuser extends Base
 
         $query = $this->projectPermission->getQueryByRole($project_ids, $role)->callback(array($this->project, 'applyColumnStats'));
 
-        if ($user_id !== UserModel::EVERYBODY_ID && isset($users[$user_id])) {
+        if ($user_id !== UserModel::EVERYBODY_ID) {
             $query->eq(UserModel::TABLE.'.id', $user_id);
             $title = t($title_user, $users[$user_id]);
         }
@@ -45,7 +62,7 @@ class Projectuser extends Base
             ->setQuery($query)
             ->calculate();
 
-        $this->response->html($this->helper->layout->projectUser('project_user/roles', array(
+        $this->response->html($this->layout('project_user/roles', array(
             'paginator' => $paginator,
             'title' => $title,
             'user_id' => $user_id,
@@ -59,7 +76,7 @@ class Projectuser extends Base
 
         $query = $this->taskFinder->getProjectUserOverviewQuery($project_ids, $is_active);
 
-        if ($user_id !== UserModel::EVERYBODY_ID && isset($users[$user_id])) {
+        if ($user_id !== UserModel::EVERYBODY_ID) {
             $query->eq(TaskModel::TABLE.'.owner_id', $user_id);
             $title = t($title_user, $users[$user_id]);
         }
@@ -71,7 +88,7 @@ class Projectuser extends Base
             ->setQuery($query)
             ->calculate();
 
-        $this->response->html($this->helper->layout->projectUser('project_user/tasks', array(
+        $this->response->html($this->layout('project_user/tasks', array(
             'paginator' => $paginator,
             'title' => $title,
             'user_id' => $user_id,
@@ -113,18 +130,5 @@ class Projectuser extends Base
     public function closed()
     {
         $this->tasks(TaskModel::STATUS_CLOSED, 'closed', t('Closed tasks'), 'Closed tasks assigned to "%s"');
-    }
-
-    /**
-     * Users tooltip
-     */
-    public function users()
-    {
-        $project = $this->getProject();
-
-        return $this->response->html($this->template->render('project_user/tooltip_users', array(
-            'users' => $this->projectUserRole->getAllUsersGroupedByRole($project['id']),
-            'roles' => $this->role->getProjectRoles(),
-        )));
     }
 }

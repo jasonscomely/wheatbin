@@ -10,18 +10,18 @@
             'chosen-select select-auto-redirect'
         ) ?>
 
-    <br><br>
+    <br/><br/>
     <ul>
-        <li <?= $this->app->checkMenuSelection('projectuser', 'managers') ?>>
+        <li <?= $this->app->getRouterAction() === 'managers' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Project managers'), 'projectuser', 'managers', $filter) ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('projectuser', 'members') ?>>
+        <li <?= $this->app->getRouterAction() === 'members' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Project members'), 'projectuser', 'members', $filter) ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('projectuser', 'opens') ?>>
+        <li <?= $this->app->getRouterAction() === 'opens' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Open tasks'), 'projectuser', 'opens', $filter) ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('projectuser', 'closed') ?>>
+        <li <?= $this->app->getRouterAction() === 'closed' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Closed tasks'), 'projectuser', 'closed', $filter) ?>
         </li>
 

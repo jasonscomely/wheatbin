@@ -1,12 +1,12 @@
 Afficher ou cacher des colonnes dans le tableau
-===============================================
+==================================
 
 Vous pouvez très facilement cacher ou afficher des colonnes dans le tableau :
 
-![Cacher une colonne](screenshots/hide-column.png)
+![Tableau avec des colonnes cachées](http://kanboard.net/screenshots/documentation/board-hide-show-column.png)
 
-Pour cacher une colonne, ouvrez le menu déroulant de la colonne.
+- Pour cacher une colonne, cliquez juste sur le titre de la colonne
+- Pour afficher une colonne cachée, cliquez sur le titre vertical
 
-![Afficher une colonne](screenshots/show-column.png)
+Lorsqu'une colonne est cachée, le nombre de tâches est affiché en haut de la colonne.
 
-Pour afficher de nouveau la colonne, cliquez sur l'icône avec le « plus ».

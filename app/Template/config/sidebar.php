@@ -1,39 +1,53 @@
 <div class="sidebar">
     <h2><?= t('Actions') ?></h2>
     <ul>
-        <li <?= $this->app->checkMenuSelection('config', 'index') ?>>
+        <li <?= $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('About'), 'config', 'index') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('config', 'plugins') ?>>
+        <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
+            <?= $this->url->link(t('Project management'), 'project', 'index') ?>
+        </li>
+        <li <?= $this->app->getRouterController() === 'user' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
+            <?= $this->url->link(t('User management'), 'user', 'index') ?>
+        </li>
+       <li <?= $this->app->getRouterAction() === 'plugins' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Plugins'), 'config', 'plugins') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('config', 'application') ?>>
+        <li <?= $this->app->getRouterAction() === 'application' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Application settings'), 'config', 'application') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('config', 'project') ?>>
+        <li <?= $this->app->getRouterAction() === 'project' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Project settings'), 'config', 'project') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('config', 'board') ?>>
+        <li <?= $this->app->getRouterAction() === 'board' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Board settings'), 'config', 'board') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('config', 'calendar') ?>>
+        <li <?= $this->app->getRouterAction() === 'calendar' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Calendar settings'), 'config', 'calendar') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('link') ?>>
+        <li <?= $this->app->getRouterController() === 'link' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Link settings'), 'link', 'index') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('currency', 'index') ?>>
-            <?= $this->url->link(t('Currency rates'), 'currency', 'index') ?>
+        <!--
+        <li 
+            <?php //<?= $this->app->getRouterController() === 'currency' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
+            <?php //<?= $this->url->link(t('Currency rates'), 'currency', 'index') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('config', 'integrations') ?>>
+        -->
+        <li <?= $this->app->getRouterAction() === 'integrations' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Integrations'), 'config', 'integrations') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('config', 'webhook') ?>>
+        <li <?= $this->app->getRouterAction() === 'webhook' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Webhooks'), 'config', 'webhook') ?>
         </li>
-        <li <?= $this->app->checkMenuSelection('config', 'api') ?>>
+        <li <?= $this->app->getRouterAction() === 'api' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('API'), 'config', 'api') ?>
         </li>
+        <li>
+            <a href="/wheatbin/documentation" class="" title="" >Wheatbin manual</a>  </li>
+       
         <?= $this->hook->render('template:config:sidebar') ?>
     </ul>
+    <div class="sidebar-collapse"><a href="#" title="<?= t('Hide sidebar') ?>"><i class="fa fa-chevron-left"></i></a></div>
+    <div class="sidebar-expand" style="display: none"><a href="#" title="<?= t('Expand sidebar') ?>"><i class="fa fa-chevron-right"></i></a></div>
 </div>

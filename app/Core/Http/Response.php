@@ -14,24 +14,6 @@ use Kanboard\Core\Csv;
 class Response extends Base
 {
     /**
-     * Send headers to cache a resource
-     *
-     * @access public
-     * @param  integer $duration
-     * @param  string  $etag
-     */
-    public function cache($duration, $etag = '')
-    {
-        header('Pragma: cache');
-        header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $duration) . ' GMT');
-        header('Cache-Control: public, max-age=' . $duration);
-
-        if ($etag) {
-            header('ETag: "' . $etag . '"');
-        }
-    }
-
-    /**
      * Send no cache headers
      *
      * @access public
@@ -78,7 +60,7 @@ class Response extends Base
     public function status($status_code)
     {
         header('Status: '.$status_code);
-        header($this->request->getServerVariable('SERVER_PROTOCOL').' '.$status_code);
+        header($_SERVER['SERVER_PROTOCOL'].' '.$status_code);
     }
 
     /**
@@ -86,12 +68,11 @@ class Response extends Base
      *
      * @access public
      * @param  string   $url   Redirection URL
-     * @param  boolean  $self  If Ajax request and true: refresh the current page
      */
-    public function redirect($url, $self = false)
+    public function redirect($url)
     {
-        if ($this->request->isAjax()) {
-            header('X-Ajax-Redirect: '.($self ? 'self' : $url));
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+            header('X-Ajax-Redirect: '.$url);
         } else {
             header('Location: '.$url);
         }
@@ -232,20 +213,6 @@ class Response extends Base
     }
 
     /**
-     * Send a iCal response
-     *
-     * @access public
-     * @param  string   $data          Raw data
-     * @param  integer  $status_code   HTTP status code
-     */
-    public function ical($data, $status_code = 200)
-    {
-        $this->status($status_code);
-        $this->contentType('text/calendar; charset=utf-8');
-        echo $data;
-    }
-
-    /**
      * Send the security header: Content-Security-Policy
      *
      * @access public
@@ -253,6 +220,7 @@ class Response extends Base
      */
     public function csp(array $policies = array())
     {
+        $policies['default-src'] = "'self'";
         $values = '';
 
         foreach ($policies as $policy => $acl) {

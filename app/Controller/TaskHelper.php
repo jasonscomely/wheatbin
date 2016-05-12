@@ -2,12 +2,6 @@
 
 namespace Kanboard\Controller;
 
-use Kanboard\Filter\TaskIdExclusionFilter;
-use Kanboard\Filter\TaskIdFilter;
-use Kanboard\Filter\TaskProjectsFilter;
-use Kanboard\Filter\TaskTitleFilter;
-use Kanboard\Formatter\TaskAutoCompleteFormatter;
-
 /**
  * Task Ajax Helper
  *
@@ -17,33 +11,47 @@ use Kanboard\Formatter\TaskAutoCompleteFormatter;
 class TaskHelper extends Base
 {
     /**
-     * Task auto-completion (Ajax)
+     * Render Markdown text and reply with the HTML Code
+     *
+     * @access public
+     */
+    public function preview()
+    {
+        $payload = $this->request->getJson();
+
+        if (empty($payload['text'])) {
+            $this->response->html('<p>'.t('Nothing to preview...').'</p>');
+        }
+
+        $this->response->html($this->helper->text->markdown($payload['text']));
+    }
+
+    /**
+     * Task autocompletion (Ajax)
      *
      * @access public
      */
     public function autocomplete()
     {
         $search = $this->request->getStringParam('term');
-        $project_ids = $this->projectPermission->getActiveProjectIds($this->userSession->getId());
-        $exclude_task_id = $this->request->getIntegerParam('exclude_task_id');
+        $projects = $this->projectPermission->getActiveProjectIds($this->userSession->getId());
 
-        if (empty($project_ids)) {
+        if (empty($projects)) {
             $this->response->json(array());
-        } else {
-
-            $filter = $this->taskQuery->withFilter(new TaskProjectsFilter($project_ids));
-
-            if (! empty($exclude_task_id)) {
-                $filter->withFilter(new TaskIdExclusionFilter(array($exclude_task_id)));
-            }
-
-            if (ctype_digit($search)) {
-                $filter->withFilter(new TaskIdFilter($search));
-            } else {
-                $filter->withFilter(new TaskTitleFilter($search));
-            }
-
-            $this->response->json($filter->format(new TaskAutoCompleteFormatter($this->container)));
         }
+
+        $filter = $this->taskFilterAutoCompleteFormatter
+            ->create()
+            ->filterByProjects($projects)
+            ->excludeTasks(array($this->request->getIntegerParam('exclude_task_id')));
+
+        // Search by task id or by title
+        if (ctype_digit($search)) {
+            $filter->filterById($search);
+        } else {
+            $filter->filterByTitle($search);
+        }
+
+        $this->response->json($filter->format());
     }
 }

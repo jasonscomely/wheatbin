@@ -65,6 +65,7 @@ extension_dir = "C:/php/ext"
 Uncomment these PHP modules:
 
 ```ini
+extension=php_curl.dll
 extension=php_gd2.dll
 extension=php_ldap.dll
 extension=php_mbstring.dll
@@ -123,8 +124,3 @@ Tested configuration
 --------------------
 
 - Windows 2008 R2 / Apache 2.4.12 / PHP 5.6.8
-
-Notes
------
-
-- Some features of Kanboard require that you run [a daily background job](cronjob.markdown).

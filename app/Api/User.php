@@ -21,11 +21,6 @@ class User extends \Kanboard\Core\Base
         return $this->user->getById($user_id);
     }
 
-    public function getUserByName($username)
-    {
-        return $this->user->getByUsername($username);
-    }
-
     public function getAllUsers()
     {
         return $this->user->getAll();
@@ -34,21 +29,6 @@ class User extends \Kanboard\Core\Base
     public function removeUser($user_id)
     {
         return $this->user->remove($user_id);
-    }
-
-    public function disableUser($user_id)
-    {
-        return $this->user->disable($user_id);
-    }
-
-    public function enableUser($user_id)
-    {
-        return $this->user->enable($user_id);
-    }
-
-    public function isActiveUser($user_id)
-    {
-        return $this->user->isActive($user_id);
     }
 
     public function createUser($username, $password, $name = '', $email = '', $role = Role::APP_USER)
@@ -62,33 +42,16 @@ class User extends \Kanboard\Core\Base
             'role' => $role,
         );
 
-        list($valid, ) = $this->userValidator->validateCreation($values);
+        list($valid, ) = $this->user->validateCreation($values);
         return $valid ? $this->user->create($values) : false;
     }
 
-    /**
-     * Create LDAP user in the database
-     *
-     * Only "anonymous" and "proxy" LDAP authentication are supported by this method
-     *
-     * User information will be fetched from the LDAP server
-     *
-     * @access public
-     * @param  string $username
-     * @return bool|int
-     */
     public function createLdapUser($username)
     {
-        if (LDAP_BIND_TYPE === 'user') {
-            $this->logger->error('LDAP authentication "user" is not supported by this API call');
-            return false;
-        }
-
         try {
 
             $ldap = LdapClient::connect();
-            $ldap->setLogger($this->logger);
-            $user = LdapUser::getUser($ldap, $username);
+            $user = LdapUser::getUser($ldap, sprintf(LDAP_USER_FILTER, $username));
 
             if ($user === null) {
                 $this->logger->info('User not found in LDAP server');
@@ -131,7 +94,7 @@ class User extends \Kanboard\Core\Base
             }
         }
 
-        list($valid, ) = $this->userValidator->validateApiModification($values);
+        list($valid, ) = $this->user->validateApiModification($values);
         return $valid && $this->user->update($values);
     }
 }

@@ -11,16 +11,11 @@ namespace Kanboard\Model;
 class ProjectMetadata extends Metadata
 {
     /**
-     * Get the table
+     * SQL table name
      *
-     * @abstract
-     * @access protected
-     * @return string
+     * @var string
      */
-    protected function getTable()
-    {
-        return 'project_has_metadata';
-    }
+    const TABLE = 'project_has_metadata';
 
     /**
      * Define the entity key
@@ -31,24 +26,5 @@ class ProjectMetadata extends Metadata
     protected function getEntityKey()
     {
         return 'project_id';
-    }
-
-    /**
-     * Helper method to duplicate all metadata to another project
-     *
-     * @access public
-     * @param  integer $src_project_id
-     * @param  integer $dst_project_id
-     * @return boolean
-     */
-    public function duplicate($src_project_id, $dst_project_id)
-    {
-        $metadata = $this->getAll($src_project_id);
-
-        if (! $this->save($dst_project_id, $metadata)) {
-            return false;
-        }
-
-        return true;
     }
 }

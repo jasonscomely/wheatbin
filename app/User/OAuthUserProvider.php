@@ -23,10 +23,10 @@ abstract class OAuthUserProvider implements UserProviderInterface
     /**
      * User properties
      *
-     * @access protected
+     * @access private
      * @var array
      */
-    protected $user = array();
+    private $user = array();
 
     /**
      * Constructor

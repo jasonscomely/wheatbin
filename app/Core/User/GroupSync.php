@@ -16,52 +16,16 @@ class GroupSync extends Base
      * Synchronize group membership
      *
      * @access public
-     * @param  integer $userId
-     * @param  array   $externalGroupIds
+     * @param  integer  $userId
+     * @param  array    $groupIds
      */
-    public function synchronize($userId, array $externalGroupIds)
+    public function synchronize($userId, array $groupIds)
     {
-        $userGroups = $this->groupMember->getGroups($userId);
-        $this->addGroups($userId, $userGroups, $externalGroupIds);
-        $this->removeGroups($userId, $userGroups, $externalGroupIds);
-    }
+        foreach ($groupIds as $groupId) {
+            $group = $this->group->getByExternalId($groupId);
 
-    /**
-     * Add missing groups to the user
-     *
-     * @access protected
-     * @param integer $userId
-     * @param array   $userGroups
-     * @param array   $externalGroupIds
-     */
-    protected function addGroups($userId, array $userGroups, array $externalGroupIds)
-    {
-        $userGroupIds = array_column($userGroups, 'external_id', 'external_id');
-
-        foreach ($externalGroupIds as $externalGroupId) {
-            if (! isset($userGroupIds[$externalGroupId])) {
-                $group = $this->group->getByExternalId($externalGroupId);
-
-                if (! empty($group)) {
-                    $this->groupMember->addUser($group['id'], $userId);
-                }
-            }
-        }
-    }
-
-    /**
-     * Remove groups from the user
-     *
-     * @access protected
-     * @param integer $userId
-     * @param array   $userGroups
-     * @param array   $externalGroupIds
-     */
-    protected function removeGroups($userId, array $userGroups, array $externalGroupIds)
-    {
-        foreach ($userGroups as $userGroup) {
-            if (! empty($userGroup['external_id']) && ! in_array($userGroup['external_id'], $externalGroupIds)) {
-                $this->groupMember->removeUser($userGroup['id'], $userId);
+            if (! empty($group) && ! $this->groupMember->isMember($group['id'], $userId)) {
+                $this->groupMember->addUser($group['id'], $userId);
             }
         }
     }

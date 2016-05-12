@@ -19,8 +19,9 @@ class Activity extends Base
     {
         $project = $this->getProject();
 
-        $this->response->html($this->helper->layout->app('activity/project', array(
-            'events' => $this->helper->projectActivity->getProjectEvents($project['id']),
+        $this->response->html($this->template->layout('activity/project', array(
+            'board_selector' => $this->projectUserRole->getProjectsByUser($this->userSession->getId()),
+            'events' => $this->projectActivity->getProject($project['id']),
             'project' => $project,
             'title' => t('%s\'s activity', $project['name'])
         )));
@@ -35,11 +36,10 @@ class Activity extends Base
     {
         $task = $this->getTask();
 
-        $this->response->html($this->helper->layout->task('activity/task', array(
+        $this->response->html($this->taskLayout('activity/task', array(
             'title' => $task['title'],
             'task' => $task,
-            'project' => $this->project->getById($task['project_id']),
-            'events' => $this->helper->projectActivity->getTaskEvents($task['id']),
+            'events' => $this->projectActivity->getTask($task['id']),
         )));
     }
 }

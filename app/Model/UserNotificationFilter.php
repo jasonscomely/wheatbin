@@ -61,11 +61,10 @@ class UserNotificationFilter extends Base
      * @access public
      * @param  integer  $user_id
      * @param  string   $filter
-     * @return boolean
      */
     public function saveFilter($user_id, $filter)
     {
-        return $this->db->table(User::TABLE)->eq('id', $user_id)->update(array(
+        $this->db->table(User::TABLE)->eq('id', $user_id)->update(array(
             'notifications_filter' => $filter,
         ));
     }
@@ -88,21 +87,17 @@ class UserNotificationFilter extends Base
      * @access public
      * @param  integer    $user_id
      * @param  integer[]  $project_ids
-     * @return boolean
      */
     public function saveSelectedProjects($user_id, array $project_ids)
     {
-        $results = array();
         $this->db->table(self::PROJECT_TABLE)->eq('user_id', $user_id)->remove();
 
         foreach ($project_ids as $project_id) {
-            $results[] = $this->db->table(self::PROJECT_TABLE)->insert(array(
+            $this->db->table(self::PROJECT_TABLE)->insert(array(
                 'user_id' => $user_id,
                 'project_id' => $project_id,
             ));
         }
-
-        return !in_array(false, $results, true);
     }
 
     /**

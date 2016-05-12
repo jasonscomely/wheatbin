@@ -1,5 +1,9 @@
 <section id="main">
-    <?= $this->projectHeader->render($project, 'Calendar', 'show') ?>
+    <?= $this->render('project/filters', array(
+        'project' => $project,
+        'filters' => $filters,
+    )) ?>
+
     <div id="calendar"
          data-save-url="<?= $this->url->href('calendar', 'save', array('project_id' => $project['id'])) ?>"
          data-check-url="<?= $this->url->href('calendar', 'project', array('project_id' => $project['id'])) ?>"

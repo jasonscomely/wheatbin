@@ -2,6 +2,9 @@
 
 namespace Kanboard\Action;
 
+use Kanboard\Integration\GithubWebhook;
+use Kanboard\Integration\BitbucketWebhook;
+
 /**
  * Assign a task to someone
  *
@@ -11,17 +14,6 @@ namespace Kanboard\Action;
 class TaskAssignUser extends Base
 {
     /**
-     * Get automatic action description
-     *
-     * @access public
-     * @return string
-     */
-    public function getDescription()
-    {
-        return t('Change the assignee based on an external username');
-    }
-
-    /**
      * Get the list of compatible events
      *
      * @access public
@@ -29,7 +21,10 @@ class TaskAssignUser extends Base
      */
     public function getCompatibleEvents()
     {
-        return array();
+        return array(
+            GithubWebhook::EVENT_ISSUE_ASSIGNEE_CHANGE,
+            BitbucketWebhook::EVENT_ISSUE_ASSIGNEE_CHANGE,
+        );
     }
 
     /**
@@ -83,6 +78,6 @@ class TaskAssignUser extends Base
      */
     public function hasRequiredCondition(array $data)
     {
-        return $this->projectPermission->isAssignable($this->getProjectId(), $data['owner_id']);
+        return true;
     }
 }

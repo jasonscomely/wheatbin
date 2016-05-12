@@ -10,13 +10,6 @@ use PicoDb\Database;
 
 class DatabaseProvider implements ServiceProviderInterface
 {
-    /**
-     * Register provider
-     *
-     * @access public
-     * @param  Container $container
-     * @return Container
-     */
     public function register(Container $container)
     {
         $container['db'] = $this->getInstance();
@@ -51,8 +44,8 @@ class DatabaseProvider implements ServiceProviderInterface
         if ($db->schema()->check(\Schema\VERSION)) {
             return $db;
         } else {
-            $messages = $db->getLogMessages();
-            throw new RuntimeException('Unable to run SQL migrations: '.implode(', ', $messages).' (You may have to fix it manually)');
+            $errors = $db->getLogMessages();
+            throw new RuntimeException('Unable to migrate database schema: '.(isset($errors[0]) ? $errors[0] : 'Unknown error'));
         }
     }
 
@@ -90,9 +83,6 @@ class DatabaseProvider implements ServiceProviderInterface
             'database' => DB_NAME,
             'charset'  => 'utf8',
             'port'     => DB_PORT,
-            'ssl_key'  => DB_SSL_KEY,
-            'ssl_ca'   => DB_SSL_CA,
-            'ssl_cert' => DB_SSL_CERT,
         ));
     }
 

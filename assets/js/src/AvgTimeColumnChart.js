@@ -1,17 +1,10 @@
-Kanboard.AvgTimeColumnChart = function(app) {
+function AvgTimeColumnChart(app) {
     this.app = app;
-};
+}
 
-Kanboard.AvgTimeColumnChart.prototype.execute = function() {
-    if (this.app.hasId("analytic-avg-time-column")) {
-        this.show();
-    }
-};
-
-Kanboard.AvgTimeColumnChart.prototype.show = function() {
-    var chart = $("#chart");
-    var metrics = chart.data("metrics");
-    var plots = [chart.data("label")];
+AvgTimeColumnChart.prototype.execute = function() {
+    var metrics = $("#chart").data("metrics");
+    var plots = [$("#chart").data("label")];
     var categories = [];
 
     for (var column_id in metrics) {

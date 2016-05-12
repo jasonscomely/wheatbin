@@ -1,37 +1,20 @@
 <?php
 
-// Root directory
-define('ROOT_DIR', __DIR__.DIRECTORY_SEPARATOR.'..');
-
-// App directory
-define('APP_DIR', __DIR__);
-
-// Data directory location
-defined('DATA_DIR') or define('DATA_DIR', ROOT_DIR.DIRECTORY_SEPARATOR.'data');
-
-// Files directory (attachments)
-defined('FILES_DIR') or define('FILES_DIR', DATA_DIR.DIRECTORY_SEPARATOR.'files');
-
-// Plugins directory
-defined('PLUGINS_DIR') or define('PLUGINS_DIR', ROOT_DIR.DIRECTORY_SEPARATOR.'plugins');
-
 // Enable/disable debug
-defined('DEBUG') or define('DEBUG', strtolower(getenv('DEBUG')) === 'true');
+defined('DEBUG') or define('DEBUG', false);
+defined('DEBUG_FILE') or define('DEBUG_FILE', __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'debug.log');
 
-// Logging drivers: syslog, stdout, stderr or file
-defined('LOG_DRIVER') or define('LOG_DRIVER', getenv('LOG_DRIVER'));
-
-// Logging file
-defined('LOG_FILE') or define('LOG_FILE', DATA_DIR.DIRECTORY_SEPARATOR.'debug.log');
+// Plugin directory
+defined('PLUGINS_DIR') or define('PLUGINS_DIR', __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'plugins');
 
 // Application version
-defined('APP_VERSION') or define('APP_VERSION', build_app_version('$Format:%d$', '$Format:%H$'));
+defined('APP_VERSION') or define('APP_VERSION', '1.0');
 
 // Database driver: sqlite, mysql or postgres
 defined('DB_DRIVER') or define('DB_DRIVER', 'sqlite');
 
 // Sqlite configuration
-defined('DB_FILENAME') or define('DB_FILENAME', DATA_DIR.DIRECTORY_SEPARATOR.'db.sqlite');
+defined('DB_FILENAME') or define('DB_FILENAME', 'data'.DIRECTORY_SEPARATOR.'db.sqlite');
 
 // Mysql/Postgres configuration
 defined('DB_USERNAME') or define('DB_USERNAME', 'root');
@@ -39,12 +22,6 @@ defined('DB_PASSWORD') or define('DB_PASSWORD', '');
 defined('DB_HOSTNAME') or define('DB_HOSTNAME', 'localhost');
 defined('DB_NAME') or define('DB_NAME', 'kanboard');
 defined('DB_PORT') or define('DB_PORT', null);
-defined('DB_SSL_KEY') or define('DB_SSL_KEY', null);
-defined('DB_SSL_CERT') or define('DB_SSL_CERT', null);
-defined('DB_SSL_CA') or define('DB_SSL_CA', null);
-
-// Database backend group provider
-defined('DB_GROUP_PROVIDER') or define('DB_GROUP_PROVIDER', true);
 
 // LDAP configuration
 defined('LDAP_AUTH') or define('LDAP_AUTH', false);
@@ -64,8 +41,6 @@ defined('LDAP_USER_ATTRIBUTE_USERNAME') or define('LDAP_USER_ATTRIBUTE_USERNAME'
 defined('LDAP_USER_ATTRIBUTE_FULLNAME') or define('LDAP_USER_ATTRIBUTE_FULLNAME', 'cn');
 defined('LDAP_USER_ATTRIBUTE_EMAIL') or define('LDAP_USER_ATTRIBUTE_EMAIL', 'mail');
 defined('LDAP_USER_ATTRIBUTE_GROUPS') or define('LDAP_USER_ATTRIBUTE_GROUPS', 'memberof');
-defined('LDAP_USER_ATTRIBUTE_PHOTO') or define('LDAP_USER_ATTRIBUTE_PHOTO', '');
-defined('LDAP_USER_ATTRIBUTE_LANGUAGE') or define('LDAP_USER_ATTRIBUTE_LANGUAGE', '');
 defined('LDAP_USER_CREATION') or define('LDAP_USER_CREATION', true);
 
 defined('LDAP_GROUP_ADMIN_DN') or define('LDAP_GROUP_ADMIN_DN', '');
@@ -74,8 +49,28 @@ defined('LDAP_GROUP_MANAGER_DN') or define('LDAP_GROUP_MANAGER_DN', '');
 defined('LDAP_GROUP_PROVIDER') or define('LDAP_GROUP_PROVIDER', false);
 defined('LDAP_GROUP_BASE_DN') or define('LDAP_GROUP_BASE_DN', '');
 defined('LDAP_GROUP_FILTER') or define('LDAP_GROUP_FILTER', '');
-defined('LDAP_GROUP_USER_FILTER') or define('LDAP_GROUP_USER_FILTER', '');
 defined('LDAP_GROUP_ATTRIBUTE_NAME') or define('LDAP_GROUP_ATTRIBUTE_NAME', 'cn');
+
+// Google authentication
+defined('GOOGLE_AUTH') or define('GOOGLE_AUTH', false);
+defined('GOOGLE_CLIENT_ID') or define('GOOGLE_CLIENT_ID', '');
+defined('GOOGLE_CLIENT_SECRET') or define('GOOGLE_CLIENT_SECRET', '');
+
+// Github authentication
+defined('GITHUB_AUTH') or define('GITHUB_AUTH', false);
+defined('GITHUB_CLIENT_ID') or define('GITHUB_CLIENT_ID', '');
+defined('GITHUB_CLIENT_SECRET') or define('GITHUB_CLIENT_SECRET', '');
+defined('GITHUB_OAUTH_AUTHORIZE_URL') or define('GITHUB_OAUTH_AUTHORIZE_URL', 'https://github.com/login/oauth/authorize');
+defined('GITHUB_OAUTH_TOKEN_URL') or define('GITHUB_OAUTH_TOKEN_URL', 'https://github.com/login/oauth/access_token');
+defined('GITHUB_API_URL') or define('GITHUB_API_URL', 'https://api.github.com/');
+
+// Gitlab authentication
+defined('GITLAB_AUTH') or define('GITLAB_AUTH', false);
+defined('GITLAB_CLIENT_ID') or define('GITLAB_CLIENT_ID', '');
+defined('GITLAB_CLIENT_SECRET') or define('GITLAB_CLIENT_SECRET', '');
+defined('GITLAB_OAUTH_AUTHORIZE_URL') or define('GITLAB_OAUTH_AUTHORIZE_URL', 'https://gitlab.com/oauth/authorize');
+defined('GITLAB_OAUTH_TOKEN_URL') or define('GITLAB_OAUTH_TOKEN_URL', 'https://gitlab.com/oauth/token');
+defined('GITLAB_API_URL') or define('GITLAB_API_URL', 'https://gitlab.com/api/v3/');
 
 // Proxy authentication
 defined('REVERSE_PROXY_AUTH') or define('REVERSE_PROXY_AUTH', false);
@@ -102,6 +97,12 @@ defined('ENABLE_HSTS') or define('ENABLE_HSTS', true);
 // Enable or disable "X-Frame-Options: DENY" HTTP header
 defined('ENABLE_XFRAME') or define('ENABLE_XFRAME', true);
 
+// Syslog
+defined('ENABLE_SYSLOG') or define('ENABLE_SYSLOG', true);
+
+// Default files directory
+defined('FILES_DIR') or define('FILES_DIR', 'data'.DIRECTORY_SEPARATOR.'files');
+
 // Escape html inside markdown text
 defined('MARKDOWN_ESCAPE_HTML') or define('MARKDOWN_ESCAPE_HTML', true);
 
@@ -113,9 +114,6 @@ defined('ENABLE_URL_REWRITE') or define('ENABLE_URL_REWRITE', isset($_SERVER['HT
 
 // Hide login form
 defined('HIDE_LOGIN_FORM') or define('HIDE_LOGIN_FORM', false);
-
-// Disabling logout (for external SSO authentication)
-defined('DISABLE_LOGOUT') or define('DISABLE_LOGOUT', false);
 
 // Bruteforce protection
 defined('BRUTEFORCE_CAPTCHA') or define('BRUTEFORCE_CAPTCHA', 3);

@@ -8,12 +8,20 @@ Enable/Disable debug mode
 -------------------------
 
 ```php
-define('DEBUG', true);
-define('LOG_DRIVER', 'file'); // Other drivers are: syslog, stdout, stderr or file
+define('DEBUG', false);
 ```
 
-The log driver must be defined if you enable the debug mode.
 The debug mode logs all SQL queries and the time taken to generate pages.
+
+Debug file path
+---------------
+
+```php
+define('DEBUG_FILE', __DIR__.'/data/debug.log');
+```
+
+All debug information are saved in this file.
+If you prefer to send logs to `stdout` or `stderr` replace the value by `php://stdout` or `php://stderr`.
 
 Plugins folder
 --------------
@@ -79,15 +87,6 @@ define('DB_NAME', 'kanboard');
 
 // Mysql/Postgres custom port (null = default port)
 define('DB_PORT', null);
-
-// Mysql SSL key
-define('DB_SSL_KEY', null);
-
-// Mysql SSL certificate
-define('DB_SSL_CERT', null);
-
-// Mysql SSL CA
-define('DB_SSL_CA', null);
 ```
 
 LDAP settings
@@ -149,13 +148,6 @@ define('LDAP_USER_ATTRIBUTE_EMAIL', 'mail');
 // LDAP attribute to find groups in user profile
 define('LDAP_USER_ATTRIBUTE_GROUPS', 'memberof');
 
-// LDAP attribute for user avatar image: thumbnailPhoto or jpegPhoto
-define('LDAP_USER_ATTRIBUTE_PHOTO', '');
-
-// LDAP attribute for user language, example: 'preferredlanguage'
-// Put an empty string to disable language sync
-define('LDAP_USER_ATTRIBUTE_LANGUAGE', '');
-
 // Allow automatic LDAP user creation
 define('LDAP_USER_CREATION', true);
 
@@ -178,13 +170,36 @@ define('LDAP_GROUP_BASE_DN', '');
 // Example for ActiveDirectory: (&(objectClass=group)(sAMAccountName=%s*))
 define('LDAP_GROUP_FILTER', '');
 
-// LDAP user group filter
-// If this filter is configured, Kanboard will search user groups in LDAP_GROUP_BASE_DN
-// Example for OpenLDAP: (&(objectClass=posixGroup)(memberUid=%s))
-define('LDAP_GROUP_USER_FILTER', '');
-
 // LDAP attribute for the group name
 define('LDAP_GROUP_ATTRIBUTE_NAME', 'cn');
+```
+
+Google Authentication settings
+------------------------------
+
+```php
+// Enable/disable Google authentication
+define('GOOGLE_AUTH', false);
+
+// Google client id (Get this value from the Google developer console)
+define('GOOGLE_CLIENT_ID', '');
+
+// Google client secret key (Get this value from the Google developer console)
+define('GOOGLE_CLIENT_SECRET', '');
+```
+
+Github Authentication settings
+------------------------------
+
+```php
+// Enable/disable GitHub authentication
+define('GITHUB_AUTH', false);
+
+// GitHub client id (Copy it from your settings -> Applications -> Developer applications)
+define('GITHUB_CLIENT_ID', '');
+
+// GitHub client secret key (Copy it from your settings -> Applications -> Developer applications)
+define('GITHUB_CLIENT_SECRET', '');
 ```
 
 Reverse-Proxy Authentication settings
@@ -226,18 +241,13 @@ define('ENABLE_XFRAME', true);
 Logging
 -------
 
-By default, Kanboard do not log anything.
-If you want to enable the logging, you have to set a log driver.
-
 ```php
-// Available log drivers: syslog, stderr, stdout or file
-define('LOG_DRIVER', '');
-
-// Log filename if the log driver is "file"
-define('LOG_FILE', __DIR__.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'debug.log');
+// Enable syslog logging
+// Set to false to disable syslog
+define('ENABLE_SYSLOG', true);
 ```
 
-Brute-force protection
+Bruteforce protection
 ---------------------
 
 ```php
@@ -284,9 +294,6 @@ define('API_AUTHENTICATION_HEADER', '');
 
 // Hide login form, useful if all your users use Google/Github/ReverseProxy authentication
 define('HIDE_LOGIN_FORM', false);
-
-// Disabling logout (for external SSO authentication)
-define('DISABLE_LOGOUT', false);
 
 // Override API token stored in the database, useful for automated tests
 define('API_AUTHENTICATION_TOKEN', 'My unique API Token');

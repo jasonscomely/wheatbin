@@ -33,22 +33,18 @@ class Me extends Base
     public function getMyActivityStream()
     {
         $project_ids = $this->projectPermission->getActiveProjectIds($this->userSession->getId());
-        return $this->helper->projectActivity->getProjectsEvents($project_ids, 100);
+        return $this->projectActivity->getProjects($project_ids, 100);
     }
 
     public function createMyPrivateProject($name, $description = null)
     {
-        if ($this->config->get('disable_private_project', 0) == 1) {
-            return false;
-        }
-
         $values = array(
             'name' => $name,
             'description' => $description,
             'is_private' => 1,
         );
 
-        list($valid, ) = $this->projectValidator->validateCreation($values);
+        list($valid, ) = $this->project->validateCreation($values);
         return $valid ? $this->project->create($values, $this->userSession->getId(), true) : false;
     }
 

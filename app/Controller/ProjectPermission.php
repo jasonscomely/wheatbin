@@ -13,24 +13,6 @@ use Kanboard\Core\Security\Role;
 class ProjectPermission extends Base
 {
     /**
-     * Permissions are only available for team projects
-     *
-     * @access protected
-     * @param  integer      $project_id    Default project id
-     * @return array
-     */
-    protected function getProject($project_id = 0)
-    {
-        $project = parent::getProject($project_id);
-
-        if ($project['is_private'] == 1) {
-            $this->forbidden();
-        }
-
-        return $project;
-    }
-
-    /**
      * Show all permissions
      *
      * @access public
@@ -43,7 +25,7 @@ class ProjectPermission extends Base
             $values['role'] = Role::PROJECT_MEMBER;
         }
 
-        $this->response->html($this->helper->layout->project('project_permission/index', array(
+        $this->response->html($this->projectLayout('project_permission/index', array(
             'project' => $project,
             'users' => $this->projectUserRole->getUsers($project['id']),
             'groups' => $this->projectGroupRole->getGroups($project['id']),
@@ -80,18 +62,15 @@ class ProjectPermission extends Base
      */
     public function addUser()
     {
-        $project = $this->getProject();
         $values = $this->request->getValues();
 
-        if (empty($values['user_id'])) {
-            $this->flash->failure(t('User not found.'));
-        } elseif ($this->projectUserRole->addUser($values['project_id'], $values['user_id'], $values['role'])) {
+        if ($this->projectUserRole->addUser($values['project_id'], $values['user_id'], $values['role'])) {
             $this->flash->success(t('Project updated successfully.'));
         } else {
             $this->flash->failure(t('Unable to update this project.'));
         }
 
-        $this->response->redirect($this->helper->url->to('ProjectPermission', 'index', array('project_id' => $project['id'])));
+        $this->response->redirect($this->helper->url->to('ProjectPermission', 'index', array('project_id' => $values['project_id'])));
     }
 
     /**
@@ -102,16 +81,19 @@ class ProjectPermission extends Base
     public function removeUser()
     {
         $this->checkCSRFParam();
-        $project = $this->getProject();
-        $user_id = $this->request->getIntegerParam('user_id');
 
-        if ($this->projectUserRole->removeUser($project['id'], $user_id)) {
+        $values = array(
+            'project_id' => $this->request->getIntegerParam('project_id'),
+            'user_id' => $this->request->getIntegerParam('user_id'),
+        );
+
+        if ($this->projectUserRole->removeUser($values['project_id'], $values['user_id'])) {
             $this->flash->success(t('Project updated successfully.'));
         } else {
             $this->flash->failure(t('Unable to update this project.'));
         }
 
-        $this->response->redirect($this->helper->url->to('ProjectPermission', 'index', array('project_id' => $project['id'])));
+        $this->response->redirect($this->helper->url->to('ProjectPermission', 'index', array('project_id' => $values['project_id'])));
     }
 
     /**
@@ -121,10 +103,10 @@ class ProjectPermission extends Base
      */
     public function changeUserRole()
     {
-        $project = $this->getProject();
+        $project_id = $this->request->getIntegerParam('project_id');
         $values = $this->request->getJson();
 
-        if (! empty($project) && ! empty($values) && $this->projectUserRole->changeUserRole($project['id'], $values['id'], $values['role'])) {
+        if (! empty($project_id) && ! empty($values) && $this->projectUserRole->changeUserRole($project_id, $values['id'], $values['role'])) {
             $this->response->json(array('status' => 'ok'));
         } else {
             $this->response->json(array('status' => 'error'));
@@ -138,20 +120,19 @@ class ProjectPermission extends Base
      */
     public function addGroup()
     {
-        $project = $this->getProject();
         $values = $this->request->getValues();
 
         if (empty($values['group_id']) && ! empty($values['external_id'])) {
             $values['group_id'] = $this->group->create($values['name'], $values['external_id']);
         }
 
-        if ($this->projectGroupRole->addGroup($project['id'], $values['group_id'], $values['role'])) {
+        if ($this->projectGroupRole->addGroup($values['project_id'], $values['group_id'], $values['role'])) {
             $this->flash->success(t('Project updated successfully.'));
         } else {
             $this->flash->failure(t('Unable to update this project.'));
         }
 
-        $this->response->redirect($this->helper->url->to('ProjectPermission', 'index', array('project_id' => $project['id'])));
+        $this->response->redirect($this->helper->url->to('ProjectPermission', 'index', array('project_id' => $values['project_id'])));
     }
 
     /**
@@ -162,16 +143,19 @@ class ProjectPermission extends Base
     public function removeGroup()
     {
         $this->checkCSRFParam();
-        $project = $this->getProject();
-        $group_id = $this->request->getIntegerParam('group_id');
 
-        if ($this->projectGroupRole->removeGroup($project['id'], $group_id)) {
+        $values = array(
+            'project_id' => $this->request->getIntegerParam('project_id'),
+            'group_id' => $this->request->getIntegerParam('group_id'),
+        );
+
+        if ($this->projectGroupRole->removeGroup($values['project_id'], $values['group_id'])) {
             $this->flash->success(t('Project updated successfully.'));
         } else {
             $this->flash->failure(t('Unable to update this project.'));
         }
 
-        $this->response->redirect($this->helper->url->to('ProjectPermission', 'index', array('project_id' => $project['id'])));
+        $this->response->redirect($this->helper->url->to('ProjectPermission', 'index', array('project_id' => $values['project_id'])));
     }
 
     /**
@@ -181,10 +165,10 @@ class ProjectPermission extends Base
      */
     public function changeGroupRole()
     {
-        $project = $this->getProject();
+        $project_id = $this->request->getIntegerParam('project_id');
         $values = $this->request->getJson();
 
-        if (! empty($project) && ! empty($values) && $this->projectGroupRole->changeGroupRole($project['id'], $values['id'], $values['role'])) {
+        if (! empty($project_id) && ! empty($values) && $this->projectGroupRole->changeGroupRole($project_id, $values['id'], $values['role'])) {
             $this->response->json(array('status' => 'ok'));
         } else {
             $this->response->json(array('status' => 'error'));

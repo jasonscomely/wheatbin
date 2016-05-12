@@ -53,13 +53,13 @@ class Project extends Base
 
     public function getProjectActivities(array $project_ids)
     {
-        return $this->helper->projectActivity->getProjectsEvents($project_ids);
+        return $this->projectActivity->getProjects($project_ids);
     }
 
     public function getProjectActivity($project_id)
     {
         $this->checkProjectPermission($project_id);
-        return $this->helper->projectActivity->getProjectEvents($project_id);
+        return $this->projectActivity->getProject($project_id);
     }
 
     public function createProject($name, $description = null)
@@ -69,7 +69,7 @@ class Project extends Base
             'description' => $description
         );
 
-        list($valid, ) = $this->projectValidator->validateCreation($values);
+        list($valid, ) = $this->project->validateCreation($values);
         return $valid ? $this->project->create($values) : false;
     }
 
@@ -81,7 +81,7 @@ class Project extends Base
             'description' => $description
         );
 
-        list($valid, ) = $this->projectValidator->validateModification($values);
+        list($valid, ) = $this->project->validateModification($values);
         return $valid && $this->project->update($values);
     }
 }

@@ -10,24 +10,18 @@ Kanboard works well with any great VPS hosting provider such as [Digital Ocean](
 To have the best performances, choose a provider with fast disk I/O because Kanboard use Sqlite by default.
 Avoid hosting providers that use a shared NFS mount point.
 
-
 I get a blank page after installing or upgrading Kanboard
 ---------------------------------------------------------
 
 - Check if you have installed all requirements on your server
-- Check the PHP and Apache error logs
 - Check if the files have the correct permission
-- If you use an aggressive OPcode caching, reload your web-server or php-fpm
-
-
-I have the error "There is no suitable CSPRNG installed on your system"
------------------------------------------------------------------------
-
-If you use PHP < 7.0, you need to have the openssl extension enabled or `/dev/urandom` accessible from the application if restricted by an `open_basedir` restriction.
+- If you use php-fpm and opcode caching, reload the process to be sure to clear the cache
+- Enable PHP error logging in your php.ini
+- Check the PHP and Apache error logs you should see the exact error
 
 
 Page not found and the URL seems wrong (&amp;amp;)
---------------------------------------------------
+----------------------------------------------
 
 - The URL looks like `/?controller=auth&amp;action=login&amp;redirect_query=` instead of `?controller=auth&action=login&redirect_query=`
 - Kanboard returns a "Page not found" error
@@ -47,18 +41,6 @@ php_value arg_separator.output "&"
 ```
 
 Otherwise Kanboard will try to override the value directly in PHP.
-
-
-Authentication failure with the API and Apache + PHP-FPM
---------------------------------------------------------
-
-php-cgi under Apache does not pass HTTP Basic user/pass to PHP by default.
-For this workaround to work, add these lines to your `.htaccess` file:
-
-```
-RewriteCond %{HTTP:Authorization} ^(.+)$
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-```
 
 
 Known issues with eAccelerator
@@ -103,26 +85,26 @@ open http://localhost:8000/
 ```
 
 
+How to migrate my tasks from Wunderlist?
+----------------------------------------
+
+You can use an external tool to import your tasks automatically and lists from Wunderlist to Kanboard.
+
+This is a command line script made by a contributor of Kanboard.
+It's simple, quick and dirty but it works :)
+
+More information here:
+
+- [Wunderlist](http://www.wunderlist.com/)
+- <https://github.com/EpocDotFr/WunderlistToKanboard>
+
+
 How to install Kanboard on Yunohost?
 ------------------------------------
 
 [YunoHost](https://yunohost.org/) is a server operating system aiming to make self-hosting accessible to everyone.
 
 There is a [package to install Kanboard on Yunohost easily](https://github.com/mbugeia/kanboard_ynh).
-
-
-Where can I find a list of related projects?
---------------------------------------------
-
-- [Kanboard API python client by @freekoder](https://github.com/freekoder/kanboard-py)
-- [Kanboard Presenter by David Eberlein](https://github.com/davideberlein/kanboard-presenter)
-- [CSV2Kanboard by @ashbike](https://github.com/ashbike/csv2kanboard)
-- [Kanboard for Yunohost by @mbugeia](https://github.com/mbugeia/kanboard_ynh)
-- [Trello import script by @matueranet](https://github.com/matueranet/kanboard-import-trello)
-- [Chrome extension by Timo](https://chrome.google.com/webstore/detail/kanboard-quickmenu/akjbeplnnihghabpgcfmfhfmifjljneh?utm_source=chrome-ntp-icon), [Source code](https://github.com/BlueTeck/kanboard_chrome_extension)
-- [Python client script by @dzudek](https://gist.github.com/fguillot/84c70d4928eb1e0cb374)
-- [Shell script for SQLite to MySQL/MariaDB migration by @oliviermaridat](https://github.com/oliviermaridat/kanboard-sqlite2mysql)
-- [Git hooks for integration with Kanboard by Gene Pavlovsky](https://github.com/gene-pavlovsky/kanboard-git-hooks)
 
 
 Are there some tutorials about Kanboard in other languages?

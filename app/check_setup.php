@@ -12,31 +12,26 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     if (! ini_get('short_open_tag')) {
         throw new Exception('This software require to have short tags enabled if you have PHP < 5.4 ("short_open_tag = On")');
     }
-}
 
-// Check data folder if sqlite
-if (DB_DRIVER === 'sqlite' && ! is_writable(dirname(DB_FILENAME))) {
-    throw new Exception('The directory "'.dirname(DB_FILENAME).'" must be writeable by your web server user');
-}
-
-// Check PDO extensions
-if (DB_DRIVER === 'sqlite' && ! extension_loaded('pdo_sqlite')) {
-    throw new Exception('PHP extension required: "pdo_sqlite"');
-}
-
-if (DB_DRIVER === 'mysql' && ! extension_loaded('pdo_mysql')) {
-    throw new Exception('PHP extension required: "pdo_mysql"');
-}
-
-if (DB_DRIVER === 'postgres' && ! extension_loaded('pdo_pgsql')) {
-    throw new Exception('PHP extension required: "pdo_pgsql"');
-}
-
-// Check other extensions
-foreach (array('gd', 'mbstring', 'hash', 'openssl', 'json', 'hash', 'ctype', 'filter', 'session') as $ext) {
-    if (! extension_loaded($ext)) {
-        throw new Exception('PHP extension required: "'.$ext.'"');
+    // Magic quotes are deprecated since PHP 5.4
+    if (get_magic_quotes_gpc()) {
+        throw new Exception('This software require to have "Magic quotes" disabled, it\'s deprecated since PHP 5.4 ("magic_quotes_gpc = Off")');
     }
+}
+
+// Check extension: PDO
+if (! extension_loaded('pdo_sqlite') && ! extension_loaded('pdo_mysql') && ! extension_loaded('pdo_pgsql')) {
+    throw new Exception('PHP extension required: "pdo_sqlite" or "pdo_mysql" or "pdo_pgsql"');
+}
+
+// Check extension: mbstring
+if (! extension_loaded('mbstring')) {
+    throw new Exception('PHP extension required: "mbstring"');
+}
+
+// Check extension: gd
+if (! extension_loaded('gd')) {
+    throw new Exception('PHP extension required: "gd"');
 }
 
 // Fix wrong value for arg_separator.output, used by the function http_build_query()

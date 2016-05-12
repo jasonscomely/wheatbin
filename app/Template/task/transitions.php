@@ -1,7 +1,3 @@
-<div class="task-show-title color-<?= $task['color_id'] ?>">
-    <h2><?= $this->text->e($task['title']) ?></h2>
-</div>
-
 <div class="page-header">
     <h2><?= t('Transitions') ?></h2>
 </div>
@@ -19,10 +15,10 @@
         </tr>
         <?php foreach ($transitions as $transition): ?>
         <tr>
-            <td><?= $this->dt->datetime($transition['date']) ?></td>
-            <td><?= $this->text->e($transition['src_column']) ?></td>
-            <td><?= $this->text->e($transition['dst_column']) ?></td>
-            <td><?= $this->url->link($this->text->e($transition['name'] ?: $transition['username']), 'user', 'show', array('user_id' => $transition['user_id'])) ?></td>
+            <td><?= dt('%B %e, %Y at %k:%M %p', $transition['date']) ?></td>
+            <td><?= $this->e($transition['src_column']) ?></td>
+            <td><?= $this->e($transition['dst_column']) ?></td>
+            <td><?= $this->url->link($this->e($transition['name'] ?: $transition['username']), 'user', 'show', array('user_id' => $transition['user_id'])) ?></td>
             <td><?= $this->dt->duration($transition['time_spent']) ?></td>
         </tr>
         <?php endforeach ?>

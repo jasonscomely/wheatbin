@@ -3,32 +3,6 @@
 use Kanboard\Core\Translator;
 
 /**
- * Build version number from git-archive output
- *
- * @param  string $ref
- * @param  string $commit_hash
- * @return string
- */
-function build_app_version($ref, $commit_hash)
-{
-    $version = 'master';
-
-    if ($ref !== '$Format:%d$') {
-        $tag = preg_replace('/\s*\(.*tag:\sv([^,]+).*\)/i', '\1', $ref);
-
-        if (!is_null($tag) && $tag !== $ref) {
-            return $tag;
-        }
-    }
-
-    if ($commit_hash !== '$Format:%H$') {
-        $version .= '.'.$commit_hash;
-    }
-
-    return $version;
-}
-
-/**
  * Translate a string
  *
  * @return string
@@ -51,10 +25,19 @@ function e()
 /**
  * Translate a number
  *
- * @param  mixed $value
  * @return string
  */
 function n($value)
 {
     return Translator::getInstance()->number($value);
+}
+
+/**
+ * Translate a date
+ *
+ * @return string
+ */
+function dt($format, $timestamp)
+{
+    return Translator::getInstance()->datetime($format, $timestamp);
 }

@@ -20,7 +20,14 @@
             <?= $this->form->label(t('Email'), 'email') ?>
             <?= $this->form->email('email', $values, $errors) ?>
 
-            <?= $this->hook->render('template:user:create-remote:form', array('values' => $values, 'errors' => $errors)) ?>
+            <?= $this->form->label(t('Google Id'), 'google_id') ?>
+            <?= $this->form->text('google_id', $values, $errors) ?>
+
+            <?= $this->form->label(t('Github Id'), 'github_id') ?>
+            <?= $this->form->text('github_id', $values, $errors) ?>
+
+            <?= $this->form->label(t('Gitlab Id'), 'gitlab_id') ?>
+            <?= $this->form->text('gitlab_id', $values, $errors) ?>
         </div>
 
         <div class="form-column">
@@ -41,7 +48,7 @@
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+            <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
             <?= t('or') ?>
             <?= $this->url->link(t('cancel'), 'user', 'index') ?>
         </div>

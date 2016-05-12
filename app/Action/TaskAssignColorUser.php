@@ -13,17 +13,6 @@ use Kanboard\Model\Task;
 class TaskAssignColorUser extends Base
 {
     /**
-     * Get automatic action description
-     *
-     * @access public
-     * @return string
-     */
-    public function getDescription()
-    {
-        return t('Assign a color to a specific user');
-    }
-
-    /**
      * Get the list of compatible events
      *
      * @access public
@@ -79,7 +68,7 @@ class TaskAssignColorUser extends Base
             'color_id' => $this->getParam('color_id'),
         );
 
-        return $this->taskModification->update($values, false);
+        return $this->taskModification->update($values);
     }
 
     /**

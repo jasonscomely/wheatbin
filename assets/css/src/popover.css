@@ -13,10 +13,11 @@
 #popover-content {
     position: absolute;
     width: 70%;
-    left: 15%;
+    margin: 0 0 0 -35%;
+    left: 50%;
     top: 1%;
     padding: 15px;
     background: #fff;
     overflow: auto;
-    max-height: 90%;
+    max-height: 85%;
 }

@@ -2,6 +2,11 @@
 
 namespace Kanboard\Action;
 
+use Kanboard\Integration\GitlabWebhook;
+use Kanboard\Integration\GithubWebhook;
+use Kanboard\Integration\BitbucketWebhook;
+use Kanboard\Model\Task;
+
 /**
  * Close automatically a task
  *
@@ -11,17 +16,6 @@ namespace Kanboard\Action;
 class TaskClose extends Base
 {
     /**
-     * Get automatic action description
-     *
-     * @access public
-     * @return string
-     */
-    public function getDescription()
-    {
-        return t('Close a task');
-    }
-
-    /**
      * Get the list of compatible events
      *
      * @access public
@@ -29,7 +23,15 @@ class TaskClose extends Base
      */
     public function getCompatibleEvents()
     {
-        return array();
+        return array(
+            Task::EVENT_MOVE_COLUMN,
+            GithubWebhook::EVENT_COMMIT,
+            GithubWebhook::EVENT_ISSUE_CLOSED,
+            GitlabWebhook::EVENT_COMMIT,
+            GitlabWebhook::EVENT_ISSUE_CLOSED,
+            BitbucketWebhook::EVENT_COMMIT,
+            BitbucketWebhook::EVENT_ISSUE_CLOSED,
+        );
     }
 
     /**
@@ -40,7 +42,17 @@ class TaskClose extends Base
      */
     public function getActionRequiredParameters()
     {
-        return array();
+        switch ($this->event_name) {
+            case GithubWebhook::EVENT_COMMIT:
+            case GithubWebhook::EVENT_ISSUE_CLOSED:
+            case GitlabWebhook::EVENT_COMMIT:
+            case GitlabWebhook::EVENT_ISSUE_CLOSED:
+            case BitbucketWebhook::EVENT_COMMIT:
+            case BitbucketWebhook::EVENT_ISSUE_CLOSED:
+                return array();
+            default:
+                return array('column_id' => t('Column'));
+        }
     }
 
     /**
@@ -51,7 +63,17 @@ class TaskClose extends Base
      */
     public function getEventRequiredParameters()
     {
-        return array('task_id');
+        switch ($this->event_name) {
+            case GithubWebhook::EVENT_COMMIT:
+            case GithubWebhook::EVENT_ISSUE_CLOSED:
+            case GitlabWebhook::EVENT_COMMIT:
+            case GitlabWebhook::EVENT_ISSUE_CLOSED:
+            case BitbucketWebhook::EVENT_COMMIT:
+            case BitbucketWebhook::EVENT_ISSUE_CLOSED:
+                return array('task_id');
+            default:
+                return array('task_id', 'column_id');
+        }
     }
 
     /**
@@ -75,6 +97,16 @@ class TaskClose extends Base
      */
     public function hasRequiredCondition(array $data)
     {
-        return true;
+        switch ($this->event_name) {
+            case GithubWebhook::EVENT_COMMIT:
+            case GithubWebhook::EVENT_ISSUE_CLOSED:
+            case GitlabWebhook::EVENT_COMMIT:
+            case GitlabWebhook::EVENT_ISSUE_CLOSED:
+            case BitbucketWebhook::EVENT_COMMIT:
+            case BitbucketWebhook::EVENT_ISSUE_CLOSED:
+                return true;
+            default:
+                return $data['column_id'] == $this->getParam('column_id');
+        }
     }
 }

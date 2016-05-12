@@ -70,7 +70,6 @@ Available methods from `Kanboard\Core\Plugin\Base`:
 - `getPluginDescription()`: Should return plugin description
 - `getPluginHomepage()`: Should return plugin Homepage (link)
 - `setContentSecurityPolicy(array $rules)`: Override default HTTP CSP rules
-- `onStartup()`: If present, this method is executed automatically when the event "app.bootstrap" is triggered
 
 Your plugin registration class can also inherit from Kanboard\Core\Base, that way you can access all classes and methods of Kanboard easily.
 
@@ -83,18 +82,15 @@ $this->user->getById(123);
 Plugin Translations
 -------------------
 
-Plugin can be translated in the same way as the rest of the application. You must load the translations yourself when the session is created:
+Plugin can be translated in the same way the rest of the application. You must load the translations yourself when the session is created:
 
 ```php
-public function onStartup()
-{
-    Translator::load($this->language->getCurrentLanguage(), __DIR__.'/Locale');
-}
+$this->on('app.bootstrap', function($container) {
+    Translator::load($container['config']->getCurrentLanguage(), __DIR__.'/Locale');
+});
 ```
 
-The translations must be stored in the file `plugins/Myplugin/Locale/xx_XX/translations.php` (replace xx_XX by the language code fr_FR, en_US...).
-
-Translations are stored in a dictionary, if you would like to override an existing string, you just need to use the same key in your translation file.
+The translations must be stored in `plugins/Myplugin/Locale/xx_XX/translations.php`.
 
 Dependency Injection Container
 ------------------------------
@@ -128,3 +124,54 @@ $this->container['hourlyRate']->getAll();
 ```
 
 Keys of the containers are unique across the application. If you override an existing class, you will change the default behavior.
+
+Event Listening
+---------------
+
+Kanboard use internal events and your plugin can listen and perform actions on these events.
+
+```php
+$this->on('app.bootstrap', function($container) {
+    // Do something
+});
+```
+
+- The first argument is the event name
+- The second argument is a PHP callable function (closure or class method)
+
+Extend Automatic Actions
+------------------------
+
+To define a new automatic action with a plugin, you just need to call the method `extendActions()` from the class `Kanboard\Model\Action`, here an example:
+
+```php
+<?php
+
+namespace Kanboard\Plugin\AutomaticAction;
+
+use Kanboard\Core\Plugin\Base;
+
+class Plugin extends Base
+{
+    public function initialize()
+    {
+        $this->action->extendActions(
+            '\Kanboard\Plugin\AutomaticAction\Action\DoSomething', // Use absolute namespace
+            t('Do something when the task color change')
+        );
+    }
+}
+```
+
+- The first argument of the method `extendActions()` is the action class with the complete namespace path. **The namespace path must starts with a backslash** otherwise Kanboard will not be able to load your class.
+- The second argument is the description of your automatic action.
+
+The automatic action class must inherit from the class `Kanboard\Action\Base` and implements all abstract methods:
+
+- `getCompatibleEvents()`
+- `getActionRequiredParameters()`
+- `getEventRequiredParameters()`
+- `doAction(array $data)`
+- `hasRequiredCondition(array $data)`
+
+For more details you should take a look to existing automatic actions or this [plugin example](https://github.com/kanboard/plugin-example-automatic-action).

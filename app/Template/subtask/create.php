@@ -2,19 +2,26 @@
     <h2><?= t('Add a sub-task') ?></h2>
 </div>
 
-<form class="popover-form" method="post" action="<?= $this->url->href('subtask', 'save', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>" autocomplete="off">
+<form method="post" action="<?= $this->url->href('subtask', 'save', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>" autocomplete="off">
 
     <?= $this->form->csrf() ?>
+
     <?= $this->form->hidden('task_id', $values) ?>
-    <?= $this->subtask->selectTitle($values, $errors, array('autofocus')) ?>
-    <?= $this->subtask->selectAssignee($users_list, $values, $errors) ?>
-    <?= $this->subtask->selectTimeEstimated($values, $errors) ?>
+
+    <?= $this->form->label(t('Title'), 'title') ?>
+    <?= $this->form->text('title', $values, $errors, array('required', 'autofocus', 'maxlength="255"')) ?><br/>
+
+    <?= $this->form->label(t('Assignee'), 'user_id') ?>
+    <?= $this->form->select('user_id', $users_list, $values, $errors) ?><br/>
+
+    <?php //<?= $this->form->label(t('Original estimate'), 'time_estimated') ?>
+    <?php //<?= $this->form->numeric('time_estimated', $values, $errors) ?> <?php //<?= t('hours') ?><br/>
 
     <?= $this->form->checkbox('another_subtask', t('Create another sub-task'), 1, isset($values['another_subtask']) && $values['another_subtask'] == 1) ?>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
         <?= t('or') ?>
-        <?= $this->url->link(t('cancel'), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), false, 'close-popover') ?>
+        <?= $this->url->link(t('cancel'), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
     </div>
 </form>

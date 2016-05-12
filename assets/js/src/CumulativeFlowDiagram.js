@@ -1,21 +1,14 @@
-Kanboard.CumulativeFlowDiagram = function(app) {
-    this.app = app;
-};
+function CumulativeFlowDiagram() {
+}
 
-Kanboard.CumulativeFlowDiagram.prototype.execute = function() {
-    if (this.app.hasId("analytic-cfd")) {
-        this.show();
-    }
-};
+CumulativeFlowDiagram.prototype.execute = function() {
 
-Kanboard.CumulativeFlowDiagram.prototype.show = function() {
-    var chart = $("#chart");
-    var metrics = chart.data("metrics");
+    var metrics = $("#chart").data("metrics");
     var columns = [];
     var groups = [];
     var categories = [];
     var inputFormat = d3.time.format("%Y-%m-%d");
-    var outputFormat = d3.time.format(chart.data("date-format"));
+    var outputFormat = d3.time.format($("#chart").data("date-format"));
 
     for (var i = 0; i < metrics.length; i++) {
 

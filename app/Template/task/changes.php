@@ -31,7 +31,7 @@
                     if (empty($task['date_due'])) {
                         echo '<li>'.t('The due date have been removed').'</li>';
                     } else {
-                        echo '<li>'.t('New due date: ').$this->dt->date($task['date_due']).'</li>';
+                        echo '<li>'.dt('New due date: %B %e, %Y', $task['date_due']).'</li>';
                     }
                     break;
                 case 'description':
@@ -56,7 +56,7 @@
                     break;
                 case 'date_started':
                     if ($value != 0) {
-                        echo '<li>'.t('Start date changed: ').$this->dt->datetime($task['date_started']).'</li>';
+                        echo '<li>'.dt('Start date changed: %B %e, %Y', $task['date_started']).'</li>';
                     }
                     break;
                 default:
@@ -68,7 +68,7 @@
     </ul>
 
     <?php if (! empty($changes['description'])): ?>
-        <p><strong><?= t('The description has been modified:') ?></strong></p>
+        <p><?= t('The description have been modified') ?></p>
         <div class="markdown"><?= $this->text->markdown($task['description']) ?></div>
     <?php endif ?>
 <?php endif ?>

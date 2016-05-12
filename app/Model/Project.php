@@ -2,6 +2,8 @@
 
 namespace Kanboard\Model;
 
+use SimpleValidator\Validator;
+use SimpleValidator\Validators;
 use Kanboard\Core\Security\Token;
 use Kanboard\Core\Security\Role;
 
@@ -35,20 +37,6 @@ class Project extends Base
     const INACTIVE = 0;
 
     /**
-     * Value for private project
-     *
-     * @var integer
-     */
-    const TYPE_PRIVATE = 1;
-
-    /**
-     * Value for team project
-     *
-     * @var integer
-     */
-    const TYPE_TEAM = 0;
-
-    /**
      * Get a project by the id
      *
      * @access public
@@ -58,22 +46,6 @@ class Project extends Base
     public function getById($project_id)
     {
         return $this->db->table(self::TABLE)->eq('id', $project_id)->findOne();
-    }
-
-    /**
-     * Get a project by id with owner name
-     *
-     * @access public
-     * @param  integer   $project_id    Project id
-     * @return array
-     */
-    public function getByIdWithOwner($project_id)
-    {
-        return $this->db->table(self::TABLE)
-            ->columns(self::TABLE.'.*', User::TABLE.'.username AS owner_username', User::TABLE.'.name AS owner_name')
-            ->eq(self::TABLE.'.id', $project_id)
-            ->join(User::TABLE, 'id', 'owner_id')
-            ->findOne();
     }
 
     /**
@@ -201,7 +173,7 @@ class Project extends Base
      * Get all projects with all its data for a given status
      *
      * @access public
-     * @param  integer   $status   Project status: self::ACTIVE or self:INACTIVE
+     * @param  integer   $status   Proejct status: self::ACTIVE or self:INACTIVE
      * @return array
      */
     public function getAllByStatus($status)
@@ -245,19 +217,6 @@ class Project extends Base
     }
 
     /**
-     * Get Priority range from a project
-     *
-     * @access public
-     * @param  array $project
-     * @return array
-     */
-    public function getPriorities(array $project)
-    {
-        $range = range($project['priority_start'], $project['priority_end']);
-        return array_combine($range, $range);
-    }
-
-    /**
      * Gather some task metrics for a given project
      *
      * @access public
@@ -268,7 +227,7 @@ class Project extends Base
     {
         $stats = array();
         $stats['nb_active_tasks'] = 0;
-        $columns = $this->column->getAll($project_id);
+        $columns = $this->board->getColumns($project_id);
         $column_stats = $this->board->getColumnStats($project_id);
 
         foreach ($columns as &$column) {
@@ -292,7 +251,7 @@ class Project extends Base
      */
     public function getColumnStats(array &$project)
     {
-        $project['columns'] = $this->column->getAll($project['id']);
+        $project['columns'] = $this->board->getColumns($project['id']);
         $stats = $this->board->getColumnStats($project['id']);
 
         foreach ($project['columns'] as &$column) {
@@ -319,6 +278,23 @@ class Project extends Base
     }
 
     /**
+     * Fetch more information for each project
+     *
+     * @access public
+     * @param  array    $projects
+     * @return array
+     */
+    public function applyProjectDetails(array $projects)
+    {
+        foreach ($projects as &$project) {
+            $this->getColumnStats($project);
+            $project = array_merge($project, $this->projectUserRole->getAllUsersGroupedByRole($project['id']));
+        }
+
+        return $projects;
+    }
+
+    /**
      * Get project summary for a list of project
      *
      * @access public
@@ -333,10 +309,27 @@ class Project extends Base
 
         return $this->db
                     ->table(Project::TABLE)
-                    ->columns(self::TABLE.'.*', User::TABLE.'.username AS owner_username', User::TABLE.'.name AS owner_name')
-                    ->join(User::TABLE, 'id', 'owner_id')
-                    ->in(self::TABLE.'.id', $project_ids)
+                    ->in('id', $project_ids)
                     ->callback(array($this, 'applyColumnStats'));
+    }
+
+    /**
+     * Get project details (users + columns) for a list of project
+     *
+     * @access public
+     * @param  array      $project_ids     List of project id
+     * @return \PicoDb\Table
+     */
+    public function getQueryProjectDetails(array $project_ids)
+    {
+        if (empty($project_ids)) {
+            return $this->db->table(Project::TABLE)->limit(0);
+        }
+
+        return $this->db
+                    ->table(Project::TABLE)
+                    ->in('id', $project_ids)
+                    ->callback(array($this, 'applyProjectDetails'));
     }
 
     /**
@@ -355,13 +348,10 @@ class Project extends Base
         $values['token'] = '';
         $values['last_modified'] = time();
         $values['is_private'] = empty($values['is_private']) ? 0 : 1;
-        $values['owner_id'] = $user_id;
 
         if (! empty($values['identifier'])) {
             $values['identifier'] = strtoupper($values['identifier']);
         }
-
-        $this->helper->model->convertIntegerFields($values, array('priority_default', 'priority_start', 'priority_end'));
 
         if (! $this->db->table(self::TABLE)->save($values)) {
             $this->db->cancelTransaction();
@@ -428,8 +418,6 @@ class Project extends Base
         if (! empty($values['identifier'])) {
             $values['identifier'] = strtoupper($values['identifier']);
         }
-
-        $this->helper->model->convertIntegerFields($values, array('priority_default', 'priority_start', 'priority_end'));
 
         return $this->exists($values['id']) &&
                $this->db->table(self::TABLE)->eq('id', $values['id'])->save($values);
@@ -521,5 +509,72 @@ class Project extends Base
                     ->table(self::TABLE)
                     ->eq('id', $project_id)
                     ->save(array('is_public' => 0, 'token' => ''));
+    }
+
+    /**
+     * Common validation rules
+     *
+     * @access private
+     * @return array
+     */
+    private function commonValidationRules()
+    {
+        return array(
+            new Validators\Integer('id', t('This value must be an integer')),
+            new Validators\Integer('is_active', t('This value must be an integer')),
+            new Validators\Required('name', t('The project name is required')),
+            new Validators\MaxLength('name', t('The maximum length is %d characters', 50), 50),
+            new Validators\MaxLength('identifier', t('The maximum length is %d characters', 50), 50),
+            new Validators\MaxLength('start_date', t('The maximum length is %d characters', 10), 10),
+            new Validators\MaxLength('end_date', t('The maximum length is %d characters', 10), 10),
+            new Validators\AlphaNumeric('identifier', t('This value must be alphanumeric')) ,
+            new Validators\Unique('identifier', t('The identifier must be unique'), $this->db->getConnection(), self::TABLE),
+        );
+    }
+
+    /**
+     * Validate project creation
+     *
+     * @access public
+     * @param  array   $values           Form values
+     * @return array   $valid, $errors   [0] = Success or not, [1] = List of errors
+     */
+    public function validateCreation(array $values)
+    {
+        if (! empty($values['identifier'])) {
+            $values['identifier'] = strtoupper($values['identifier']);
+        }
+
+        $v = new Validator($values, $this->commonValidationRules());
+
+        return array(
+            $v->execute(),
+            $v->getErrors()
+        );
+    }
+
+    /**
+     * Validate project modification
+     *
+     * @access public
+     * @param  array   $values           Form values
+     * @return array   $valid, $errors   [0] = Success or not, [1] = List of errors
+     */
+    public function validateModification(array $values)
+    {
+        if (! empty($values['identifier'])) {
+            $values['identifier'] = strtoupper($values['identifier']);
+        }
+
+        $rules = array(
+            new Validators\Required('id', t('This value is required')),
+        );
+
+        $v = new Validator($values, array_merge($rules, $this->commonValidationRules()));
+
+        return array(
+            $v->execute(),
+            $v->getErrors()
+        );
     }
 }

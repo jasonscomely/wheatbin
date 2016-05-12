@@ -1,20 +1,15 @@
 <section id="main">
     <div class="page-header">
-        <ul>
-            <li>
-                <i class="fa fa-search fa-fw"></i>
-                <?= $this->url->link(t('Activity stream search'), 'search', 'activity') ?>
-            </li>
-        </ul>
     </div>
 
-    <div class="filter-box">
+    <div class="search">
         <form method="get" action="<?= $this->url->dir() ?>" class="search">
             <?= $this->form->hidden('controller', $values) ?>
             <?= $this->form->hidden('action', $values) ?>
             <?= $this->form->text('search', $values, array(), array(empty($values['search']) ? 'autofocus' : '', 'placeholder="'.t('Search').'"'), 'form-input-large') ?>
-            <?= $this->render('app/filters_helper') ?>
         </form>
+
+        <?= $this->render('app/filters_helper') ?>
     </div>
 
     <?php if (empty($values['search'])): ?>

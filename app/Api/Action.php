@@ -12,17 +12,17 @@ class Action extends \Kanboard\Core\Base
 {
     public function getAvailableActions()
     {
-        return $this->actionManager->getAvailableActions();
+        return $this->action->getAvailableActions();
     }
 
     public function getAvailableActionEvents()
     {
-        return $this->eventManager->getAll();
+        return $this->action->getAvailableEvents();
     }
 
     public function getCompatibleActionEvents($action_name)
     {
-        return $this->actionManager->getCompatibleEvents($action_name);
+        return $this->action->getCompatibleEvents($action_name);
     }
 
     public function removeAction($action_id)
@@ -32,10 +32,22 @@ class Action extends \Kanboard\Core\Base
 
     public function getActions($project_id)
     {
-        return $this->action->getAllByProject($project_id);
+        $actions = $this->action->getAllByProject($project_id);
+
+        foreach ($actions as $index => $action) {
+            $params = array();
+
+            foreach ($action['params'] as $param) {
+                $params[$param['name']] = $param['value'];
+            }
+
+            $actions[$index]['params'] = $params;
+        }
+
+        return $actions;
     }
 
-    public function createAction($project_id, $event_name, $action_name, array $params)
+    public function createAction($project_id, $event_name, $action_name, $params)
     {
         $values = array(
             'project_id' => $project_id,
@@ -44,23 +56,23 @@ class Action extends \Kanboard\Core\Base
             'params' => $params,
         );
 
-        list($valid, ) = $this->actionValidator->validateCreation($values);
+        list($valid, ) = $this->action->validateCreation($values);
 
         if (! $valid) {
             return false;
         }
 
         // Check if the action exists
-        $actions = $this->actionManager->getAvailableActions();
+        $actions = $this->action->getAvailableActions();
 
         if (! isset($actions[$action_name])) {
             return false;
         }
 
         // Check the event
-        $action = $this->actionManager->getAction($action_name);
+        $action = $this->action->load($action_name, $project_id, $event_name);
 
-        if (! in_array($event_name, $action->getEvents())) {
+        if (! in_array($event_name, $action->getCompatibleEvents())) {
             return false;
         }
 

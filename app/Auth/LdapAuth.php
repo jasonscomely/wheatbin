@@ -20,26 +20,26 @@ class LdapAuth extends Base implements PasswordAuthenticationProviderInterface
     /**
      * User properties
      *
-     * @access protected
+     * @access private
      * @var \Kanboard\User\LdapUserProvider
      */
-    protected $userInfo = null;
+    private $userInfo = null;
 
     /**
      * Username
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $username = '';
+    private $username = '';
 
     /**
      * Password
      *
-     * @access protected
+     * @access private
      * @var string
      */
-    protected $password = '';
+    private $password = '';
 
     /**
      * Get authentication provider name
@@ -63,20 +63,16 @@ class LdapAuth extends Base implements PasswordAuthenticationProviderInterface
         try {
 
             $client = LdapClient::connect($this->getLdapUsername(), $this->getLdapPassword());
-            $client->setLogger($this->logger);
-
             $user = LdapUser::getUser($client, $this->username);
 
             if ($user === null) {
-                $this->logger->info('User ('.$this->username.') not found in LDAP server');
+                $this->logger->info('User not found in LDAP server');
                 return false;
             }
 
             if ($user->getUsername() === '') {
                 throw new LogicException('Username not found in LDAP profile, check the parameter LDAP_USER_ATTRIBUTE_USERNAME');
             }
-
-            $this->logger->info('Authenticate this user: '.$user->getDn());
 
             if ($client->authenticate($user->getDn(), $this->password)) {
                 $this->userInfo = $user;

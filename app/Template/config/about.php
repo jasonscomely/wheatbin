@@ -3,13 +3,24 @@
 </div>
 <div class="listing">
     <ul>
+
+     <li>
+             <?= t('') ?>
+            <strong>Wheatbin</strong><?= t(' is a complete project management system that combines Kanban methodology with the Law of the Harvest.')?> 
+        
+</li>
+<hr>
         <li>
             <?= t('Official website:') ?>
-            <a href="https://kanboard.net/" target="_blank" rel="noreferer">https://kanboard.net/</a>
+            <a href="http://wheatbin.com/" target="_blank" rel="noreferer">http://wheatbin.com/</a>
         </li>
         <li>
-            <?= t('Author:') ?>
-            <strong>Frédéric Guillot</strong> (<a href="https://github.com/fguillot/kanboard/blob/master/CONTRIBUTORS.md" target="_blank"><?= t('contributors') ?></a>)
+            <?= t('Application version:') ?>
+            <strong><?= APP_VERSION ?></strong>
+        </li>
+        <li>
+            <?= t('Designer:') ?>
+            <strong><a href="http://jasoncomely.com" target="_blank" rel="noreferer">Jason Comely</a></strong>
         </li>
         <li>
             <?= t('License:') ?>
@@ -18,48 +29,34 @@
     </ul>
 </div>
 
+
 <div class="page-header">
-    <h2><?= t('Configuration') ?></h2>
+   
 </div>
 <div class="listing">
     <ul>
         <li>
-            <?= t('Application version:') ?>
-            <strong><?= APP_VERSION ?></strong>
+
+ 
+Wheatbin software is a fork of <strong><a href="http://kanboard.net" target="_blank" rel="noreferer">Kanboard</a></strong> by <strong><a href="https://github.com/fguillot" target="_blank"><?= t('Frédéric Guillot') ?></a></strong> and <strong><a href="https://github.com/fguillot/kanboard/blob/master/CONTRIBUTORS.md" target="_blank">contributors</a></strong>.
         </li>
-        <li>
-            <?= t('PHP version:') ?>
-            <strong><?= PHP_VERSION ?></strong>
-        </li>
-        <li>
-            <?= t('PHP SAPI:') ?>
-            <strong><?= PHP_SAPI ?></strong>
-        </li>
-        <li>
-            <?= t('OS version:') ?>
-            <strong><?= php_uname('s').' '.php_uname('r') ?></strong>
-        </li>
-        <li>
-            <?= t('Database driver:') ?>
-            <strong><?= DB_DRIVER ?></strong>
-        </li>
-        <li>
-            <?= t('Database version:') ?>
-            <strong><?= $this->text->e($db_version) ?></strong>
-        </li>
-        <li>
-            <?= t('Browser:') ?>
-            <strong><?= $this->text->e($user_agent) ?></strong>
-        </li>
+
     </ul>
 </div>
 
-<?php if (DB_DRIVER === 'sqlite'): ?>
-    <div class="page-header">
-        <h2><?= t('Database') ?></h2>
-    </div>
-    <div class="listing">
-        <ul>
+
+
+
+<div class="page-header">
+    <h2><?= t('Database') ?></h2>
+</div>
+<div class="listing">
+    <ul>
+        <li>
+            <?= t('Database driver:') ?>
+            <strong><?= $this->e(DB_DRIVER) ?></strong>
+        </li>
+        <?php if (DB_DRIVER === 'sqlite'): ?>
             <li>
                 <?= t('Database size:') ?>
                 <strong><?= $this->text->bytes($db_size) ?></strong>
@@ -72,15 +69,40 @@
                 <?= $this->url->link(t('Optimize the database'), 'config', 'optimizeDb', array(), true) ?>&nbsp;
                 <?= t('(VACUUM command)') ?>
             </li>
-        </ul>
-    </div>
-<?php endif ?>
+        <?php endif ?>
+    </ul>
+</div>
 
-<?= $this->render('config/keyboard_shortcuts') ?>
+<div class="page-header">
+    <h2><?= t('Keyboard shortcuts') ?></h2>
+</div>
+<div class="listing">
+    <h3><?= t('Board/Calendar/List view') ?></h3>
+    <ul>
+        <li><?= t('Switch to the board view') ?> = <strong>v b</strong></li>
+        <li><?= t('Switch to the calendar view') ?> = <strong>v c</strong></li>
+        <li><?= t('Switch to the list view') ?> = <strong>v l</strong></li>
+        <li><?= t('Switch to the Gantt chart view') ?> = <strong>v g</strong></li>
+    </ul>
+    <h3><?= t('Board view') ?></h3>
+    <ul>
+        <li><?= t('New task') ?> = <strong>n</strong></li>
+        <li><?= t('Expand/collapse tasks') ?> = <strong>s</strong></li>
+        <li><?= t('Compact/wide view') ?> = <strong>c</strong></li>
+    </ul>
+    <h3><?= t('Application') ?></h3>
+    <ul>
+        <li><?= t('Open board switcher') ?> = <strong>b</strong></li>
+        <li><?= t('Go to the search/filter box') ?> = <strong>f</strong></li>
+        <li><?= t('Reset the search/filter box') ?> = <strong>r</strong></li>
+        <li><?= t('Close dialog box') ?> = <strong>ESC</strong></li>
+        <li><?= t('Submit a form') ?> = <strong>CTRL+ENTER</strong> <?= t('or') ?> <strong>⌘+ENTER</strong></li>
+    </ul>
+</div>
 
 <div class="page-header">
     <h2><?= t('License') ?></h2>
 </div>
 <div class="listing">
-<?= nl2br(file_get_contents(ROOT_DIR.DIRECTORY_SEPARATOR.'LICENSE')) ?>
+<?= nl2br(file_get_contents('LICENSE')) ?>
 </div>

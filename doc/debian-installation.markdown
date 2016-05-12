@@ -1,8 +1,6 @@
 How to install Kanboard on Debian?
 ==================================
 
-Note: Some features of Kanboard require that you run [a daily background job](cronjob.markdown).
-
 Debian 8 (Jessie)
 -----------------
 
@@ -18,7 +16,7 @@ Install Kanboard:
 
 ```bash
 cd /var/www/html
-wget https://kanboard.net/kanboard-latest.zip
+wget http://kanboard.net/kanboard-latest.zip
 unzip kanboard-latest.zip
 chown -R www-data:www-data kanboard/data
 rm kanboard-latest.zip
@@ -38,7 +36,7 @@ Install Kanboard:
 
 ```bash
 cd /var/www
-wget https://kanboard.net/kanboard-latest.zip
+wget http://kanboard.net/kanboard-latest.zip
 unzip kanboard-latest.zip
 chown -R www-data:www-data kanboard/data
 rm kanboard-latest.zip
@@ -58,7 +56,7 @@ Install Kanboard:
 
 ```bash
 cd /var/www
-wget https://kanboard.net/kanboard-latest.zip
+wget http://kanboard.net/kanboard-latest.zip
 unzip kanboard-latest.zip
 chown -R www-data:www-data kanboard/data
 rm kanboard-latest.zip

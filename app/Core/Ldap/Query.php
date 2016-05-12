@@ -13,18 +13,18 @@ class Query
     /**
      * LDAP client
      *
-     * @access protected
+     * @access private
      * @var Client
      */
-    protected $client = null;
+    private $client = null;
 
     /**
      * Query result
      *
-     * @access protected
+     * @access private
      * @var array
      */
-    protected $entries = array();
+    private $entries = array();
 
     /**
      * Constructor
@@ -48,12 +48,6 @@ class Query
      */
     public function execute($baseDn, $filter, array $attributes)
     {
-        if (DEBUG && $this->client->hasLogger()) {
-            $this->client->getLogger()->debug('BaseDN='.$baseDn);
-            $this->client->getLogger()->debug('Filter='.$filter);
-            $this->client->getLogger()->debug('Attributes='.implode(', ', $attributes));
-        }
-
         $sr = ldap_search($this->client->getConnection(), $baseDn, $filter, $attributes);
         if ($sr === false) {
             return $this;
@@ -65,10 +59,6 @@ class Query
         }
 
         $this->entries = $entries;
-
-        if (DEBUG && $this->client->hasLogger()) {
-            $this->client->getLogger()->debug('NbEntries='.$entries['count']);
-        }
 
         return $this;
     }
@@ -88,7 +78,7 @@ class Query
      * Get LDAP Entries
      *
      * @access public
-     * @return Entries
+     * @return Entities
      */
     public function getEntries()
     {

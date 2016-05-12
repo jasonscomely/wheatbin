@@ -34,30 +34,62 @@ Response from the server:
 Example with Python
 -------------------
 
-You can use the [official Python client for Kanboard](https://github.com/kanboard/kanboard-api-python):
-
-```bash
-pip install kanboard
-```
-
-Here an example to create a project and a task:
+Here a basic example written in Python to create a task:
 
 ```python
-from kanboard import Kanboard
+#!/usr/bin/env python
 
-kb = Kanboard("http://localhost/jsonrpc.php", "jsonrpc", "your_api_token")
+import requests
+import json
 
-project_id = kb.create_project(name="My project")
+def main():
+    url = "http://demo.kanboard.net/jsonrpc.php"
+    api_key = "be4271664ca8169d32af49d8e1ec854edb0290bc3588a2e356275eab9505"
+    headers = {"content-type": "application/json"}
 
-task_id = kb.create_task(project_id=project_id, title="My task title")
+    payload = {
+        "method": "createTask",
+        "params": {
+            "title": "Python API test",
+            "project_id": 1
+        },
+        "jsonrpc": "2.0",
+        "id": 1,
+    }
+
+    response = requests.post(
+        url,
+        data=json.dumps(payload),
+        headers=headers,
+        auth=("jsonrpc", api_key)
+    )
+
+    if response.status_code == 401:
+        print "Authentication failed"
+    else:
+        result = response.json()
+
+        assert result["result"] == True
+        assert result["jsonrpc"]
+        assert result["id"] == 1
+
+        print "Task created successfully!"
+
+if __name__ == "__main__":
+    main()
 ```
 
-There are more examples on the [official website](https://github.com/kanboard/kanboard-api-python).
+Run this script from your terminal:
+
+```bash
+python jsonrpc.py
+Task created successfully!
+```
 
 Example with a PHP client
 -------------------------
 
-You can use this [Json-RPC Client/Server library for PHP](https://github.com/fguillot/JsonRPC), here an example:
+I wrote a simple [Json-RPC Client/Server library in PHP](https://github.com/fguillot/JsonRPC), here an example:
 
 ```php
 <?php

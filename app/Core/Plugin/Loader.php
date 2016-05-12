@@ -2,19 +2,27 @@
 
 namespace Kanboard\Core\Plugin;
 
-use Composer\Autoload\ClassLoader;
 use DirectoryIterator;
+use PDOException;
 use LogicException;
+use RuntimeException;
 use Kanboard\Core\Tool;
 
 /**
  * Plugin Loader
  *
- * @package Kanboard\Core\Plugin
- * @author  Frederic Guillot
+ * @package  plugin
+ * @author   Frederic Guillot
  */
 class Loader extends \Kanboard\Core\Base
 {
+    /**
+     * Schema version table for plugins
+     *
+     * @var string
+     */
+    const TABLE_SCHEMA = 'plugin_schema_versions';
+
     /**
      * Plugin instances
      *
@@ -24,17 +32,6 @@ class Loader extends \Kanboard\Core\Base
     public $plugins = array();
 
     /**
-     * Get list of loaded plugins
-     *
-     * @access public
-     * @return array
-     */
-    public function getPlugins()
-    {
-        return $this->plugins;
-    }
-
-    /**
      * Scan plugin folder and load plugins
      *
      * @access public
@@ -42,33 +39,15 @@ class Loader extends \Kanboard\Core\Base
     public function scan()
     {
         if (file_exists(PLUGINS_DIR)) {
-            $loader = new ClassLoader();
-            $loader->addPsr4('Kanboard\Plugin\\', PLUGINS_DIR);
-            $loader->register();
-
             $dir = new DirectoryIterator(PLUGINS_DIR);
 
-            foreach ($dir as $fileInfo) {
-                if ($fileInfo->isDir() && substr($fileInfo->getFilename(), 0, 1) !== '.') {
-                    $pluginName = $fileInfo->getFilename();
-                    $this->loadSchema($pluginName);
-                    $this->initializePlugin($this->loadPlugin($pluginName));
+            foreach ($dir as $fileinfo) {
+                if (! $fileinfo->isDot() && $fileinfo->isDir()) {
+                    $plugin = $fileinfo->getFilename();
+                    $this->loadSchema($plugin);
+                    $this->load($plugin);
                 }
             }
-        }
-    }
-
-    /**
-     * Load plugin schema
-     *
-     * @access public
-     * @param  string $pluginName
-     */
-    public function loadSchema($pluginName)
-    {
-        if (SchemaHandler::hasSchema($pluginName)) {
-            $schemaHandler = new SchemaHandler($this->container);
-            $schemaHandler->loadSchema($pluginName);
         }
     }
 
@@ -76,37 +55,99 @@ class Loader extends \Kanboard\Core\Base
      * Load plugin
      *
      * @access public
-     * @throws LogicException
-     * @param  string $pluginName
-     * @return Base
+     * @param  string $plugin
      */
-    public function loadPlugin($pluginName)
+    public function load($plugin)
     {
-        $className = '\Kanboard\Plugin\\'.$pluginName.'\\Plugin';
+        $class = '\Kanboard\Plugin\\'.$plugin.'\\Plugin';
 
-        if (! class_exists($className)) {
-            throw new LogicException('Unable to load this plugin class '.$className);
+        if (! class_exists($class)) {
+            throw new LogicException('Unable to load this plugin class '.$class);
         }
 
-        return new $className($this->container);
+        $instance = new $class($this->container);
+
+        Tool::buildDic($this->container, $instance->getClasses());
+
+        $instance->initialize();
+        $this->plugins[] = $instance;
     }
 
     /**
-     * Initialize plugin
+     * Load plugin schema
      *
      * @access public
-     * @param  Base $plugin
+     * @param  string  $plugin
      */
-    public function initializePlugin(Base $plugin)
+    public function loadSchema($plugin)
     {
-        if (method_exists($plugin, 'onStartup')) {
-            $this->dispatcher->addListener('app.bootstrap', array($plugin, 'onStartup'));
+        $filename = PLUGINS_DIR.'/'.$plugin.'/Schema/'.ucfirst(DB_DRIVER).'.php';
+
+        if (file_exists($filename)) {
+            require_once($filename);
+            $this->migrateSchema($plugin);
         }
+    }
 
-        Tool::buildDIC($this->container, $plugin->getClasses());
-        Tool::buildDICHelpers($this->container, $plugin->getHelpers());
+    /**
+     * Execute plugin schema migrations
+     *
+     * @access public
+     * @param  string  $plugin
+     */
+    public function migrateSchema($plugin)
+    {
+        $last_version = constant('\Kanboard\Plugin\\'.$plugin.'\Schema\VERSION');
+        $current_version = $this->getSchemaVersion($plugin);
 
-        $plugin->initialize();
-        $this->plugins[] = $plugin;
+        try {
+            $this->db->startTransaction();
+            $this->db->getDriver()->disableForeignKeys();
+
+            for ($i = $current_version + 1; $i <= $last_version; $i++) {
+                $function_name = '\Kanboard\Plugin\\'.$plugin.'\Schema\version_'.$i;
+
+                if (function_exists($function_name)) {
+                    call_user_func($function_name, $this->db->getConnection());
+                }
+            }
+
+            $this->db->getDriver()->enableForeignKeys();
+            $this->db->closeTransaction();
+            $this->setSchemaVersion($plugin, $i - 1);
+        } catch (PDOException $e) {
+            $this->db->cancelTransaction();
+            $this->db->getDriver()->enableForeignKeys();
+            throw new RuntimeException('Unable to migrate schema for the plugin: '.$plugin.' => '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Get current plugin schema version
+     *
+     * @access public
+     * @param  string  $plugin
+     * @return integer
+     */
+    public function getSchemaVersion($plugin)
+    {
+        return (int) $this->db->table(self::TABLE_SCHEMA)->eq('plugin', strtolower($plugin))->findOneColumn('version');
+    }
+
+    /**
+     * Save last plugin schema version
+     *
+     * @access public
+     * @param  string   $plugin
+     * @param  integer  $version
+     * @return boolean
+     */
+    public function setSchemaVersion($plugin, $version)
+    {
+        $dictionary = array(
+            strtolower($plugin) => $version
+        );
+
+        return $this->db->getDriver()->upsert(self::TABLE_SCHEMA, 'plugin', 'version', $dictionary);
     }
 }

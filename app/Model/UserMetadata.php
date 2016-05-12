@@ -11,16 +11,11 @@ namespace Kanboard\Model;
 class UserMetadata extends Metadata
 {
     /**
-     * Get the table
+     * SQL table name
      *
-     * @abstract
-     * @access protected
-     * @return string
+     * @var string
      */
-    protected function getTable()
-    {
-        return 'user_has_metadata';
-    }
+    const TABLE = 'user_has_metadata';
 
     /**
      * Define the entity key

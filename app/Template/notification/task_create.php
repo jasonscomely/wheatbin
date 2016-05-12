@@ -1,12 +1,12 @@
-<h2><?= $this->text->e($task['title']) ?> (#<?= $task['id'] ?>)</h2>
+<h2><?= $this->e($task['title']) ?> (#<?= $task['id'] ?>)</h2>
 
 <ul>
     <li>
-        <?= t('Created:').' '.$this->dt->datetime($task['date_creation']) ?>
+        <?= dt('Created on %B %e, %Y at %k:%M %p', $task['date_creation']) ?>
     </li>
     <?php if ($task['date_due']): ?>
     <li>
-        <strong><?= t('Due date:').' '.$this->dt->date($task['date_due']) ?></strong>
+        <strong><?= dt('Must be done before %B %e, %Y', $task['date_due']) ?></strong>
     </li>
     <?php endif ?>
     <?php if (! empty($task['creator_username'])): ?>
@@ -25,12 +25,12 @@
     </li>
     <li>
         <?= t('Column on the board:') ?>
-        <strong><?= $this->text->e($task['column_title']) ?></strong>
+        <strong><?= $this->e($task['column_title']) ?></strong>
     </li>
-    <li><?= t('Task position:').' '.$this->text->e($task['position']) ?></li>
+    <li><?= t('Task position:').' '.$this->e($task['position']) ?></li>
     <?php if (! empty($task['category_name'])): ?>
     <li>
-        <?= t('Category:') ?> <strong><?= $this->text->e($task['category_name']) ?></strong>
+        <?= t('Category:') ?> <strong><?= $this->e($task['category_name']) ?></strong>
     </li>
     <?php endif ?>
 </ul>

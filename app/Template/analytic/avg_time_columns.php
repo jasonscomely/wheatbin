@@ -16,7 +16,7 @@
         </tr>
         <?php foreach ($metrics as $column): ?>
         <tr>
-            <td><?= $this->text->e($column['title']) ?></td>
+            <td><?= $this->e($column['title']) ?></td>
             <td><?= $this->dt->duration($column['average']) ?></td>
         </tr>
         <?php endforeach ?>

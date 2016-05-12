@@ -21,12 +21,18 @@ class UserNotification extends Base
      */
     public function sendNotifications($event_name, array $event_data)
     {
-        $users = $this->getUsersWithNotificationEnabled($event_data['task']['project_id'], $this->userSession->getId());
+        $logged_user_id = $this->userSession->isLogged() ? $this->userSession->getId() : 0;
+        $users = $this->getUsersWithNotificationEnabled($event_data['task']['project_id'], $logged_user_id);
 
-        foreach ($users as $user) {
-            if ($this->userNotificationFilter->shouldReceiveNotification($user, $event_data)) {
-                $this->sendUserNotification($user, $event_name, $event_data);
+        if (! empty($users)) {
+            foreach ($users as $user) {
+                if ($this->userNotificationFilter->shouldReceiveNotification($user, $event_data)) {
+                    $this->sendUserNotification($user, $event_name, $event_data);
+                }
             }
+
+            // Restore locales
+            $this->config->setupTranslations();
         }
     }
 
@@ -52,9 +58,6 @@ class UserNotification extends Base
         foreach ($this->userNotificationType->getSelectedTypes($user['id']) as $type) {
             $this->userNotificationType->getType($type)->notifyUser($user, $event_name, $event_data);
         }
-
-        // Restore locales
-        $this->language->loadCurrentLanguage();
     }
 
     /**
@@ -71,17 +74,7 @@ class UserNotification extends Base
             return $this->getEverybodyWithNotificationEnabled($exclude_user_id);
         }
 
-        $users = array();
-        $members = $this->getProjectUserMembersWithNotificationEnabled($project_id, $exclude_user_id);
-        $groups = $this->getProjectGroupMembersWithNotificationEnabled($project_id, $exclude_user_id);
-
-        foreach (array_merge($members, $groups) as $user) {
-            if (! isset($users[$user['id']])) {
-                $users[$user['id']] = $user;
-            }
-        }
-
-        return array_values($users);
+        return $this->getProjectMembersWithNotificationEnabled($project_id, $exclude_user_id);
     }
 
     /**
@@ -117,20 +110,23 @@ class UserNotification extends Base
      */
     public function saveSettings($user_id, array $values)
     {
-        $types = empty($values['notification_types']) ? array() : array_keys($values['notification_types']);
+        $this->db->startTransaction();
 
-        if (! empty($types)) {
+        if (isset($values['notifications_enabled']) && $values['notifications_enabled'] == 1) {
             $this->enableNotification($user_id);
+
+            $filter = empty($values['notifications_filter']) ? UserNotificationFilter::FILTER_BOTH : $values['notifications_filter'];
+            $projects = empty($values['notification_projects']) ? array() : array_keys($values['notification_projects']);
+            $types = empty($values['notification_types']) ? array() : array_keys($values['notification_types']);
+
+            $this->userNotificationFilter->saveFilter($user_id, $filter);
+            $this->userNotificationFilter->saveSelectedProjects($user_id, $projects);
+            $this->userNotificationType->saveSelectedTypes($user_id, $types);
         } else {
             $this->disableNotification($user_id);
         }
 
-        $filter = empty($values['notifications_filter']) ? UserNotificationFilter::FILTER_BOTH : $values['notifications_filter'];
-        $project_ids = empty($values['notification_projects']) ? array() : array_keys($values['notification_projects']);
-
-        $this->userNotificationFilter->saveFilter($user_id, $filter);
-        $this->userNotificationFilter->saveSelectedProjects($user_id, $project_ids);
-        $this->userNotificationType->saveSelectedTypes($user_id, $types);
+        $this->db->closeTransaction();
     }
 
     /**
@@ -149,14 +145,14 @@ class UserNotification extends Base
     }
 
     /**
-     * Get a list of group members with notification enabled
+     * Get a list of project members with notification enabled
      *
      * @access private
      * @param  integer   $project_id        Project id
      * @param  integer   $exclude_user_id   User id to exclude
      * @return array
      */
-    private function getProjectUserMembersWithNotificationEnabled($project_id, $exclude_user_id)
+    private function getProjectMembersWithNotificationEnabled($project_id, $exclude_user_id)
     {
         return $this->db
             ->table(ProjectUserRole::TABLE)
@@ -164,19 +160,6 @@ class UserNotification extends Base
             ->join(User::TABLE, 'id', 'user_id')
             ->eq('project_id', $project_id)
             ->eq('notifications_enabled', '1')
-            ->neq(User::TABLE.'.id', $exclude_user_id)
-            ->findAll();
-    }
-
-    private function getProjectGroupMembersWithNotificationEnabled($project_id, $exclude_user_id)
-    {
-        return $this->db
-            ->table(ProjectGroupRole::TABLE)
-            ->columns(User::TABLE.'.id', User::TABLE.'.username', User::TABLE.'.name', User::TABLE.'.email', User::TABLE.'.language', User::TABLE.'.notifications_filter')
-            ->join(GroupMember::TABLE, 'group_id', 'group_id', ProjectGroupRole::TABLE)
-            ->join(User::TABLE, 'id', 'user_id', GroupMember::TABLE)
-            ->eq(ProjectGroupRole::TABLE.'.project_id', $project_id)
-            ->eq(User::TABLE.'.notifications_enabled', '1')
             ->neq(User::TABLE.'.id', $exclude_user_id)
             ->findAll();
     }

@@ -10,7 +10,7 @@
     <?= $this->form->text('webhook_url', $values, $errors) ?>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
     </div>
 </form>
 </section>
@@ -22,7 +22,7 @@
     <ul>
         <li>
             <?= t('Webhook token:') ?>
-            <strong><?= $this->text->e($values['webhook_token']) ?></strong>
+            <strong><?= $this->e($values['webhook_token']) ?></strong>
         </li>
         <li>
             <?= t('URL for task creation:') ?>

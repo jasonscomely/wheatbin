@@ -1,6 +1,3 @@
-<div class="task-show-title color-<?= $task['color_id'] ?>">
-    <h2><?= $this->text->e($task['title']) ?></h2>
-</div>
 <div class="page-header">
     <h2><?= t('Analytics') ?></h2>
 </div>
@@ -21,7 +18,7 @@
     </tr>
     <?php foreach ($time_spent_columns as $column): ?>
     <tr>
-        <td><?= $this->text->e($column['title']) ?></td>
+        <td><?= $this->e($column['title']) ?></td>
         <td><?= $this->dt->duration($column['time_spent']) ?></td>
     </tr>
     <?php endforeach ?>

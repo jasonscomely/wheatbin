@@ -13,17 +13,6 @@ use Kanboard\Model\Task;
 class TaskMoveColumnCategoryChange extends Base
 {
     /**
-     * Get automatic action description
-     *
-     * @access public
-     * @return string
-     */
-    public function getDescription()
-    {
-        return t('Move the task to another column when the category is changed');
-    }
-
-    /**
      * Get the list of compatible events
      *
      * @access public
@@ -61,6 +50,7 @@ class TaskMoveColumnCategoryChange extends Base
         return array(
             'task_id',
             'column_id',
+            'project_id',
             'category_id',
         );
     }
@@ -81,8 +71,7 @@ class TaskMoveColumnCategoryChange extends Base
             $data['task_id'],
             $this->getParam('dest_column_id'),
             $original_task['position'],
-            $original_task['swimlane_id'],
-            false
+            $original_task['swimlane_id']
         );
     }
 

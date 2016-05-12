@@ -1,7 +1,7 @@
 API File Procedures
 ===================
 
-## createTaskFile
+### createFile
 
 - Purpose: **Create and upload a new task attachment**
 - Parameters:
@@ -18,7 +18,7 @@ Request example:
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "createTaskFile",
+    "method": "createFile",
     "id": 94500810,
     "params": [
         1,
@@ -39,7 +39,7 @@ Response example:
 }
 ```
 
-## getAllTaskFiles
+### getAllFiles
 
 - Purpose: **Get all files attached to  task**
 - Parameters:
@@ -52,7 +52,7 @@ Request example:
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "getAllTaskFiles",
+    "method": "getAllFiles",
     "id": 1880662820,
     "params": {
         "task_id": 1
@@ -83,7 +83,7 @@ Response example:
 }
 ```
 
-## getTaskFile
+### getFile
 
 - Purpose: **Get file information**
 - Parameters:
@@ -96,7 +96,7 @@ Request example:
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "getTaskFile",
+    "method": "getFile",
     "id": 318676852,
     "params": [
         "1"
@@ -123,7 +123,7 @@ Response example:
 }
 ```
 
-## downloadTaskFile
+### downloadFile
 
 - Purpose: **Download file contents (encoded in base64)**
 - Parameters:
@@ -136,7 +136,7 @@ Request example:
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "downloadTaskFile",
+    "method": "downloadFile",
     "id": 235943344,
     "params": [
         "1"
@@ -154,7 +154,7 @@ Response example:
 }
 ```
 
-## removeTaskFile
+### removeFile
 
 - Purpose: **Remove file**
 - Parameters:
@@ -167,7 +167,7 @@ Request example:
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "removeTaskFile",
+    "method": "removeFile",
     "id": 447036524,
     "params": [
         "1"
@@ -185,7 +185,7 @@ Response example:
 }
 ```
 
-## removeAllTaskFiles
+### removeAllFiles
 
 - Purpose: **Remove all files associated to a task**
 - Parameters:
@@ -198,7 +198,7 @@ Request example:
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "removeAllTaskFiles",
+    "method": "removeAllFiles",
     "id": 593312993,
     "params": {
         "task_id": 1

@@ -27,7 +27,7 @@ class Export extends Base
             $this->response->csv($data);
         }
 
-        $this->response->html($this->helper->layout->project('export/'.$action, array(
+        $this->response->html($this->projectLayout('export/'.$action, array(
             'values' => array(
                 'controller' => 'export',
                 'action' => $action,
@@ -37,7 +37,7 @@ class Export extends Base
             ),
             'errors' => array(),
             'date_format' => $this->config->get('application_date_format'),
-            'date_formats' => $this->dateParser->getAvailableFormats($this->dateParser->getDateFormats()),
+            'date_formats' => $this->dateParser->getAvailableFormats(),
             'project' => $project,
             'title' => $page_title,
         ), 'export/sidebar'));
@@ -80,6 +80,6 @@ class Export extends Base
      */
     public function transitions()
     {
-        $this->common('transitionExport', 'export', t('Transitions'), 'transitions', t('Task transitions export'));
+        $this->common('transition', 'export', t('Transitions'), 'transitions', t('Task transitions export'));
     }
 }

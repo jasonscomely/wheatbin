@@ -1,79 +1,62 @@
-Kanboard.App = function() {
-    this.controllers = {};
-};
-
-Kanboard.App.prototype.get = function(controller) {
-    return this.controllers[controller];
-};
-
-Kanboard.App.prototype.execute = function() {
-    for (var className in Kanboard) {
-        if (className !== "App") {
-            var controller = new Kanboard[className](this);
-            this.controllers[className] = controller;
-
-            if (typeof controller.execute === "function") {
-                controller.execute();
-            }
-
-            if (typeof controller.listen === "function") {
-                controller.listen();
-            }
-
-            if (typeof controller.focus === "function") {
-                controller.focus();
-            }
-
-            if (typeof controller.keyboardShortcuts === "function") {
-                controller.keyboardShortcuts();
-            }
-        }
-    }
-
-    this.focus();
-    this.chosen();
+function App() {
+    this.board = new Board(this);
+    this.markdown = new Markdown();
+    this.sidebar = new Sidebar();
+    this.search = new Search(this);
+    this.swimlane = new Swimlane();
+    this.dropdown = new Dropdown();
+    this.tooltip = new Tooltip(this);
+    this.popover = new Popover(this);
+    this.task = new Task();
+    this.project = new Project();
     this.keyboardShortcuts();
-    this.datePicker();
-    this.autoComplete();
-};
+    this.chosen();
+    this.poll();
 
-Kanboard.App.prototype.keyboardShortcuts = function() {
-    var self = this;
+    // Alert box fadeout
+    $(".alert-fade-out").delay(4000).fadeOut(800, function() {
+        $(this).remove();
+    });
 
-    // Submit form
-    Mousetrap.bindGlobal("mod+enter", function() {
-        var forms = $("form");
-
-        if (forms.length == 1) {
-            forms.submit();
-        } else if (forms.length > 1) {
-            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                $(document.activeElement).parents("form").submit();
-            } else if (self.get("Popover").isOpen()) {
-                $("#popover-container form").submit();
-            }
+    // Reload page when a destination project is changed
+    var reloading_project = false;
+    $("select.task-reload-project-destination").change(function() {
+        if (! reloading_project) {
+            $(".loading-icon").show();
+            reloading_project = true;
+            window.location = $(this).data("redirect").replace(/PROJECT_ID/g, $(this).val());
         }
     });
+}
 
-    // Open board selector
-    Mousetrap.bind("b", function(e) {
-        e.preventDefault();
-        $('#board-selector').trigger('chosen:open');
-    });
-
-    // Close popover and dropdown
-    Mousetrap.bindGlobal("esc", function() {
-        self.get("Popover").close();
-        self.get("Dropdown").close();
-    });
-
-    // Show keyboard shortcut
-    Mousetrap.bind("?", function() {
-        self.get("Popover").open($("body").data("keyboard-shortcut-url"));
-    });
+App.prototype.listen = function() {
+    this.project.listen();
+    this.popover.listen();
+    this.markdown.listen();
+    this.sidebar.listen();
+    this.tooltip.listen();
+    this.dropdown.listen();
+    this.search.listen();
+    this.task.listen();
+    this.swimlane.listen();
+    this.search.focus();
+    this.autoComplete();
+    this.datePicker();
+    this.focus();
 };
 
-Kanboard.App.prototype.focus = function() {
+App.prototype.refresh = function() {
+    $(document).off();
+    this.listen();
+};
+
+App.prototype.focus = function() {
+
+    // Autofocus fields (html5 autofocus works only with page onload)
+    $("[autofocus]").each(function(index, element) {
+        $(this).focus();
+    })
+
     // Auto-select input fields
     $(document).on('focus', '.auto-select', function() {
         $(this).select();
@@ -85,28 +68,46 @@ Kanboard.App.prototype.focus = function() {
     });
 };
 
-Kanboard.App.prototype.chosen = function() {
-    $(".chosen-select").each(function() {
-        var searchThreshold = $(this).data("search-threshold");
+App.prototype.poll = function() {
+    window.setInterval(this.checkSession, 60000);
+};
 
-        if (searchThreshold === undefined) {
-            searchThreshold = 10;
-        }
+App.prototype.keyboardShortcuts = function() {
+    var self = this;
 
-        $(this).chosen({
-            width: "180px",
-            no_results_text: $(this).data("notfound"),
-            disable_search_threshold: searchThreshold
-        });
+    // Submit form
+    Mousetrap.bindGlobal("mod+enter", function() {
+        $("form").submit();
     });
 
-    $(".select-auto-redirect").change(function() {
-        var regex = new RegExp($(this).data('redirect-regex'), 'g');
-        window.location = $(this).data('redirect-url').replace(regex, $(this).val());
+    // Open board selector
+    Mousetrap.bind("b", function(e) {
+        e.preventDefault();
+        $('#board-selector').trigger('chosen:open');
+    });
+
+    // Close popover and dropdown
+    Mousetrap.bindGlobal("esc", function() {
+        self.popover.close();
+        self.dropdown.close();
     });
 };
 
-Kanboard.App.prototype.datePicker = function() {
+App.prototype.checkSession = function() {
+    if (! $(".form-login").length) {
+        $.ajax({
+            cache: false,
+            url: $("body").data("status-url"),
+            statusCode: {
+                401: function() {
+                    window.location = $("body").data("login-url");
+                }
+            }
+        });
+    }
+};
+
+App.prototype.datePicker = function() {
     // Datepicker translation
     $.datepicker.setDefaults($.datepicker.regional[$("body").data("js-lang")]);
 
@@ -128,14 +129,14 @@ Kanboard.App.prototype.datePicker = function() {
     });
 };
 
-Kanboard.App.prototype.autoComplete = function() {
+App.prototype.autoComplete = function() {
     $(".autocomplete").each(function() {
         var input = $(this);
         var field = input.data("dst-field");
         var extraField = input.data("dst-extra-field");
 
         if ($('#form-' + field).val() == '') {
-            input.parent().find("button[type=submit]").attr('disabled','disabled');
+            input.parent().find("input[type=submit]").attr('disabled','disabled');
         }
 
         input.autocomplete({
@@ -148,39 +149,34 @@ Kanboard.App.prototype.autoComplete = function() {
                     $("input[name=" + extraField + "]").val(ui.item[extraField]);
                 }
 
-                input.parent().find("button[type=submit]").removeAttr('disabled');
+                input.parent().find("input[type=submit]").removeAttr('disabled');
             }
         });
     });
 };
 
-Kanboard.App.prototype.hasId = function(id) {
-    return !!document.getElementById(id);
+App.prototype.chosen = function() {
+    $(".chosen-select").chosen({
+        width: "180px",
+        no_results_text: $(".chosen-select").data("notfound"),
+        disable_search_threshold: 10
+    });
+
+    $(".select-auto-redirect").change(function() {
+        var regex = new RegExp($(this).data('redirect-regex'), 'g');
+        window.location = $(this).data('redirect-url').replace(regex, $(this).val());
+    });
 };
 
-Kanboard.App.prototype.showLoadingIcon = function() {
+App.prototype.showLoadingIcon = function() {
     $("body").append('<span id="app-loading-icon">&nbsp;<i class="fa fa-spinner fa-spin"></i></span>');
 };
 
-Kanboard.App.prototype.hideLoadingIcon = function() {
+App.prototype.hideLoadingIcon = function() {
     $("#app-loading-icon").remove();
 };
 
-Kanboard.App.prototype.formatDuration = function(d) {
-    if (d >= 86400) {
-        return Math.round(d/86400) + "d";
-    }
-    else if (d >= 3600) {
-        return Math.round(d/3600) + "h";
-    }
-    else if (d >= 60) {
-        return Math.round(d/60) + "m";
-    }
-
-    return d + "s";
-};
-
-Kanboard.App.prototype.isVisible = function() {
+App.prototype.isVisible = function() {
     var property = "";
 
     if (typeof document.hidden !== "undefined") {
@@ -198,4 +194,18 @@ Kanboard.App.prototype.isVisible = function() {
     }
 
     return true;
+};
+
+App.prototype.formatDuration = function(d) {
+    if (d >= 86400) {
+        return Math.round(d/86400) + "d";
+    }
+    else if (d >= 3600) {
+        return Math.round(d/3600) + "h";
+    }
+    else if (d >= 60) {
+        return Math.round(d/60) + "m";
+    }
+
+    return d + "s";
 };

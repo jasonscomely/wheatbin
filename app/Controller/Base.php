@@ -17,18 +17,18 @@ abstract class Base extends \Kanboard\Core\Base
      *
      * @access public
      */
-    public function beforeAction()
+    public function beforeAction($controller, $action)
     {
         $this->sessionManager->open();
         $this->dispatcher->dispatch('app.bootstrap');
-        $this->sendHeaders();
+        $this->sendHeaders($action);
         $this->authenticationManager->checkCurrentSession();
 
-        if (! $this->applicationAuthorization->isAllowed($this->router->getController(), $this->router->getAction(), Role::APP_PUBLIC)) {
+        if (! $this->applicationAuthorization->isAllowed($controller, $action, Role::APP_PUBLIC)) {
             $this->handleAuthentication();
-            $this->handlePostAuthentication();
-            $this->checkApplicationAuthorization();
-            $this->checkProjectAuthorization();
+            $this->handlePostAuthentication($controller, $action);
+            $this->checkApplicationAuthorization($controller, $action);
+            $this->checkProjectAuthorization($controller, $action);
         }
     }
 
@@ -37,7 +37,7 @@ abstract class Base extends \Kanboard\Core\Base
      *
      * @access private
      */
-    private function sendHeaders()
+    private function sendHeaders($action)
     {
         // HTTP secure headers
         $this->response->csp($this->container['cspRules']);
@@ -45,7 +45,7 @@ abstract class Base extends \Kanboard\Core\Base
         $this->response->xss();
 
         // Allow the public board iframe inclusion
-        if (ENABLE_XFRAME && $this->router->getAction() !== 'readonly') {
+        if (ENABLE_XFRAME && $action !== 'readonly') {
             $this->response->xframe();
         }
 
@@ -76,10 +76,8 @@ abstract class Base extends \Kanboard\Core\Base
      *
      * @access private
      */
-    private function handlePostAuthentication()
+    private function handlePostAuthentication($controller, $action)
     {
-        $controller = strtolower($this->router->getController());
-        $action = strtolower($this->router->getAction());
         $ignore = ($controller === 'twofactor' && in_array($action, array('code', 'check'))) || ($controller === 'auth' && $action === 'logout');
 
         if ($ignore === false && $this->userSession->hasPostAuthentication() && ! $this->userSession->isPostAuthenticationValidated()) {
@@ -96,9 +94,9 @@ abstract class Base extends \Kanboard\Core\Base
      *
      * @access private
      */
-    private function checkApplicationAuthorization()
+    private function checkApplicationAuthorization($controller, $action)
     {
-        if (! $this->helper->user->hasAccess($this->router->getController(), $this->router->getAction())) {
+        if (! $this->helper->user->hasAccess($controller, $action)) {
             $this->forbidden();
         }
     }
@@ -108,7 +106,7 @@ abstract class Base extends \Kanboard\Core\Base
      *
      * @access private
      */
-    private function checkProjectAuthorization()
+    private function checkProjectAuthorization($controller, $action)
     {
         $project_id = $this->request->getIntegerParam('project_id');
         $task_id = $this->request->getIntegerParam('task_id');
@@ -118,7 +116,7 @@ abstract class Base extends \Kanboard\Core\Base
             $project_id = $this->taskFinder->getProjectId($task_id);
         }
 
-        if ($project_id > 0 && ! $this->helper->user->hasProjectAccess($this->router->getController(), $this->router->getAction(), $project_id)) {
+        if ($project_id > 0 && ! $this->helper->user->hasProjectAccess($controller, $action, $project_id)) {
             $this->forbidden();
         }
     }
@@ -131,7 +129,7 @@ abstract class Base extends \Kanboard\Core\Base
      */
     protected function notfound($no_layout = false)
     {
-        $this->response->html($this->helper->layout->app('app/notfound', array(
+        $this->response->html($this->template->layout('app/notfound', array(
             'title' => t('Page not found'),
             'no_layout' => $no_layout,
         )));
@@ -146,10 +144,10 @@ abstract class Base extends \Kanboard\Core\Base
     protected function forbidden($no_layout = false)
     {
         if ($this->request->isAjax()) {
-            $this->response->text('Access Forbidden', 403);
+            $this->response->text('Not Authorized', 401);
         }
 
-        $this->response->html($this->helper->layout->app('app/forbidden', array(
+        $this->response->html($this->template->layout('app/forbidden', array(
             'title' => t('Access Forbidden'),
             'no_layout' => $no_layout,
         )));
@@ -180,6 +178,43 @@ abstract class Base extends \Kanboard\Core\Base
     }
 
     /**
+     * Common layout for task views
+     *
+     * @access protected
+     * @param  string $template Template name
+     * @param  array $params Template parameters
+     * @return string
+     */
+    protected function taskLayout($template, array $params)
+    {
+        $content = $this->template->render($template, $params);
+        $params['task_content_for_layout'] = $content;
+        $params['title'] = $params['task']['project_name'].' &gt; '.$params['task']['title'];
+        $params['board_selector'] = $this->projectUserRole->getProjectsByUser($this->userSession->getId());
+
+        return $this->template->layout('task/layout', $params);
+    }
+
+    /**
+     * Common layout for project views
+     *
+     * @access protected
+     * @param  string    $template   Template name
+     * @param  array     $params     Template parameters
+     * @return string
+     */
+    protected function projectLayout($template, array $params, $sidebar_template = 'project/sidebar')
+    {
+        $content = $this->template->render($template, $params);
+        $params['project_content_for_layout'] = $content;
+        $params['title'] = $params['project']['name'] === $params['title'] ? $params['title'] : $params['project']['name'].' &gt; '.$params['title'];
+        $params['board_selector'] = $this->projectUserRole->getProjectsByUser($this->userSession->getId());
+        $params['sidebar_template'] = $sidebar_template;
+
+        return $this->template->layout('project/layout', $params);
+    }
+
+    /**
      * Common method to get a task for task views
      *
      * @access protected
@@ -202,36 +237,6 @@ abstract class Base extends \Kanboard\Core\Base
     }
 
     /**
-     * Get Task or Project file
-     *
-     * @access protected
-     */
-    protected function getFile()
-    {
-        $task_id = $this->request->getIntegerParam('task_id');
-        $file_id = $this->request->getIntegerParam('file_id');
-        $model = 'projectFile';
-
-        if ($task_id > 0) {
-            $model = 'taskFile';
-            $project_id = $this->taskFinder->getProjectId($task_id);
-
-            if ($project_id !== $this->request->getIntegerParam('project_id')) {
-                $this->forbidden();
-            }
-        }
-
-        $file = $this->$model->getById($file_id);
-
-        if (empty($file)) {
-            $this->notfound();
-        }
-
-        $file['model'] = $model;
-        return $file;
-    }
-
-    /**
      * Common method to get a project
      *
      * @access protected
@@ -241,10 +246,11 @@ abstract class Base extends \Kanboard\Core\Base
     protected function getProject($project_id = 0)
     {
         $project_id = $this->request->getIntegerParam('project_id', $project_id);
-        $project = $this->project->getByIdWithOwner($project_id);
+        $project = $this->project->getById($project_id);
 
         if (empty($project)) {
-            $this->notfound();
+            $this->flash->failure(t('Project not found.'));
+            $this->response->redirect($this->helper->url->to('project', 'index'));
         }
 
         return $project;
@@ -272,19 +278,34 @@ abstract class Base extends \Kanboard\Core\Base
     }
 
     /**
-     * Get the current subtask
+     * Common method to get project filters
      *
      * @access protected
+     * @param  string $controller
+     * @param  string $action
      * @return array
      */
-    protected function getSubtask()
+    protected function getProjectFilters($controller, $action)
     {
-        $subtask = $this->subtask->getById($this->request->getIntegerParam('subtask_id'));
+        $project = $this->getProject();
+        $search = $this->request->getStringParam('search', $this->userSession->getFilters($project['id']));
+        $board_selector = $this->projectUserRole->getProjectsByUser($this->userSession->getId());
+        unset($board_selector[$project['id']]);
 
-        if (empty($subtask)) {
-            $this->notfound();
-        }
+        $filters = array(
+            'controller' => $controller,
+            'action' => $action,
+            'project_id' => $project['id'],
+            'search' => urldecode($search),
+        );
 
-        return $subtask;
+        $this->userSession->setFilters($project['id'], $filters['search']);
+
+        return array(
+            'project' => $project,
+            'board_selector' => $board_selector,
+            'filters' => $filters,
+            'title' => $project['name'],
+        );
     }
 }

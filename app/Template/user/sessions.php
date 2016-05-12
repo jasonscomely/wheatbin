@@ -15,10 +15,10 @@
     </tr>
     <?php foreach ($sessions as $session): ?>
     <tr>
-        <td><?= $this->dt->datetime($session['date_creation']) ?></td>
-        <td><?= $this->dt->datetime($session['expiration']) ?></td>
-        <td><?= $this->text->e($session['ip']) ?></td>
-        <td><?= $this->text->e($session['user_agent']) ?></td>
+        <td><?= dt('%B %e, %Y at %k:%M %p', $session['date_creation']) ?></td>
+        <td><?= dt('%B %e, %Y at %k:%M %p', $session['expiration']) ?></td>
+        <td><?= $this->e($session['ip']) ?></td>
+        <td><?= $this->e($session['user_agent']) ?></td>
         <td><?= $this->url->link(t('Remove'), 'User', 'removeSession', array('user_id' => $user['id'], 'id' => $session['id']), true) ?></td>
     </tr>
     <?php endforeach ?>

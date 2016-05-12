@@ -11,18 +11,34 @@ namespace Kanboard\Controller;
 class Currency extends Base
 {
     /**
+     * Common layout for config views
+     *
+     * @access private
+     * @param  string    $template   Template name
+     * @param  array     $params     Template parameters
+     * @return string
+     */
+    private function layout($template, array $params)
+    {
+        $params['board_selector'] = $this->projectUserRole->getProjectsByUser($this->userSession->getId());
+        $params['config_content_for_layout'] = $this->template->render($template, $params);
+
+        return $this->template->layout('config/layout', $params);
+    }
+
+    /**
      * Display all currency rates and form
      *
      * @access public
      */
     public function index(array $values = array(), array $errors = array())
     {
-        $this->response->html($this->helper->layout->config('currency/index', array(
+        $this->response->html($this->layout('currency/index', array(
             'config_values' => array('application_currency' => $this->config->get('application_currency')),
             'values' => $values,
             'errors' => $errors,
             'rates' => $this->currency->getAll(),
-            'currencies' => $this->currency->getCurrencies(),
+            'currencies' => $this->config->getCurrencies(),
             'title' => t('Settings').' &gt; '.t('Currency rates'),
         )));
     }
@@ -35,7 +51,7 @@ class Currency extends Base
     public function create()
     {
         $values = $this->request->getValues();
-        list($valid, $errors) = $this->currencyValidator->validateCreation($values);
+        list($valid, $errors) = $this->currency->validate($values);
 
         if ($valid) {
             if ($this->currency->create($values['currency'], $values['rate'])) {
@@ -59,6 +75,7 @@ class Currency extends Base
         $values = $this->request->getValues();
 
         if ($this->config->save($values)) {
+            $this->config->reload();
             $this->flash->success(t('Settings saved successfully.'));
         } else {
             $this->flash->failure(t('Unable to save your settings.'));

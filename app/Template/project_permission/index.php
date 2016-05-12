@@ -19,7 +19,7 @@
             </tr>
             <?php foreach ($users as $user): ?>
             <tr>
-                <td><?= $this->text->e($user['name'] ?: $user['username']) ?></td>
+                <td><?= $this->e($user['name'] ?: $user['username']) ?></td>
                 <td>
                     <?= $this->form->select(
                         'role-'.$user['id'],
@@ -57,7 +57,7 @@
 
             <?= $this->form->select('role', $roles, $values, $errors) ?>
 
-            <button type="submit" class="btn btn-blue"><?= t('Add') ?></button>
+            <input type="submit" value="<?= t('Add') ?>" class="btn btn-blue"/>
         </form>
     </div>
     <?php endif ?>
@@ -79,7 +79,7 @@
             </tr>
             <?php foreach ($groups as $group): ?>
             <tr>
-                <td><?= $this->text->e($group['name']) ?></td>
+                <td><?= $this->e($group['name']) ?></td>
                 <td>
                     <?= $this->form->select(
                         'role-'.$group['id'],
@@ -119,7 +119,7 @@
 
             <?= $this->form->select('role', $roles, $values, $errors) ?>
 
-            <button type="submit" class="btn btn-blue"><?= t('Add') ?></button>
+            <input type="submit" value="<?= t('Add') ?>" class="btn btn-blue"/>
         </form>
     </div>
     <?php endif ?>
@@ -135,7 +135,7 @@
     <?= $this->form->checkbox('is_everybody_allowed', t('Allow everybody to access to this project'), 1, $project['is_everybody_allowed']) ?>
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-blue"><?= t('Save') ?></button>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
     </div>
 </form>
 <?php endif ?>

@@ -2,9 +2,6 @@
 
 namespace Kanboard\Controller;
 
-use Kanboard\Filter\TaskAssigneeFilter;
-use Kanboard\Filter\TaskProjectFilter;
-use Kanboard\Filter\TaskStatusFilter;
 use Kanboard\Model\Task as TaskModel;
 
 /**
@@ -23,14 +20,9 @@ class Calendar extends Base
      */
     public function show()
     {
-        $project = $this->getProject();
-
-        $this->response->html($this->helper->layout->app('calendar/show', array(
-            'project' => $project,
-            'title' => $project['name'],
-            'description' => $this->helper->projectHeader->getDescription($project),
+        $this->response->html($this->template->layout('calendar/show', array(
             'check_interval' => $this->config->get('board_private_refresh_interval'),
-        )));
+        ) + $this->getProjectFilters('calendar', 'show')));
     }
 
     /**
@@ -43,11 +35,21 @@ class Calendar extends Base
         $project_id = $this->request->getIntegerParam('project_id');
         $start = $this->request->getStringParam('start');
         $end = $this->request->getStringParam('end');
-        $search = $this->userSession->getFilters($project_id);
-        $queryBuilder = $this->taskLexer->build($search)->withFilter(new TaskProjectFilter($project_id));
 
-        $events = $this->helper->calendar->getTaskDateDueEvents(clone($queryBuilder), $start, $end);
-        $events = array_merge($events, $this->helper->calendar->getTaskEvents(clone($queryBuilder), $start, $end));
+        // Common filter
+        $filter = $this->taskFilterCalendarFormatter
+            ->search($this->userSession->getFilters($project_id))
+            ->filterByProject($project_id);
+
+        // Tasks
+        if ($this->config->get('calendar_project_tasks', 'date_started') === 'date_creation') {
+            $events = $filter->copy()->filterByCreationDateRange($start, $end)->setColumns('date_creation', 'date_completed')->format();
+        } else {
+            $events = $filter->copy()->filterByStartDateRange($start, $end)->setColumns('date_started', 'date_completed')->format();
+        }
+
+        // Tasks with due date
+        $events = array_merge($events, $filter->copy()->filterByDueDateRange($start, $end)->setColumns('date_due')->setFullDay()->format());
 
         $events = $this->hook->merge('controller:calendar:project:events', $events, array(
             'project_id' => $project_id,
@@ -68,15 +70,21 @@ class Calendar extends Base
         $user_id = $this->request->getIntegerParam('user_id');
         $start = $this->request->getStringParam('start');
         $end = $this->request->getStringParam('end');
-        $queryBuilder = $this->taskQuery
-            ->withFilter(new TaskAssigneeFilter($user_id))
-            ->withFilter(new TaskStatusFilter(TaskModel::STATUS_OPEN));
+        $filter = $this->taskFilterCalendarFormatter->create()->filterByOwner($user_id)->filterByStatus(TaskModel::STATUS_OPEN);
 
-        $events = $this->helper->calendar->getTaskDateDueEvents(clone($queryBuilder), $start, $end);
-        $events = array_merge($events, $this->helper->calendar->getTaskEvents(clone($queryBuilder), $start, $end));
+        // Task with due date
+        $events = $filter->copy()->filterByDueDateRange($start, $end)->setColumns('date_due')->setFullDay()->format();
 
+        // Tasks
+        if ($this->config->get('calendar_user_tasks', 'date_started') === 'date_creation') {
+            $events = array_merge($events, $filter->copy()->filterByCreationDateRange($start, $end)->setColumns('date_creation', 'date_completed')->format());
+        } else {
+            $events = array_merge($events, $filter->copy()->filterByStartDateRange($start, $end)->setColumns('date_started', 'date_completed')->format());
+        }
+
+        // Subtasks time tracking
         if ($this->config->get('calendar_user_subtasks_time_tracking') == 1) {
-            $events = array_merge($events, $this->helper->calendar->getSubtaskTimeTrackingEvents($user_id, $start, $end));
+            $events = array_merge($events, $this->subtaskTimeTracking->getUserCalendarEvents($user_id, $start, $end));
         }
 
         $events = $this->hook->merge('controller:calendar:user:events', $events, array(

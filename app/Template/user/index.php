@@ -12,31 +12,30 @@
     <?php if ($paginator->isEmpty()): ?>
         <p class="alert"><?= t('No user') ?></p>
     <?php else: ?>
-        <table class="table-stripped">
+        <table>
             <tr>
-                <th class="column-5"><?= $paginator->order(t('Id'), 'id') ?></th>
-                <th class="column-18"><?= $paginator->order(t('Username'), 'username') ?></th>
-                <th class="column-18"><?= $paginator->order(t('Name'), 'name') ?></th>
-                <th class="column-15"><?= $paginator->order(t('Email'), 'email') ?></th>
-                <th class="column-15"><?= $paginator->order(t('Role'), 'role') ?></th>
-                <th class="column-10"><?= $paginator->order(t('Two Factor'), 'twofactor_activated') ?></th>
-                <th class="column-10"><?= $paginator->order(t('Account type'), 'is_ldap_user') ?></th>
-                <th class="column-10"><?= $paginator->order(t('Status'), 'is_active') ?></th>
-                <th class="column-5"><?= t('Actions') ?></th>
+                <th><?= $paginator->order(t('Id'), 'id') ?></th>
+                <th><?= $paginator->order(t('Username'), 'username') ?></th>
+                <th><?= $paginator->order(t('Name'), 'name') ?></th>
+                <th><?= $paginator->order(t('Email'), 'email') ?></th>
+                <th><?= $paginator->order(t('Role'), 'role') ?></th>
+                <th><?= $paginator->order(t('Two factor authentication'), 'twofactor_activated') ?></th>
+                <th><?= $paginator->order(t('Notifications'), 'notifications_enabled') ?></th>
+                <th><?= $paginator->order(t('Account type'), 'is_ldap_user') ?></th>
             </tr>
             <?php foreach ($paginator->getCollection() as $user): ?>
             <tr>
                 <td>
-                    <?= '#'.$user['id'] ?>
+                    <?= $this->url->link('#'.$user['id'], 'user', 'show', array('user_id' => $user['id'])) ?>
                 </td>
                 <td>
-                    <?= $this->url->link($this->text->e($user['username']), 'user', 'show', array('user_id' => $user['id'])) ?>
+                    <?= $this->url->link($this->e($user['username']), 'user', 'show', array('user_id' => $user['id'])) ?>
                 </td>
                 <td>
-                    <?= $this->text->e($user['name']) ?>
+                    <?= $this->e($user['name']) ?>
                 </td>
                 <td>
-                    <a href="mailto:<?= $this->text->e($user['email']) ?>"><?= $this->text->e($user['email']) ?></a>
+                    <a href="mailto:<?= $this->e($user['email']) ?>"><?= $this->e($user['email']) ?></a>
                 </td>
                 <td>
                     <?= $this->user->getRoleName($user['role']) ?>
@@ -45,17 +44,14 @@
                     <?= $user['twofactor_activated'] ? t('Yes') : t('No') ?>
                 </td>
                 <td>
-                    <?= $user['is_ldap_user'] ? t('Remote') : t('Local') ?>
-                </td>
-                <td>
-                    <?php if ($user['is_active'] == 1): ?>
-                        <?= t('Active') ?>
+                    <?php if ($user['notifications_enabled'] == 1): ?>
+                        <?= t('Enabled') ?>
                     <?php else: ?>
-                        <?= t('Inactive') ?>
+                        <?= t('Disabled') ?>
                     <?php endif ?>
                 </td>
                 <td>
-                    <?= $this->render('user/dropdown', array('user' => $user)) ?>
+                    <?= $user['is_ldap_user'] ? t('Remote') : t('Local') ?>
                 </td>
             </tr>
             <?php endforeach ?>

@@ -8,6 +8,7 @@ namespace Kanboard\Core\Session;
  * @package  session
  * @author   Frederic Guillot
  *
+ * @property array  $config
  * @property array  $user
  * @property array  $flash
  * @property array  $csrf
@@ -19,9 +20,6 @@ namespace Kanboard\Core\Session;
  * @property bool   $hasSubtaskInProgress
  * @property bool   $hasRememberMe
  * @property bool   $boardCollapsed
- * @property bool   $twoFactorBeforeCodeCalled
- * @property string $twoFactorSecret
- * @property string $oauthState
  */
 class SessionStorage
 {

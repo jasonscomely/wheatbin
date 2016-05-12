@@ -3,7 +3,6 @@
 namespace Kanboard\Core\User;
 
 use Kanboard\Core\Base;
-use Kanboard\Event\UserProfileSyncEvent;
 
 /**
  * User Profile
@@ -13,8 +12,6 @@ use Kanboard\Event\UserProfileSyncEvent;
  */
 class UserProfile extends Base
 {
-    const EVENT_USER_PROFILE_AFTER_SYNC = 'user_profile.after.sync';
-
     /**
      * Assign provider data to the local user
      *
@@ -55,9 +52,8 @@ class UserProfile extends Base
             $this->groupSync->synchronize($profile['id'], $user->getExternalGroupIds());
         }
 
-        if (! empty($profile) && $profile['is_active'] == 1) {
+        if (! empty($profile)) {
             $this->userSession->initialize($profile);
-            $this->dispatcher->dispatch(self::EVENT_USER_PROFILE_AFTER_SYNC, new UserProfileSyncEvent($profile, $user));
             return true;
         }
 

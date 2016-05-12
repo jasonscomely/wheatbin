@@ -31,7 +31,7 @@
             </div>
 
             <div class="form-inline-group">
-                <button type="submit" class="btn btn-blue"><?= t('Execute') ?></button>
+                <input type="submit" value="<?= t('Execute') ?>" class="btn btn-blue"/>
             </div>
         </form>
 

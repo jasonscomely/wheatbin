@@ -1,14 +1,7 @@
-Kanboard.UserRepartitionChart = function(app) {
-    this.app = app;
-};
+function UserRepartitionChart() {
+}
 
-Kanboard.UserRepartitionChart.prototype.execute = function() {
-    if (this.app.hasId("analytic-user-repartition")) {
-        this.show();
-    }
-};
-
-Kanboard.UserRepartitionChart.prototype.show = function() {
+UserRepartitionChart.prototype.execute = function() {
     var metrics = $("#chart").data("metrics");
     var columns = [];
 

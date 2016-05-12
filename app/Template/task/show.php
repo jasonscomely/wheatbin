@@ -1,52 +1,45 @@
-<?= $this->hook->render('template:task:show:top', array('task' => $task, 'project' => $project)) ?>
-
 <?= $this->render('task/details', array(
     'task' => $task,
     'project' => $project,
+    'recurrence_trigger_list' => $this->task->recurrenceTriggers(),
+    'recurrence_timeframe_list' => $this->task->recurrenceTimeframes(),
+    'recurrence_basedate_list' => $this->task->recurrenceBasedates(),
     'editable' => $this->user->hasProjectAccess('taskmodification', 'edit', $project['id']),
 )) ?>
 
-<?= $this->hook->render('template:task:show:before-description', array('task' => $task, 'project' => $project)) ?>
+<?php if ($this->user->hasProjectAccess('taskmodification', 'edit', $project['id'])): ?>
+    <?= $this->render('task_modification/edit_time', array('task' => $task, 'values' => $values, 'date_format' => $date_format, 'date_formats' => $date_formats)) ?>
+<?php endif ?>
+
 <?= $this->render('task/description', array('task' => $task)) ?>
 
-<?= $this->hook->render('template:task:show:before-subtasks', array('task' => $task, 'project' => $project)) ?>
+<?= $this->render('tasklink/show', array(
+    'task' => $task,
+    'links' => $links,
+    'link_label_list' => $link_label_list,
+    'editable' => $this->user->hasProjectAccess('tasklink', 'edit', $project['id']),
+    'is_public' => false,
+)) ?>
+
 <?= $this->render('subtask/show', array(
     'task' => $task,
     'subtasks' => $subtasks,
     'project' => $project,
-    'editable' => true,
+    'users_list' => isset($users_list) ? $users_list : array(),
+    'editable' => $this->user->hasProjectAccess('subtask', 'edit', $project['id']),
 )) ?>
 
-<?= $this->hook->render('template:task:show:before-internal-links', array('task' => $task, 'project' => $project)) ?>
-<?= $this->render('task_internal_link/show', array(
-    'task' => $task,
-    'links' => $internal_links,
-    'project' => $project,
-    'link_label_list' => $link_label_list,
-    'editable' => true,
-    'is_public' => false,
-)) ?>
+<?= $this->render('task/time_tracking_summary', array('task' => $task)) ?>
 
-<?= $this->hook->render('template:task:show:before-external-links', array('task' => $task, 'project' => $project)) ?>
-<?= $this->render('task_external_link/show', array(
-    'task' => $task,
-    'links' => $external_links,
-    'project' => $project,
-)) ?>
-
-<?= $this->hook->render('template:task:show:before-attachments', array('task' => $task, 'project' => $project)) ?>
-<?= $this->render('task_file/show', array(
+<?= $this->render('file/show', array(
     'task' => $task,
     'files' => $files,
     'images' => $images
 )) ?>
 
-<?= $this->hook->render('template:task:show:before-comments', array('task' => $task, 'project' => $project)) ?>
-<?= $this->render('comments/show', array(
+<?= $this->render('task/comments', array(
     'task' => $task,
     'comments' => $comments,
     'project' => $project,
     'editable' => $this->user->hasProjectAccess('comment', 'edit', $project['id']),
 )) ?>
-
-<?= $this->hook->render('template:task:show:bottom', array('task' => $task, 'project' => $project)) ?>

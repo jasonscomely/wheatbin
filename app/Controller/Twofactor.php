@@ -23,7 +23,7 @@ class Twofactor extends User
     }
 
     /**
-     * Show form to disable/enable 2FA
+     * Index
      *
      * @access public
      */
@@ -31,45 +31,54 @@ class Twofactor extends User
     {
         $user = $this->getUser();
         $this->checkCurrentUser($user);
-        unset($this->sessionStorage->twoFactorSecret);
 
-        $this->response->html($this->helper->layout->user('twofactor/index', array(
+        $provider = $this->authenticationManager->getPostAuthenticationProvider();
+        $label = $user['email'] ?: $user['username'];
+
+        $provider->setSecret($user['twofactor_secret']);
+
+        $this->response->html($this->layout('twofactor/index', array(
             'user' => $user,
-            'provider' => $this->authenticationManager->getPostAuthenticationProvider()->getName(),
+            'qrcode_url' => $user['twofactor_activated'] == 1 ? $provider->getQrCodeUrl($label) : '',
+            'key_url' => $user['twofactor_activated'] == 1 ? $provider->getKeyUrl($label) : '',
         )));
     }
 
     /**
-     * Show page with secret and test form
+     * Enable/disable 2FA
      *
      * @access public
      */
-    public function show()
+    public function save()
     {
         $user = $this->getUser();
         $this->checkCurrentUser($user);
 
-        $label = $user['email'] ?: $user['username'];
-        $provider = $this->authenticationManager->getPostAuthenticationProvider();
+        $values = $this->request->getValues();
 
-        if (! isset($this->sessionStorage->twoFactorSecret)) {
-            $provider->generateSecret();
-            $provider->beforeCode();
-            $this->sessionStorage->twoFactorSecret = $provider->getSecret();
+        if (isset($values['twofactor_activated']) && $values['twofactor_activated'] == 1) {
+            $this->user->update(array(
+                'id' => $user['id'],
+                'twofactor_activated' => 1,
+                'twofactor_secret' => $this->authenticationManager->getPostAuthenticationProvider()->getSecret(),
+            ));
         } else {
-            $provider->setSecret($this->sessionStorage->twoFactorSecret);
+            $this->user->update(array(
+                'id' => $user['id'],
+                'twofactor_activated' => 0,
+                'twofactor_secret' => '',
+            ));
         }
 
-        $this->response->html($this->helper->layout->user('twofactor/show', array(
-            'user' => $user,
-            'secret' => $this->sessionStorage->twoFactorSecret,
-            'qrcode_url' => $provider->getQrCodeUrl($label),
-            'key_url' => $provider->getKeyUrl($label),
-        )));
+        // Allow the user to test or disable the feature
+        $this->userSession->disablePostAuthentication();
+
+        $this->flash->success(t('User updated successfully.'));
+        $this->response->redirect($this->helper->url->to('twofactor', 'index', array('user_id' => $user['id'])));
     }
 
     /**
-     * Test code and save secret
+     * Test code
      *
      * @access public
      */
@@ -82,47 +91,14 @@ class Twofactor extends User
 
         $provider = $this->authenticationManager->getPostAuthenticationProvider();
         $provider->setCode(empty($values['code']) ? '' : $values['code']);
-        $provider->setSecret($this->sessionStorage->twoFactorSecret);
+        $provider->setSecret($user['twofactor_secret']);
 
         if ($provider->authenticate()) {
             $this->flash->success(t('The two factor authentication code is valid.'));
-
-            $this->user->update(array(
-                'id' => $user['id'],
-                'twofactor_activated' => 1,
-                'twofactor_secret' => $this->authenticationManager->getPostAuthenticationProvider()->getSecret(),
-            ));
-
-            unset($this->sessionStorage->twoFactorSecret);
-            $this->userSession->disablePostAuthentication();
-
-            $this->response->redirect($this->helper->url->to('twofactor', 'index', array('user_id' => $user['id'])));
         } else {
             $this->flash->failure(t('The two factor authentication code is not valid.'));
-            $this->response->redirect($this->helper->url->to('twofactor', 'show', array('user_id' => $user['id'])));
         }
-    }
 
-    /**
-     * Disable 2FA for the current user
-     *
-     * @access public
-     */
-    public function deactivate()
-    {
-        $user = $this->getUser();
-        $this->checkCurrentUser($user);
-
-        $this->user->update(array(
-            'id' => $user['id'],
-            'twofactor_activated' => 0,
-            'twofactor_secret' => '',
-        ));
-
-        // Allow the user to test or disable the feature
-        $this->userSession->disablePostAuthentication();
-
-        $this->flash->success(t('User updated successfully.'));
         $this->response->redirect($this->helper->url->to('twofactor', 'index', array('user_id' => $user['id'])));
     }
 
@@ -159,13 +135,7 @@ class Twofactor extends User
      */
     public function code()
     {
-        if (! isset($this->sessionStorage->twoFactorBeforeCodeCalled)) {
-            $provider = $this->authenticationManager->getPostAuthenticationProvider();
-            $provider->beforeCode();
-            $this->sessionStorage->twoFactorBeforeCodeCalled = true;
-        }
-
-        $this->response->html($this->helper->layout->app('twofactor/check', array(
+        $this->response->html($this->template->layout('twofactor/check', array(
             'title' => t('Check two factor authentication code'),
         )));
     }
@@ -191,7 +161,7 @@ class Twofactor extends User
             $this->response->redirect($this->helper->url->to('user', 'show', array('user_id' => $user['id'])));
         }
 
-        $this->response->html($this->helper->layout->user('twofactor/disable', array(
+        $this->response->html($this->layout('twofactor/disable', array(
             'user' => $user,
         )));
     }

@@ -146,21 +146,19 @@ input.form-input-large {
     width: 400px;
 }
 
+.form-row {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
 .form-column {
     float: left;
     margin-right: 3%;
-    max-width: 50%;
-    min-width: 40%;
+    max-width: 47%;
 }
 
 .form-column ul {
     margin-top: 15px;
-}
-
-.form-clear {
-    clear: both;
-    padding-top: 20px;
-    padding-bottom: 10px;
 }
 
 .form-login {
@@ -175,21 +173,51 @@ input.form-input-large {
     line-height: 25px;
 }
 
-.form-login h2 {
-    margin-bottom: 30px;
-    font-size: 1.5em;
+/* preview tabs */
+label + .form-tabs {
+    margin-top: 10px;
+}
+
+.form-tabs {
+    width: 100%;
+    max-width: 800px;
+}
+
+ul.form-tabs-nav {
+    margin-bottom: 8px;
+    margin-top: 0;
+}
+
+.form-tabs-nav li {
+    margin-left: 0;
+    display: inline;
+}
+
+.form-tab {
+    margin-right: 20px;
+}
+
+.form-tab a {
+    color: #ccc;
     font-weight: bold;
+    text-decoration: none;
 }
 
-.popover-form {
-    margin-bottom: 0;
+.form-tab a:focus,
+.form-tab a:hover {
+    color: #000;
 }
 
-.reset-password {
-    margin-top: 20px;
+.form-tab-selected a {
+    color: #333;
 }
 
-.reset-password a {
-    font-size: 0.8em;
-    color: #999;
+.preview-area {
+    border: 1px dashed #000;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 5px;
+    display: none;
+    overflow: auto;
 }

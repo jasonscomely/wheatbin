@@ -167,8 +167,8 @@ Just change the value of `LDAP_ACCOUNT_CREATION` to `false`:
 define('LDAP_ACCOUNT_CREATION', false);
 ```
 
-Troubleshooting
----------------
+Troubleshootings
+----------------
 
 ### SELinux restrictions
 

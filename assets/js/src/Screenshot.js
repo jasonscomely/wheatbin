@@ -1,16 +1,13 @@
-Kanboard.Screenshot = function(app) {
-    this.app = app;
+function Screenshot() {
     this.pasteCatcher = null;
-};
+}
 
-Kanboard.Screenshot.prototype.onPopoverOpened = function() {
-    if (this.app.hasId("screenshot-zone")) {
-        this.initialize();
-    }
+Screenshot.prototype.execute = function() {
+    this.initialize();
 };
 
 // Setup event listener and workarounds
-Kanboard.Screenshot.prototype.initialize = function() {
+Screenshot.prototype.initialize = function() {
     this.destroy();
 
     if (! window.Clipboard) {
@@ -43,7 +40,7 @@ Kanboard.Screenshot.prototype.initialize = function() {
 };
 
 // Destroy contentEditable element
-Kanboard.Screenshot.prototype.destroy = function() {
+Screenshot.prototype.destroy = function() {
     if (this.pasteCatcher != null) {
         document.body.removeChild(this.pasteCatcher);
     }
@@ -56,14 +53,14 @@ Kanboard.Screenshot.prototype.destroy = function() {
 };
 
 // Set focus on contentEditable element
-Kanboard.Screenshot.prototype.setFocus = function() {
+Screenshot.prototype.setFocus = function() {
     if (this.pasteCatcher !== null) {
         this.pasteCatcher.focus();
     }
 };
 
 // Paste event callback
-Kanboard.Screenshot.prototype.pasteHandler = function(e) {
+Screenshot.prototype.pasteHandler = function(e) {
     // Firefox doesn't have the property e.clipboardData.items (only Chrome)
     if (e.clipboardData && e.clipboardData.items) {
 
@@ -98,7 +95,7 @@ Kanboard.Screenshot.prototype.pasteHandler = function(e) {
 };
 
 // Parse the input in the paste catcher element
-Kanboard.Screenshot.prototype.checkInput = function() {
+Screenshot.prototype.checkInput = function() {
     var child = this.pasteCatcher.childNodes[0];
 
     if (child) {
@@ -113,7 +110,7 @@ Kanboard.Screenshot.prototype.checkInput = function() {
 };
 
 // Creates a new image from a given source
-Kanboard.Screenshot.prototype.createImage = function(blob) {
+Screenshot.prototype.createImage = function(blob) {
     var pastedImage = new Image();
     pastedImage.src = blob;
 

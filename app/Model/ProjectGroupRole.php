@@ -48,13 +48,11 @@ class ProjectGroupRole extends Base
      */
     public function getUserRole($project_id, $user_id)
     {
-        $roles = $this->db->table(self::TABLE)
+        return $this->db->table(self::TABLE)
             ->join(GroupMember::TABLE, 'group_id', 'group_id', self::TABLE)
             ->eq(GroupMember::TABLE.'.user_id', $user_id)
             ->eq(self::TABLE.'.project_id', $project_id)
-            ->findAllByColumn('role');
-
-        return $this->projectAccessMap->getHighestRole($roles);
+            ->findOneColumn('role');
     }
 
     /**
@@ -101,12 +99,11 @@ class ProjectGroupRole extends Base
      */
     public function getAssignableUsers($project_id)
     {
-        return $this->db->table(User::TABLE)
+        return $this->db->table(self::TABLE)
             ->columns(User::TABLE.'.id', User::TABLE.'.username', User::TABLE.'.name')
-            ->join(GroupMember::TABLE, 'user_id', 'id', User::TABLE)
-            ->join(self::TABLE, 'group_id', 'group_id', GroupMember::TABLE)
+            ->join(GroupMember::TABLE, 'group_id', 'group_id', self::TABLE)
+            ->join(User::TABLE, 'id', 'user_id', GroupMember::TABLE)
             ->eq(self::TABLE.'.project_id', $project_id)
-            ->eq(User::TABLE.'.is_active', 1)
             ->in(self::TABLE.'.role', array(Role::PROJECT_MANAGER, Role::PROJECT_MEMBER))
             ->asc(User::TABLE.'.username')
             ->findAll();
@@ -166,7 +163,7 @@ class ProjectGroupRole extends Base
      * Copy group access from a project to another one
      *
      * @param  integer   $project_src_id  Project Template
-     * @param  integer   $project_dst_id  Project that receives the copy
+     * @return integer   $project_dst_id  Project that receives the copy
      * @return boolean
      */
     public function duplicate($project_src_id, $project_dst_id)

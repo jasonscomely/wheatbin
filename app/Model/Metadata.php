@@ -11,15 +11,6 @@ namespace Kanboard\Model;
 abstract class Metadata extends Base
 {
     /**
-     * Get the table
-     *
-     * @abstract
-     * @access protected
-     * @return string
-     */
-    abstract protected function getTable();
-
-    /**
      * Define the entity key
      *
      * @abstract
@@ -38,7 +29,7 @@ abstract class Metadata extends Base
     public function getAll($entity_id)
     {
         return $this->db
-            ->hashtable($this->getTable())
+            ->hashtable(static::TABLE)
             ->eq($this->getEntityKey(), $entity_id)
             ->asc('name')
             ->getAll('name', 'value');
@@ -56,7 +47,7 @@ abstract class Metadata extends Base
     public function get($entity_id, $name, $default = '')
     {
         return $this->db
-            ->table($this->getTable())
+            ->table(static::TABLE)
             ->eq($this->getEntityKey(), $entity_id)
             ->eq('name', $name)
             ->findOneColumn('value') ?: $default;
@@ -73,7 +64,7 @@ abstract class Metadata extends Base
     public function exists($entity_id, $name)
     {
         return $this->db
-            ->table($this->getTable())
+            ->table(static::TABLE)
             ->eq($this->getEntityKey(), $entity_id)
             ->eq('name', $name)
             ->exists();
@@ -85,53 +76,23 @@ abstract class Metadata extends Base
      * @access public
      * @param  integer  $entity_id
      * @param  array    $values
-     * @return boolean
      */
     public function save($entity_id, array $values)
     {
         $results = array();
-        $user_id = $this->userSession->getId();
-        $timestamp = time();
 
         $this->db->startTransaction();
 
         foreach ($values as $key => $value) {
             if ($this->exists($entity_id, $key)) {
-                $results[] = $this->db->table($this->getTable())
-                    ->eq($this->getEntityKey(), $entity_id)
-                    ->eq('name', $key)->update(array(
-                        'value' => $value,
-                        'changed_on' => $timestamp,
-                        'changed_by' => $user_id,
-                    ));
+                $results[] = $this->db->table(static::TABLE)->eq($this->getEntityKey(), $entity_id)->eq('name', $key)->update(array('value' => $value));
             } else {
-                $results[] = $this->db->table($this->getTable())->insert(array(
-                    'name' => $key,
-                    'value' => $value,
-                    $this->getEntityKey() => $entity_id,
-                    'changed_on' => $timestamp,
-                    'changed_by' => $user_id,
-                ));
+                $results[] = $this->db->table(static::TABLE)->insert(array('name' => $key, 'value' => $value, $this->getEntityKey() => $entity_id));
             }
         }
 
         $this->db->closeTransaction();
-        return ! in_array(false, $results, true);
-    }
 
-    /**
-     * Remove a metadata
-     *
-     * @access public
-     * @param  integer $entity_id
-     * @param  string  $name
-     * @return bool
-     */
-    public function remove($entity_id, $name)
-    {
-        return $this->db->table($this->getTable())
-            ->eq($this->getEntityKey(), $entity_id)
-            ->eq('name', $name)
-            ->remove();
+        return ! in_array(false, $results, true);
     }
 }

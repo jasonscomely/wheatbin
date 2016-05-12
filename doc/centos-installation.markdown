@@ -1,8 +1,6 @@
 Centos Installation
 ===================
 
-Note: Some features of Kanboard require that you run [a daily background job](cronjob.markdown).
-
 Centos 7
 --------
 
@@ -24,7 +22,7 @@ Install Kanboard:
 
 ```bash
 cd /var/www/html
-wget https://kanboard.net/kanboard-latest.zip
+wget http://kanboard.net/kanboard-latest.zip
 unzip kanboard-latest.zip
 chown -R apache:apache kanboard/data
 rm kanboard-latest.zip
@@ -70,7 +68,7 @@ Install Kanboard:
 
 ```bash
 cd /var/www/html
-wget https://kanboard.net/kanboard-latest.zip
+wget http://kanboard.net/kanboard-latest.zip
 unzip kanboard-latest.zip
 chown -R apache:apache kanboard/data
 rm kanboard-latest.zip

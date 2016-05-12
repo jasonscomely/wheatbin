@@ -41,25 +41,23 @@ class Client extends Base
      * @param  string  $name
      * @param  string  $subject
      * @param  string  $html
-     * @return Client
+     * @return EmailClient
      */
     public function send($email, $name, $subject, $html)
     {
-        if (! empty($email)) {
-            $this->logger->debug('Sending email to '.$email.' ('.MAIL_TRANSPORT.')');
+        $this->container['logger']->debug('Sending email to '.$email.' ('.MAIL_TRANSPORT.')');
 
-            $start_time = microtime(true);
-            $author = 'Kanboard';
+        $start_time = microtime(true);
+        $author = 'Kanboard';
 
-            if ($this->userSession->isLogged()) {
-                $author = e('%s via Kanboard', $this->helper->user->getFullname());
-            }
+        if ($this->userSession->isLogged()) {
+            $author = e('%s via Kanboard', $this->helper->user->getFullname());
+        }
 
-            $this->getTransport(MAIL_TRANSPORT)->sendEmail($email, $name, $subject, $html, $author);
+        $this->getTransport(MAIL_TRANSPORT)->sendEmail($email, $name, $subject, $html, $author);
 
-            if (DEBUG) {
-                $this->logger->debug('Email sent in '.round(microtime(true) - $start_time, 6).' seconds');
-            }
+        if (DEBUG) {
+            $this->logger->debug('Email sent in '.round(microtime(true) - $start_time, 6).' seconds');
         }
 
         return $this;
@@ -70,7 +68,7 @@ class Client extends Base
      *
      * @access public
      * @param  string  $transport
-     * @return ClientInterface
+     * @return EmailClientInterface
      */
     public function getTransport($transport)
     {
@@ -83,7 +81,7 @@ class Client extends Base
      * @access public
      * @param  string  $transport
      * @param  string  $class
-     * @return Client
+     * @return EmailClient
      */
     public function setTransport($transport, $class)
     {

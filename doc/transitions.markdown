@@ -3,7 +3,7 @@ Task transitions
 
 Transitions record each movement of the tasks between columns.
 
-![Transitions](https://kanboard.net/screenshots/documentation/transitions.png)
+![Transitions](http://kanboard.net/screenshots/documentation/transitions.png)
 
 Available from the task view, you can see that information:
 
@@ -15,6 +15,6 @@ Available from the task view, you can see that information:
 
 Task transition data can also be exported from the project settings page.
 
-![Transitions Export](https://kanboard.net/screenshots/documentation/transitions-export.png)
+![Transitions Export](http://kanboard.net/screenshots/documentation/transitions-export.png)
 
 For the specified time range you will generate a CSV file that you can use with any spreadsheet software.

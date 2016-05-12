@@ -3,10 +3,6 @@
 namespace Kanboard\Model;
 
 use Kanboard\Core\Security\Role;
-use Kanboard\Filter\ProjectGroupRoleProjectFilter;
-use Kanboard\Filter\ProjectGroupRoleUsernameFilter;
-use Kanboard\Filter\ProjectUserRoleProjectFilter;
-use Kanboard\Filter\ProjectUserRoleUsernameFilter;
 
 /**
  * Project Permission
@@ -32,10 +28,10 @@ class ProjectPermission extends Base
 
         return $this
             ->db
-            ->table(ProjectUserRole::TABLE)
+            ->table(self::TABLE)
             ->join(User::TABLE, 'id', 'user_id')
             ->join(Project::TABLE, 'id', 'project_id')
-            ->eq(ProjectUserRole::TABLE.'.role', $role)
+            ->eq(self::TABLE.'.role', $role)
             ->eq(Project::TABLE.'.is_private', 0)
             ->in(Project::TABLE.'.id', $project_ids)
             ->columns(
@@ -45,35 +41,6 @@ class ProjectPermission extends Base
                 Project::TABLE.'.name AS project_name',
                 Project::TABLE.'.id'
             );
-    }
-
-    /**
-     * Get all usernames (fetch users from groups)
-     *
-     * @access public
-     * @param  integer $project_id
-     * @param  string  $input
-     * @return array
-     */
-    public function findUsernames($project_id, $input)
-    {
-        $userMembers = $this->projectUserRoleQuery
-            ->withFilter(new ProjectUserRoleProjectFilter($project_id))
-            ->withFilter(new ProjectUserRoleUsernameFilter($input))
-            ->getQuery()
-            ->findAllByColumn('username');
-
-        $groupMembers = $this->projectGroupRoleQuery
-            ->withFilter(new ProjectGroupRoleProjectFilter($project_id))
-            ->withFilter(new ProjectGroupRoleUsernameFilter($input))
-            ->getQuery()
-            ->findAllByColumn('username');
-
-        $members = array_unique(array_merge($userMembers, $groupMembers));
-
-        sort($members);
-
-        return $members;
     }
 
     /**
@@ -119,23 +86,9 @@ class ProjectPermission extends Base
      * @param  integer  $user_id
      * @return boolean
      */
-    public function isAssignable($project_id, $user_id)
-    {
-        return $this->user->isActive($user_id) &&
-            in_array($this->projectUserRole->getUserRole($project_id, $user_id), array(Role::PROJECT_MEMBER, Role::PROJECT_MANAGER));
-    }
-
-    /**
-     * Return true if the user is member
-     *
-     * @access public
-     * @param  integer  $project_id
-     * @param  integer  $user_id
-     * @return boolean
-     */
     public function isMember($project_id, $user_id)
     {
-        return in_array($this->projectUserRole->getUserRole($project_id, $user_id), array(Role::PROJECT_MEMBER, Role::PROJECT_MANAGER, Role::PROJECT_VIEWER));
+        return in_array($this->projectUserRole->getUSerRole($project_id, $user_id), array(Role::PROJECT_MEMBER, Role::PROJECT_MANAGER));
     }
 
     /**
@@ -147,7 +100,7 @@ class ProjectPermission extends Base
      */
     public function getActiveProjectIds($user_id)
     {
-        return array_keys($this->projectUserRole->getActiveProjectsByUser($user_id));
+        return array_keys($this->projectUserRole->getProjectsByUser($user_id, array(Project::ACTIVE)));
     }
 
     /**

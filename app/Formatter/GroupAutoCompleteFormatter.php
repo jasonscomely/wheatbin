@@ -2,12 +2,8 @@
 
 namespace Kanboard\Formatter;
 
-use Kanboard\Core\Filter\FormatterInterface;
-use Kanboard\Core\Group\GroupProviderInterface;
-use PicoDb\Table;
-
 /**
- * Auto-complete formatter for groups
+ * Autocomplete formatter for groups
  *
  * @package  formatter
  * @author   Frederic Guillot
@@ -18,35 +14,25 @@ class GroupAutoCompleteFormatter implements FormatterInterface
      * Groups found
      *
      * @access private
-     * @var GroupProviderInterface[]
+     * @var array
      */
     private $groups;
 
     /**
-     * Format groups for the ajax auto-completion
+     * Format groups for the ajax autocompletion
      *
      * @access public
-     * @param  GroupProviderInterface[] $groups
+     * @param  array $groups
+     * @return GroupAutoCompleteFormatter
      */
-    public function __construct(array $groups)
+    public function setGroups(array $groups)
     {
         $this->groups = $groups;
-    }
-
-    /**
-     * Set query
-     *
-     * @access public
-     * @param  Table $query
-     * @return FormatterInterface
-     */
-    public function withQuery(Table $query)
-    {
         return $this;
     }
 
     /**
-     * Format groups for the ajax auto-completion
+     * Format groups for the ajax autocompletion
      *
      * @access public
      * @return array

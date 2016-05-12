@@ -2,7 +2,6 @@
 
 namespace Kanboard\Controller;
 
-use Kanboard\Filter\TaskProjectFilter;
 use Kanboard\Model\Task as TaskModel;
 
 /**
@@ -20,25 +19,18 @@ class Listing extends Base
      */
     public function show()
     {
-        $project = $this->getProject();
-        $search = $this->helper->projectHeader->getSearchQuery($project);
+        $params = $this->getProjectFilters('listing', 'show');
+        $query = $this->taskFilter->search($params['filters']['search'])->filterByProject($params['project']['id'])->getQuery();
 
         $paginator = $this->paginator
-            ->setUrl('listing', 'show', array('project_id' => $project['id']))
+            ->setUrl('listing', 'show', array('project_id' => $params['project']['id']))
             ->setMax(30)
             ->setOrder(TaskModel::TABLE.'.id')
             ->setDirection('DESC')
-            ->setQuery($this->taskLexer
-                ->build($search)
-                ->withFilter(new TaskProjectFilter($project['id']))
-                ->getQuery()
-            )
+            ->setQuery($query)
             ->calculate();
 
-        $this->response->html($this->helper->layout->app('listing/show', array(
-            'project' => $project,
-            'title' => $project['name'],
-            'description' => $this->helper->projectHeader->getDescription($project),
+        $this->response->html($this->template->layout('listing/show', $params + array(
             'paginator' => $paginator,
         )));
     }

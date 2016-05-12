@@ -22,7 +22,6 @@ abstract class Setting extends Base
      *
      * @abstract
      * @access public
-     * @param  array $values
      * @return array
      */
     abstract public function prepare(array $values);
@@ -48,12 +47,10 @@ abstract class Setting extends Base
      */
     public function getOption($name, $default = '')
     {
-        $value = $this->db
+        return $this->db
             ->table(self::TABLE)
             ->eq('option', $name)
-            ->findOneColumn('value');
-
-        return $value === null || $value === false || $value === '' ? $default : $value;
+            ->findOneColumn('value') ?: $default;
     }
 
     /**
@@ -76,31 +73,19 @@ abstract class Setting extends Base
      *
      * @access public
      * @param  array    $values
-     * @return boolean
      */
     public function save(array $values)
     {
         $results = array();
         $values = $this->prepare($values);
-        $user_id = $this->userSession->getId();
-        $timestamp = time();
 
         $this->db->startTransaction();
 
         foreach ($values as $option => $value) {
             if ($this->exists($option)) {
-                $results[] = $this->db->table(self::TABLE)->eq('option', $option)->update(array(
-                    'value' => $value,
-                    'changed_on' => $timestamp,
-                    'changed_by' => $user_id,
-                ));
+                $results[] = $this->db->table(self::TABLE)->eq('option', $option)->update(array('value' => $value));
             } else {
-                $results[] = $this->db->table(self::TABLE)->insert(array(
-                    'option' => $option,
-                    'value' => $value,
-                    'changed_on' => $timestamp,
-                    'changed_by' => $user_id,
-                ));
+                $results[] = $this->db->table(self::TABLE)->insert(array('option' => $option, 'value' => $value));
             }
         }
 

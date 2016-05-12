@@ -2,8 +2,8 @@
     <h2><?= t('My notifications') ?></h2>
 
 <?php if (empty($notifications)): ?>
+    <p class="alert"><?= t('No new notifications.') ?></p>
 </div>
-<p class="alert"><?= t('No new notifications.') ?></p>
 <?php else: ?>
     <ul>
         <li>
@@ -25,7 +25,7 @@
                 <?php if ($this->text->contains($notification['event_name'], 'subtask')): ?>
                     <i class="fa fa-tasks fa-fw"></i>
                 <?php elseif ($this->text->contains($notification['event_name'], 'task.move')): ?>
-                    <i class="fa fa-arrows-alt fa-fw"></i>
+                    <!--<i class="fa fa-arrows-alt fa-fw"></i>-->
                 <?php elseif ($this->text->contains($notification['event_name'], 'task.overdue')): ?>
                     <i class="fa fa-calendar-times-o fa-fw"></i>
                 <?php elseif ($this->text->contains($notification['event_name'], 'task')): ?>
@@ -49,7 +49,7 @@
                 <?php endif ?>
             </td>
             <td>
-                <?= $this->dt->datetime($notification['date_creation']) ?>
+                <?= dt('%B %e, %Y at %k:%M %p', $notification['date_creation']) ?>
             </td>
             <td>
                 <i class="fa fa-check fa-fw"></i>

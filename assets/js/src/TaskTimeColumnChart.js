@@ -1,17 +1,10 @@
-Kanboard.TaskTimeColumnChart = function(app) {
+function TaskTimeColumnChart(app) {
     this.app = app;
-};
+}
 
-Kanboard.TaskTimeColumnChart.prototype.execute = function() {
-    if (this.app.hasId("analytic-task-time-column")) {
-        this.show();
-    }
-};
-
-Kanboard.TaskTimeColumnChart.prototype.show = function() {
-    var chart = $("#chart");
-    var metrics = chart.data("metrics");
-    var plots = [chart.data("label")];
+TaskTimeColumnChart.prototype.execute = function() {
+    var metrics = $("#chart").data("metrics");
+    var plots = [$("#chart").data("label")];
     var categories = [];
 
     for (var i = 0; i < metrics.length; i++) {

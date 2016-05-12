@@ -2,6 +2,8 @@
 
 namespace Kanboard\Controller;
 
+use Gregwar\Captcha\CaptchaBuilder;
+
 /**
  * Authentication controller
  *
@@ -14,8 +16,6 @@ class Auth extends Base
      * Display the form login
      *
      * @access public
-     * @param array $values
-     * @param array $errors
      */
     public function login(array $values = array(), array $errors = array())
     {
@@ -23,7 +23,7 @@ class Auth extends Base
             $this->response->redirect($this->helper->url->to('app', 'index'));
         }
 
-        $this->response->html($this->helper->layout->app('auth/index', array(
+        $this->response->html($this->template->layout('auth/index', array(
             'captcha' => ! empty($values['username']) && $this->userLocking->hasCaptcha($values['username']),
             'errors' => $errors,
             'values' => $values,
@@ -41,7 +41,7 @@ class Auth extends Base
     {
         $values = $this->request->getValues();
         $this->sessionStorage->hasRememberMe = ! empty($values['remember_me']);
-        list($valid, $errors) = $this->authValidator->validateForm($values);
+        list($valid, $errors) = $this->authentication->validateForm($values);
 
         if ($valid) {
             $this->redirectAfterLogin();
@@ -57,12 +57,23 @@ class Auth extends Base
      */
     public function logout()
     {
-        if (! DISABLE_LOGOUT) {
-            $this->sessionManager->close();
-            $this->response->redirect($this->helper->url->to('auth', 'login'));
-        } else {
-            $this->response->redirect($this->helper->url->to('auth', 'index'));
-        }
+        $this->sessionManager->close();
+        $this->response->redirect($this->helper->url->to('auth', 'login'));
+    }
+
+    /**
+     * Display captcha image
+     *
+     * @access public
+     */
+    public function captcha()
+    {
+        $this->response->contentType('image/jpeg');
+
+        $builder = new CaptchaBuilder;
+        $builder->build();
+        $this->sessionStorage->captcha = $builder->getPhrase();
+        $builder->output();
     }
 
     /**

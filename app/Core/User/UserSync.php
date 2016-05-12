@@ -64,13 +64,13 @@ class UserSync extends Base
      */
     private function createUser(UserProviderInterface $user, array $properties)
     {
-        $userId = $this->user->create($properties);
+        $id = $this->user->create($properties);
 
-        if ($userId === false) {
+        if ($id === false) {
             $this->logger->error('Unable to create user profile: '.$user->getExternalId());
             return array();
         }
 
-        return $this->user->getById($userId);
+        return $this->user->getById($id);
     }
 }

@@ -1,5 +1,5 @@
 Actions automatiques
-====================
+=================
 
 Pour réduire au minimum l'interaction avec les utilisateurs, Kanboard dispose d'actions automatiques.
 
@@ -12,18 +12,22 @@ Chaque action automatique est définie ainsi :
 Chaque projet a une série d'actions automatisées qui lui sont propres, le panneau de configuration est situé sur la page qui liste les projets, il vous suffit de cliquer sur le lien **Actions automatiques**.
 
 Ajouter une nouvelle action
----------------------------
+----------------
 
-Cliquez sur le lien **Ajouter une nouvelle action**.
+### Choisir une action
 
-![Action automatique](screenshots/automatic-action-creation.png)
+![Choisir une action](http://kanboard.net/screenshots/documentation/project-automatic-action-step1.png)
 
-- Commencez par choisir une action
-- Ensuite, sélectionnez un évènement
-- Et pour finir, les paramètres de l'action
+### Choisir un évènement
+
+![Choisir un évènement](http://kanboard.net/screenshots/documentation/project-automatic-action-step2.png)
+
+### Définir les paramètres d'une action
+
+![Definir les paramètres](http://kanboard.net/screenshots/documentation/project-automatic-action-step3.png)
 
 Liste des évènements disponibles
---------------------------------
+------------------------
 
 - Déplacement d'une tâche vers une autre colonne
 - Déplacement d'une tâche à un autre emplacement de la même colonne
@@ -52,7 +56,7 @@ Liste des évènements disponibles
 - Création d'un commentaire d'une *issue* de Bitbucket
 
 Liste des actions disponibles
------------------------------
+-------------------------
 
 - Fermer une tâche
 - Ouvrir une tâche
@@ -106,7 +110,7 @@ Supposons que nous ayons deux projets : "Commande du client" et "Production". Un
 - Choisir l'évènement :  **Fermer une tâche**
 - Définir les paramètres de l'action : **Colonne = Validé** et **Projet = Production**
 
-### Quand une tâche est déplacée vers la toute dernière colonne, déplacer la même tâche exactement vers un autre projet
+### Quand une tâche est déplacée vers la toute dernière colonne, déplacer la même tâche exactement vers un autre projet 
 
 Supposons que nous ayons deux projets : "Idées" et "Développement". Une fois validée l'idée, la basculer vers le projet "Développement".
 

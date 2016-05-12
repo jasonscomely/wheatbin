@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="font-family:Helvetica, Arial, sans-serif;">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
@@ -19,7 +19,38 @@
         <?= $this->asset->colorCss() ?>
         <?= $this->asset->css('assets/css/app.css') ?>
         <?= $this->asset->css('assets/css/print.css', true, 'print') ?>
-        <?= $this->asset->customCss() ?>
+		<!--- Begin Q3SHAFE --->
+<style>
+/* Change bottom line of header */
+header {
+ height: 2.7em;
+}
+
+.menu-inline li, .page-header li {
+    font-size: 1em;
+}
+
+.table-small {
+    font-size: 1em;
+}
+
+.page-header-mobile > ul li a {
+ display: inline-flex !important;
+}
+
+.page-header-mobile > ul li a img {
+ margin: auto;
+}
+
+/* remove: private project, task description */
+.display-none, .task-show-details > *:not(h2) {
+ display: none;
+}
+</style>        
+
+
+        <?php // $this->asset->customCss() ?>
+<!--- End Q3SHAFE --->        
 
         <?= $this->hook->asset('css', 'template:layout:css') ?>
         <?= $this->hook->asset('js', 'template:layout:js') ?>
@@ -30,23 +61,15 @@
         <link rel="apple-touch-icon" sizes="114x114" href="<?= $this->url->dir() ?>assets/img/touch-icon-iphone-retina.png">
         <link rel="apple-touch-icon" sizes="144x144" href="<?= $this->url->dir() ?>assets/img/touch-icon-ipad-retina.png">
 
-        <title>
-            <?php if (isset($page_title)): ?>
-                <?= $this->text->e($page_title) ?>
-            <?php elseif (isset($title)): ?>
-                <?= $this->text->e($title) ?>
-            <?php else: ?>
-                Kanboard
-            <?php endif ?>
-        </title>
+        <title><?= isset($title) ? $this->e($title) : 'Wheatbin' ?></title>
 
         <?= $this->hook->render('template:layout:head') ?>
     </head>
     <body data-status-url="<?= $this->url->href('app', 'status') ?>"
           data-login-url="<?= $this->url->href('auth', 'login') ?>"
-          data-keyboard-shortcut-url="<?= $this->url->href('Doc', 'shortcuts') ?>"
+          data-markdown-preview-url="<?= $this->url->href('TaskHelper', 'preview') ?>"
           data-timezone="<?= $this->app->getTimezone() ?>"
-          data-js-lang="<?= $this->app->jsLang() ?>">
+          data-js-lang="<?= $this->app->jsLang() ?>" >
 
     <?php if (isset($no_layout) && $no_layout): ?>
         <?= $content_for_layout ?>

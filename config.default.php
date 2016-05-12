@@ -7,11 +7,8 @@
 // Enable/Disable debug
 define('DEBUG', false);
 
-// Available log drivers: syslog, stderr, stdout or file
-define('LOG_DRIVER', '');
-
-// Log filename if the log driver is "file"
-define('LOG_FILE', __DIR__.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'debug.log');
+// Debug file path
+define('DEBUG_FILE', __DIR__.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'debug.log');
 
 // Plugins directory
 define('PLUGINS_DIR', 'plugins');
@@ -52,15 +49,6 @@ define('DB_NAME', 'kanboard');
 
 // Mysql/Postgres custom port (null = default port)
 define('DB_PORT', null);
-
-// Mysql SSL key
-define('DB_SSL_KEY', null);
-
-// Mysql SSL certificate
-define('DB_SSL_CERT', null);
-
-// Mysql SSL CA
-define('DB_SSL_CA', null);
 
 // Enable LDAP authentication (false by default)
 define('LDAP_AUTH', false);
@@ -117,13 +105,6 @@ define('LDAP_USER_ATTRIBUTE_EMAIL', 'mail');
 // LDAP attribute to find groups in user profile
 define('LDAP_USER_ATTRIBUTE_GROUPS', 'memberof');
 
-// LDAP attribute for user avatar image: thumbnailPhoto or jpegPhoto
-define('LDAP_USER_ATTRIBUTE_PHOTO', '');
-
-// LDAP attribute for user language, example: 'preferredlanguage'
-// Put an empty string to disable language sync
-define('LDAP_USER_ATTRIBUTE_LANGUAGE', '');
-
 // Allow automatic LDAP user creation
 define('LDAP_USER_CREATION', true);
 
@@ -146,13 +127,53 @@ define('LDAP_GROUP_BASE_DN', '');
 // Example for ActiveDirectory: (&(objectClass=group)(sAMAccountName=%s*))
 define('LDAP_GROUP_FILTER', '');
 
-// LDAP user group filter
-// If this filter is configured, Kanboard will search user groups in LDAP_GROUP_BASE_DN with this filter
-// Example for OpenLDAP: (&(objectClass=posixGroup)(memberUid=%s))
-define('LDAP_GROUP_USER_FILTER', '');
-
 // LDAP attribute for the group name
 define('LDAP_GROUP_ATTRIBUTE_NAME', 'cn');
+
+// Enable/disable Google authentication
+define('GOOGLE_AUTH', false);
+
+// Google client id (Get this value from the Google developer console)
+define('GOOGLE_CLIENT_ID', '');
+
+// Google client secret key (Get this value from the Google developer console)
+define('GOOGLE_CLIENT_SECRET', '');
+
+// Enable/disable GitHub authentication
+define('GITHUB_AUTH', false);
+
+// GitHub client id (Copy it from your settings -> Applications -> Developer applications)
+define('GITHUB_CLIENT_ID', '');
+
+// GitHub client secret key (Copy it from your settings -> Applications -> Developer applications)
+define('GITHUB_CLIENT_SECRET', '');
+
+// Github oauth2 authorize url
+define('GITHUB_OAUTH_AUTHORIZE_URL', 'https://github.com/login/oauth/authorize');
+
+// Github oauth2 token url
+define('GITHUB_OAUTH_TOKEN_URL', 'https://github.com/login/oauth/access_token');
+
+// Github API url (don't forget the trailing slash)
+define('GITHUB_API_URL', 'https://api.github.com/');
+
+// Enable/disable Gitlab authentication
+define('GITLAB_AUTH', false);
+
+// Gitlab application id
+define('GITLAB_CLIENT_ID', '');
+
+// Gitlab application secret
+define('GITLAB_CLIENT_SECRET', '');
+
+// Gitlab oauth2 authorize url
+define('GITLAB_OAUTH_AUTHORIZE_URL', 'https://gitlab.com/oauth/authorize');
+
+// Gitlab oauth2 token url
+define('GITLAB_OAUTH_TOKEN_URL', 'https://gitlab.com/oauth/token');
+
+// Gitlab API url endpoint (don't forget the trailing slash)
+define('GITLAB_API_URL', 'https://gitlab.com/api/v3/');
 
 // Enable/disable the reverse proxy authentication
 define('REVERSE_PROXY_AUTH', false);
@@ -175,6 +196,9 @@ define('ENABLE_HSTS', true);
 // Enable or disable "X-Frame-Options: DENY" HTTP header
 define('ENABLE_XFRAME', true);
 
+// Enable syslog logging
+define('ENABLE_SYSLOG', true);
+
 // Escape html inside markdown text
 define('MARKDOWN_ESCAPE_HTML', true);
 
@@ -186,9 +210,6 @@ define('ENABLE_URL_REWRITE', false);
 
 // Hide login form, useful if all your users use Google/Github/ReverseProxy authentication
 define('HIDE_LOGIN_FORM', false);
-
-// Disabling logout (for external SSO authentication)
-define('DISABLE_LOGOUT', false);
 
 // Enable captcha after 3 authentication failure
 define('BRUTEFORCE_CAPTCHA', 3);
