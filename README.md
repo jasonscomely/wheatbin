@@ -12,7 +12,7 @@
 
 Wheatbin makes redesign of Kanboard by including the concept for "[Law of the Harvest]". You can know our [motivation] for this and also do good harvests!
 
-See the installation [instructions].
+See the **installation [instructions]**.
 
 For Kanboard's specific issues, go to [upstream] from/or our [fork] please.
 
