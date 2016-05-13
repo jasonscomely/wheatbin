@@ -26,7 +26,7 @@ Regards,
 [Wheatbin]: http://www.wheatbin.com
 [Kanboard]: http://kanboard.net
 [jasoncomely]: http://jasoncomely.com
-[diff]: /fguillot/kanboard/compare/v1.0.22...wheatbin:master
+[diff]: //github.com/fguillot/kanboard/compare/v1.0.22...wheatbin:master
 
 [logo-wb]: wheatbin-logo.png
 [logo-jc]: jasoncomely.png
@@ -35,5 +35,5 @@ Regards,
 [motivation]: doc/seed-of-entrepreneurship.markdown
 
 [instructions]: WHEATBIN-INSTALL.md
-[upstream]: /fguillot/kanboard
-[fork]: /wheatbin/kanboard
+[upstream]: //github.com/fguillot/kanboard
+[fork]: //github.com/wheatbin/kanboard
