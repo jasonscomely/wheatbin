@@ -1,50 +1,39 @@
-Kanboard
-========
+[![WHEATBIN's logo][logo-wb]][Wheatbin]
 
-Kanboard is a project management software that uses the Kanban methodology.
+[Wheatbin] is a software fork of Kanboard v1.0.22 — see our [diff].
 
-Official website: <http://kanboard.net>
+[Kanboard] is a project management software created by Frédéric Guillot. It uses the Kanban methodology.
 
 - Get a visual and clear overview of your project
 - Multiple boards with the ability to drag and drop tasks
 - Open source and self-hosted
 - Super simple installation
-- Translated in 23 languages
 - Distributed under [MIT License](LICENSE)
-- [List of features are available on the website](http://kanboard.net/features)
-- [Change Log](ChangeLog)
 
-[![Build Status](https://travis-ci.org/fguillot/kanboard.svg)](https://travis-ci.org/fguillot/kanboard)
+Wheatbin makes redesign of Kanboard by including the concept for "[Law of the Harvest]". You can know our [motivation] for this and also do good harvests!
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fguillot/kanboard/badges/quality-score.png?s=2b6490781608657cc8c43d02285bfafb4f489528)](https://scrutinizer-ci.com/g/fguillot/kanboard/)
+See the installation [instructions].
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+For Kanboard's specific issues, go to [upstream] from/or our [fork] please.
 
-Known bugs and feature requests
--------------------------------
+For more interesting and useful products, visit [jasoncomely.com][jasoncomely].
 
-- Bug tracker: <https://github.com/fguillot/kanboard/issues>
+Regards,
 
-Authors
--------
+[![Jason Comely's logo][logo-jc]][jasoncomely]
 
-- Main developer: Frédéric Guillot (fguillot)
-- [List of contributors](CONTRIBUTORS.md)
 
-Documentation
--------------
+[Wheatbin]: http://www.wheatbin.com
+[Kanboard]: http://kanboard.net
+[jasoncomely]: http://jasoncomely.com
+[diff]: /fguillot/kanboard/compare/v1.0.22...wheatbin:master
 
-- [Read the documentation](doc/index.markdown)
+[logo-wb]: wheatbin-logo.png
+[logo-jc]: jasoncomely.png
 
-Related projects
-----------------
+[Law of the Harvest]: doc/law-of-the-harvest.markdown
+[motivation]: doc/seed-of-entrepreneurship.markdown
 
-List of plugins: http://kanboard.net/plugins
-
-- [Kanboard API python client by @freekoder](https://github.com/freekoder/kanboard-py)
-- [Kanboard Presenter by David Eberlein](https://github.com/davideberlein/kanboard-presenter)
-- [CSV2Kanboard by @ashbike](https://github.com/ashbike/csv2kanboard)
-- [Kanboard for Yunohost by @mbugeia](https://github.com/mbugeia/kanboard_ynh)
-- [Trello import script by @matueranet](https://github.com/matueranet/kanboard-import-trello)
-- [Chrome extension by Timo](https://chrome.google.com/webstore/detail/kanboard-quickmenu/akjbeplnnihghabpgcfmfhfmifjljneh?utm_source=chrome-ntp-icon), [Source code](https://github.com/BlueTeck/kanboard_chrome_extension)
-- [Python client script by @dzudek](https://gist.github.com/fguillot/84c70d4928eb1e0cb374)
+[instructions]: WHEATBIN-INSTALL.md
+[upstream]: /fguillot/kanboard
+[fork]: /wheatbin/kanboard
