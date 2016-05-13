@@ -1,14 +1,16 @@
-Documentation
+Wheatbin manual
 =============
-
-Using Kanboard
---------------
+ 
 
 ### Introduction
 
+- [Special Acknowledgement](special-acknowledgement.markdown)
+- [About the Wheatbin manual](about-wheatbin-manual.markdown)
+
+### Overview of Productivity Systems
+
 - [What is Kanban?](what-is-kanban.markdown)
 - [Kanban vs Todo Lists and Scrum](kanban-vs-todo-and-scrum.markdown)
-- [Usage examples](usage-examples.markdown)
 
 ### Using the board
 
@@ -24,7 +26,6 @@ Using Kanboard
 - [Editing projects](editing-projects.markdown)
 - [Sharing boards and tasks](sharing-projects.markdown)
 - [Automatic actions](automatic-actions.markdown)
-- [Project permissions](project-permissions.markdown)
 - [Swimlanes](swimlanes.markdown)
 - [Calendar](calendar.markdown)
 - [Analytics](analytics.markdown)
@@ -37,13 +38,10 @@ Using Kanboard
 - [Creating tasks](creating-tasks.markdown)
 - [Closing tasks](closing-tasks.markdown)
 - [Duplicate and move tasks](duplicate-move-tasks.markdown)
-- [Adding screenshots](screenshots.markdown)
 - [Task links](task-links.markdown)
 - [Transitions](transitions.markdown)
-- [Time tracking](time-tracking.markdown)
 - [Recurring tasks](recurring-tasks.markdown)
 - [Create tasks by email](create-tasks-by-email.markdown)
-- [Subtasks](subtasks.markdown)
 - [Analytics for tasks](analytics-tasks.markdown)
 
 ### Working with users and groups
@@ -52,7 +50,6 @@ Using Kanboard
 - [User Types](user-types.markdown)
 - [Group management](groups.markdown)
 - [User management](user-management.markdown)
-- [Notifications](notifications.markdown)
 - [Two factor authentication](2fa.markdown)
 
 ### Settings
@@ -63,7 +60,6 @@ Using Kanboard
 - [Board settings](board-configuration.markdown)
 - [Calendar settings](calendar-configuration.markdown)
 - [Link settings](link-labels.markdown)
-- [Currency rate](currency-rate.markdown)
 
 ### Integrations
 

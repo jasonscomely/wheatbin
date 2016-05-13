@@ -41,8 +41,11 @@
         <?= $this->form->label(t('Category'), 'category_id') ?>
         <?= $this->form->select('category_id', $categories_list, $values, $errors, array('tabindex="4"')) ?><br/>
 
-        <?= $this->form->label(t('Complexity'), 'score') ?>
-        <?= $this->form->number('score', $values, $errors, array('tabindex="6"')) ?><br/>
+        <?php // <?= $this->form->label(t('Complexity'), 'score') ?>
+        <?php //<?= $this->form->number('score', $values, $errors, array('tabindex="6"')) ?><!-- <br/> -->
+        
+        <?= $this->form->label(t('Column'), 'column_id') ?>
+        <?= $this->form->select('column_id', $columns_list, $values, $errors, array('tabindex="6"')) ?><br/>
 
         <?= $this->form->label(t('Due Date'), 'date_due') ?>
         <?= $this->form->text('date_due', $values, $errors, array('placeholder="'.$this->text->in($date_format, $date_formats).'"', 'tabindex="7"'), 'form-date') ?><br/>

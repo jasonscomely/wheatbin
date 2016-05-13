@@ -22,10 +22,12 @@
             ), $values) ?>
     </div>
 
+    <!-- 
     <div class="listing">
-        <h3><?= t('Subtasks time tracking') ?></h3>
-        <?= $this->form->checkbox('calendar_user_subtasks_time_tracking', t('Show subtasks based on the time tracking'), 1, $values['calendar_user_subtasks_time_tracking'] == 1) ?>
+        <h3><?php //<?= t('Subtasks time tracking') ?></h3>
+        <?php //<?= $this->form->checkbox('calendar_user_subtasks_time_tracking', t('Show subtasks based on the time tracking'), 1, $values['calendar_user_subtasks_time_tracking'] == 1) ?>
     </div>
+    -->
 
     <div class="form-actions">
         <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>

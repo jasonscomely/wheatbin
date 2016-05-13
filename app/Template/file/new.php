@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h2><?= t('Attach a document') ?></h2>
+    <h2><?= t('Attach a file') ?></h2>
 </div>
 
 <form action="<?= $this->url->href('file', 'save', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>" method="post" enctype="multipart/form-data">

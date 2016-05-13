@@ -4,7 +4,7 @@
             <?php if ($this->user->hasAccess('project', 'create')): ?>
                 <li><i class="fa fa-plus fa-fw"></i><?= $this->url->link(t('New project'), 'project', 'create') ?></li>
             <?php endif ?>
-            <li><i class="fa fa-lock fa-fw"></i><?= $this->url->link(t('New private project'), 'project', 'createPrivate') ?></li>
+            <!-- <li><i class="fa fa-lock fa-fw"></i><?php //<?= $this->url->link(t('New private project'), 'project', 'createPrivate') ?></li> -->
             <?php if ($this->user->hasAccess('projectuser', 'managers')): ?>
                 <li><i class="fa fa-user fa-fw"></i><?= $this->url->link(t('Users overview'), 'projectuser', 'managers') ?></li>
             <?php endif ?>
@@ -48,9 +48,9 @@
                     <?php if ($project['is_public']): ?>
                         <i class="fa fa-share-alt fa-fw" title="<?= t('Shared project') ?>"></i>
                     <?php endif ?>
-                    <?php if ($project['is_private']): ?>
-                        <i class="fa fa-lock fa-fw" title="<?= t('Private project') ?>"></i>
-                    <?php endif ?>
+                    <?php // if ($project['is_private']): ?>
+                        <!-- <i class="fa fa-lock fa-fw" title="<?php //<?= t('Private project') ?>"></i> -->
+                    <?php // endif ?>
 
                     <?php if (! empty($project['description'])): ?>
                         <span class="tooltip" title='<?= $this->e($this->text->markdown($project['description'])) ?>'>

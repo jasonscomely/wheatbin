@@ -61,11 +61,11 @@
         <?= $this->form->label(t('Column'), 'column_id') ?>
         <?= $this->form->select('column_id', $columns_list, $values, $errors, array('tabindex="6"')) ?><br/>
 
-        <?= $this->form->label(t('Complexity'), 'score') ?>
-        <?= $this->form->number('score', $values, $errors, array('tabindex="8"')) ?><br/>
+        <?php //<?= $this->form->label(t('Complexity'), 'score') ?>
+        <?php //<?= $this->form->number('score', $values, $errors, array('tabindex="8"')) ?><br/>
 
-        <?= $this->form->label(t('Original estimate'), 'time_estimated') ?>
-        <?= $this->form->numeric('time_estimated', $values, $errors, array('tabindex="9"')) ?> <?= t('hours') ?><br/>
+        <?php //<?= $this->form->label(t('Original estimate'), 'time_estimated') ?>
+        <?php //<?= $this->form->numeric('time_estimated', $values, $errors, array('tabindex="9"')) ?> <?php //<?= t('hours') ?><br/>
 
         <?= $this->form->label(t('Due Date'), 'date_due') ?>
         <?= $this->form->text('date_due', $values, $errors, array('placeholder="'.$this->text->in($date_format, $date_formats).'"', 'tabindex="10"'), 'form-date') ?><br/>

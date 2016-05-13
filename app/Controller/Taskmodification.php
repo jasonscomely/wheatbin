@@ -111,6 +111,7 @@ class Taskmodification extends Base
             'errors' => $errors,
             'task' => $task,
             'users_list' => $this->projectUserRole->getAssignableUsersList($task['project_id']),
+            'columns_list' => $this->board->getColumnsList($task['project_id']),
             'colors_list' => $this->color->getList(),
             'categories_list' => $this->category->getList($task['project_id']),
             'date_format' => $this->config->get('application_date_format'),

@@ -8,7 +8,7 @@
      data-due-date="<?= $task['date_due'] ?>"
      data-task-url="<?= $this->url->href('task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>">
 
-    <div class="task-board-sort-handle" style="display: none;"><i class="fa fa-arrows-alt"></i></div>
+    <div class="task-board-sort-handle" style="display: none;"><!--<i class="fa fa-arrows-alt"></i>--></div>
 
     <?php if ($this->board->isCollapsed($task['project_id'])): ?>
         <div class="task-board-collapsed">

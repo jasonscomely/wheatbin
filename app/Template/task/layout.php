@@ -10,10 +10,12 @@
                 <?= $this->url->link(t('Back to the calendar'), 'calendar', 'show', array('project_id' => $task['project_id'])) ?>
             </li>
             <?php if ($this->user->hasProjectAccess('project', 'edit', $task['project_id'])): ?>
-            <li>
+            <!--
+			<li>
                 <i class="fa fa-cog fa-fw"></i>
                 <?= $this->url->link(t('Project settings'), 'project', 'show', array('project_id' => $task['project_id'])) ?>
             </li>
+			-->
             <?php endif ?>
         </ul>
     </div>

@@ -4,7 +4,13 @@
         <li <?= $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('About'), 'config', 'index') ?>
         </li>
-        <li <?= $this->app->getRouterAction() === 'plugins' ? 'class="active"' : '' ?>>
+        <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
+            <?= $this->url->link(t('Project management'), 'project', 'index') ?>
+        </li>
+        <li <?= $this->app->getRouterController() === 'user' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
+            <?= $this->url->link(t('User management'), 'user', 'index') ?>
+        </li>
+       <li <?= $this->app->getRouterAction() === 'plugins' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Plugins'), 'config', 'plugins') ?>
         </li>
         <li <?= $this->app->getRouterAction() === 'application' ? 'class="active"' : '' ?>>
@@ -22,9 +28,12 @@
         <li <?= $this->app->getRouterController() === 'link' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Link settings'), 'link', 'index') ?>
         </li>
-        <li <?= $this->app->getRouterController() === 'currency' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
-            <?= $this->url->link(t('Currency rates'), 'currency', 'index') ?>
+        <!--
+        <li 
+            <?php //<?= $this->app->getRouterController() === 'currency' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
+            <?php //<?= $this->url->link(t('Currency rates'), 'currency', 'index') ?>
         </li>
+        -->
         <li <?= $this->app->getRouterAction() === 'integrations' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Integrations'), 'config', 'integrations') ?>
         </li>
@@ -35,8 +44,8 @@
             <?= $this->url->link(t('API'), 'config', 'api') ?>
         </li>
         <li>
-            <?= $this->url->link(t('Documentation'), 'doc', 'show') ?>
-        </li>
+            <a href="/wheatbin/documentation" class="" title="" >Wheatbin manual</a>  </li>
+       
         <?= $this->hook->render('template:config:sidebar') ?>
     </ul>
     <div class="sidebar-collapse"><a href="#" title="<?= t('Hide sidebar') ?>"><i class="fa fa-chevron-left"></i></a></div>

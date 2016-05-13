@@ -8,7 +8,7 @@ defined('DEBUG_FILE') or define('DEBUG_FILE', __DIR__.DIRECTORY_SEPARATOR.'..'.D
 defined('PLUGINS_DIR') or define('PLUGINS_DIR', __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'plugins');
 
 // Application version
-defined('APP_VERSION') or define('APP_VERSION', 'master');
+defined('APP_VERSION') or define('APP_VERSION', '1.0');
 
 // Database driver: sqlite, mysql or postgres
 defined('DB_DRIVER') or define('DB_DRIVER', 'sqlite');

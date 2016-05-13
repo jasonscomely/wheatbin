@@ -4,7 +4,7 @@
     <table class="table-fixed">
         <tr>
             <th class="column-20"><?= $paginator->order(t('User'), 'users.username') ?></th>
-            <th class="column-25"><?= $paginator->order(t('Project'), 'projects.name') ?></th>
+            <th><?= $paginator->order(t('Project'), 'projects.name') ?></th>
             <th><?= t('Columns') ?></th>
         </tr>
         <?php foreach ($paginator->getCollection() as $project): ?>

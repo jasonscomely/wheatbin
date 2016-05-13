@@ -2,7 +2,7 @@
 <div id="comments" class="task-show-section">
     <div class="page-header">
         <h2>
-            <?= t('Comments') ?>
+            <?= t('Details') ?>
             <span class="comment-sorting">
                 <i class="fa fa-sort"></i>
                 <?= $this->url->link(t('change sorting'), 'comment', 'toggleSorting', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>

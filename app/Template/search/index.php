@@ -1,11 +1,5 @@
 <section id="main">
     <div class="page-header">
-        <ul>
-            <li>
-                <i class="fa fa-folder fa-fw"></i>
-                <?= $this->url->link(t('All projects'), 'project', 'index') ?>
-            </li>
-        </ul>
     </div>
 
     <div class="search">

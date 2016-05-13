@@ -1,4 +1,4 @@
-<div class="dropdown filters">
+<!---<div class="dropdown filters">
     <i class="fa fa-caret-down"></i> <a href="#" class="dropdown-menu"><?= t('Filters') ?></a>
     <ul>
         <li><a href="#" class="filter-helper filter-reset" data-filter="<?= isset($reset) ? $reset : '' ?>" title="<?= t('Keyboard shortcut: "%s"', 'r') ?>"><?= t('Reset filters') ?></a></li>
@@ -15,4 +15,4 @@
             <?= $this->url->doc(t('View advanced search syntax'), 'search') ?>
         </li>
     </ul>
-</div>
+</div>------>

@@ -1,5 +1,11 @@
 <div class="color-<?= $task['color_id'] ?> task-show-details">
-    <h2><?= $this->e('#'.$task['id'].' '.$task['title']) ?></h2>
+    <h2><?= $this->e('['.$task['id'].'] '.$task['title']) ?>
+        <?php if ($task['date_due']): ?>
+            <br /><span style="font-size: 14px;font-weight: bold">
+                <?= dt('Due Date: %B %e, %Y', $task['date_due']) ?>
+            </span>
+         <?php endif ?>
+    </h2>
     <?php if ($task['score']): ?>
         <span class="task-score"><?= $this->e($task['score']) ?></span>
     <?php endif ?>

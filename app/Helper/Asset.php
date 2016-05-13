@@ -42,11 +42,16 @@ class Asset extends \Kanboard\Core\Base
      */
     public function customCss()
     {
-        if ($this->config->get('application_stylesheet')) {
+        
+		if ($this->config->get('application_stylesheet')) {
             return '<style>'.$this->config->get('application_stylesheet').'</style>';
         }
+		
+		$return = '';
 
-        return '';
+		
+		
+		
     }
 
     /**

@@ -15,8 +15,8 @@
     <?= $this->form->label(t('Assignee'), 'user_id') ?>
     <?= $this->form->select('user_id', $users_list, $values, $errors) ?><br/>
 
-    <?= $this->form->label(t('Original estimate'), 'time_estimated') ?>
-    <?= $this->form->numeric('time_estimated', $values, $errors) ?> <?= t('hours') ?><br/>
+    <?php //<?= $this->form->label(t('Original estimate'), 'time_estimated') ?>
+    <?php //<?= $this->form->numeric('time_estimated', $values, $errors) ?> <?php //<?= t('hours') ?><br/>
 
     <?= $this->form->label(t('Time spent'), 'time_spent') ?>
     <?= $this->form->numeric('time_spent', $values, $errors) ?> <?= t('hours') ?><br/>

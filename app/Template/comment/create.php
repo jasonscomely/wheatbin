@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h2><?= t('Add a comment') ?></h2>
+    <h2><?= t('Add a detail') ?></h2>
 </div>
 
 <form method="post" action="<?= $this->url->href('comment', 'save', array('task_id' => $task['id'], 'project_id' => $task['project_id'], 'ajax' => isset($ajax))) ?>" autocomplete="off" class="form-comment">

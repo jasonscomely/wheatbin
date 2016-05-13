@@ -4,41 +4,24 @@
         <li <?= $this->app->getRouterAction() === 'show' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Summary'), 'project', 'show', array('project_id' => $project['id'])) ?>
         </li>
-        <?php if ($this->user->hasProjectAccess('customfilter', 'index', $project['id'])): ?>
-        <li <?= $this->app->getRouterController() === 'customfilter' && $this->app->getRouterAction() === 'index' ? 'class="active"' : '' ?>>
-            <?= $this->url->link(t('Custom filters'), 'customfilter', 'index', array('project_id' => $project['id'])) ?>
+        <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'edit' ? 'class="active"' : '' ?>>
+                <?= $this->url->link(t('Edit project'), 'project', 'edit', array('project_id' => $project['id'])) ?>
         </li>
-        <?php endif ?>
 
         <?php if ($this->user->hasProjectAccess('project', 'edit', $project['id'])): ?>
             <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'share' ? 'class="active"' : '' ?>>
                 <?= $this->url->link(t('Public access'), 'project', 'share', array('project_id' => $project['id'])) ?>
             </li>
-            <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'notifications' ? 'class="active"' : '' ?>>
-                <?= $this->url->link(t('Notifications'), 'project', 'notifications', array('project_id' => $project['id'])) ?>
+            <!--
+            <li <?php //<?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'notifications' ? 'class="active"' : '' ?>>
+                <?php //<?= $this->url->link(t('Notifications'), 'project', 'notifications', array('project_id' => $project['id'])) ?>
             </li>
-            <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'integrations' ? 'class="active"' : '' ?>>
-                <?= $this->url->link(t('Integrations'), 'project', 'integrations', array('project_id' => $project['id'])) ?>
-            </li>
-            <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'edit' ? 'class="active"' : '' ?>>
-                <?= $this->url->link(t('Edit project'), 'project', 'edit', array('project_id' => $project['id'])) ?>
-            </li>
+            -->
             <li <?= $this->app->getRouterController() === 'column' ? 'class="active"' : '' ?>>
                 <?= $this->url->link(t('Columns'), 'column', 'index', array('project_id' => $project['id'])) ?>
             </li>
-            <li <?= $this->app->getRouterController() === 'swimlane' ? 'class="active"' : '' ?>>
-                <?= $this->url->link(t('Swimlanes'), 'swimlane', 'index', array('project_id' => $project['id'])) ?>
-            </li>
             <li <?= $this->app->getRouterController() === 'category' ? 'class="active"' : '' ?>>
                 <?= $this->url->link(t('Categories'), 'category', 'index', array('project_id' => $project['id'])) ?>
-            </li>
-            <?php if ($project['is_private'] == 0): ?>
-            <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'permissions' ? 'class="active"' : '' ?>>
-                <?= $this->url->link(t('Permissions'), 'ProjectPermission', 'index', array('project_id' => $project['id'])) ?>
-            </li>
-            <?php endif ?>
-            <li <?= $this->app->getRouterController() === 'action' ? 'class="active"' : '' ?>>
-                <?= $this->url->link(t('Automatic actions'), 'action', 'index', array('project_id' => $project['id'])) ?>
             </li>
             <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'duplicate' ? 'class="active"' : '' ?>>
                 <?= $this->url->link(t('Duplicate'), 'project', 'duplicate', array('project_id' => $project['id'])) ?>
@@ -59,6 +42,55 @@
                 </li>
             <?php endif ?>
         <?php endif ?>
+        
+        <!-- Starting Modification -->
+        
+        <h2><?= t('Information') ?></h2>
+        <li>
+            <?= $this->url->link(t('Activity'), 'activity', 'project', array('project_id' => $project['id'])) ?>
+        </li>
+        
+        <?php if ($this->user->hasProjectAccess('customfilter', 'index', $project['id'])): ?>
+        <li>
+            <?= $this->url->link(t('Custom filters'), 'customfilter', 'index', array('project_id' => $project['id'])) ?>
+        </li>
+        <?php endif ?>
+        
+        <?php if ($project['is_public']): ?>
+        <li>
+            <?= $this->url->link(t('Public link'), 'board', 'readonly', array('token' => $project['token']), false, '', '', true) ?>
+        </li>
+        <?php endif ?>
+        
+        <?= $this->hook->render('template:project:dropdown', array('project' => $project)) ?>
+        
+        <?php if ($this->user->hasProjectAccess('analytic', 'tasks', $project['id'])): ?>
+            <li>
+                <?= $this->url->link(t('Analytics'), 'analytic', 'tasks', array('project_id' => $project['id'])) ?>
+            </li>
+        <?php endif ?>
+        
+        <?php if ($this->user->hasProjectAccess('export', 'tasks', $project['id'])): ?>
+            <li>
+                <?= $this->url->link(t('Exports'), 'export', 'tasks', array('project_id' => $project['id'])) ?>
+            </li>
+        <?php endif ?>
+        
+        <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'integrations' ? 'class="active"' : '' ?>>
+                <?= $this->url->link(t('Integrations'), 'project', 'integrations', array('project_id' => $project['id'])) ?>
+            </li>
+            <li <?= $this->app->getRouterController() === 'swimlane' ? 'class="active"' : '' ?>>
+                <?= $this->url->link(t('Swimlanes'), 'swimlane', 'index', array('project_id' => $project['id'])) ?>
+            </li>
+            <?php if ($project['is_private'] == 0): ?>
+            <li <?= $this->app->getRouterController() === 'project' && $this->app->getRouterAction() === 'permissions' ? 'class="active"' : '' ?>>
+                <?= $this->url->link(t('Permissions'), 'ProjectPermission', 'index', array('project_id' => $project['id'])) ?>
+            </li>
+            <?php endif ?>
+            <li <?= $this->app->getRouterController() === 'action' ? 'class="active"' : '' ?>>
+                <?= $this->url->link(t('Automatic actions'), 'action', 'index', array('project_id' => $project['id'])) ?>
+            </li>
+        <!-- End Modification -->
 
         <?= $this->hook->render('template:project:sidebar') ?>
     </ul>

@@ -6,11 +6,11 @@
     <?php if (! empty($assignee)): ?>
         <?= e('%s changed the assignee of the task %s to %s',
                 $this->e($author),
-                $this->url->link(t('#%d', $task['id']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])),
+                $this->url->link(t('[%d]', $task['id']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])),
                 $this->e($assignee)
             ) ?>
     <?php else: ?>
-        <?= e('%s remove the assignee of the task %s', $this->e($author), $this->url->link(t('#%d', $task['id']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']))) ?>
+        <?= e('%s remove the assignee of the task %s', $this->e($author), $this->url->link(t('[%d]', $task['id']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']))) ?>
     <?php endif ?>
 </p>
 <p class="activity-description">

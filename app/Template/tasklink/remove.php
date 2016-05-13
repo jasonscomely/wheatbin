@@ -4,7 +4,7 @@
 
 <div class="confirm">
     <p class="alert alert-info">
-        <?= t('Do you really want to remove this link with task #%d?', $link['opposite_task_id']) ?>
+        <?= t('Do you really want to remove this link with task [%d]?', $link['opposite_task_id']) ?>
     </p>
 
     <div class="form-actions">

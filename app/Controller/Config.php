@@ -71,7 +71,7 @@ class Config extends Base
     {
         $this->response->html($this->layout('config/about', array(
             'db_size' => $this->config->getDatabaseSize(),
-            'title' => t('Settings').' &gt; '.t('About'),
+            'title' => t('Main settings').' &gt; '.t('About'),
         )));
     }
 
@@ -84,7 +84,7 @@ class Config extends Base
     {
         $this->response->html($this->layout('config/plugins', array(
             'plugins' => $this->pluginLoader->plugins,
-            'title' => t('Settings').' &gt; '.t('Plugins'),
+            'title' => t('Main settings').' &gt; '.t('Plugins'),
         )));
     }
 
@@ -101,7 +101,7 @@ class Config extends Base
             'languages' => $this->config->getLanguages(),
             'timezones' => $this->config->getTimezones(),
             'date_formats' => $this->dateParser->getAvailableFormats(),
-            'title' => t('Settings').' &gt; '.t('Application settings'),
+            'title' => t('Main settings').' &gt; '.t('Application settings'),
         )));
     }
 
@@ -117,7 +117,7 @@ class Config extends Base
         $this->response->html($this->layout('config/project', array(
             'colors' => $this->color->getList(),
             'default_columns' => implode(', ', $this->board->getDefaultColumns()),
-            'title' => t('Settings').' &gt; '.t('Project settings'),
+            'title' => t('Main settings').' &gt; '.t('Project settings'),
         )));
     }
 
@@ -131,7 +131,7 @@ class Config extends Base
         $this->common('board');
 
         $this->response->html($this->layout('config/board', array(
-            'title' => t('Settings').' &gt; '.t('Board settings'),
+            'title' => t('Main settings').' &gt; '.t('Board settings'),
         )));
     }
 
@@ -145,7 +145,7 @@ class Config extends Base
         $this->common('calendar');
 
         $this->response->html($this->layout('config/calendar', array(
-            'title' => t('Settings').' &gt; '.t('Calendar settings'),
+            'title' => t('Main settings').' &gt; '.t('Calendar settings'),
         )));
     }
 
@@ -159,7 +159,7 @@ class Config extends Base
         $this->common('integrations');
 
         $this->response->html($this->layout('config/integrations', array(
-            'title' => t('Settings').' &gt; '.t('Integrations'),
+            'title' => t('Main settings').' &gt; '.t('Integrations'),
         )));
     }
 
@@ -173,7 +173,7 @@ class Config extends Base
         $this->common('webhook');
 
         $this->response->html($this->layout('config/webhook', array(
-            'title' => t('Settings').' &gt; '.t('Webhook settings'),
+            'title' => t('Main settings').' &gt; '.t('Webhook settings'),
         )));
     }
 
@@ -185,7 +185,7 @@ class Config extends Base
     public function api()
     {
         $this->response->html($this->layout('config/api', array(
-            'title' => t('Settings').' &gt; '.t('API'),
+            'title' => t('Main settings').' &gt; '.t('API'),
         )));
     }
 

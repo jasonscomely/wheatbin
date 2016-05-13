@@ -28,6 +28,8 @@ class File extends \Kanboard\Core\Base
             case 'gif':
                 return 'fa-file-image-o';
             case 'xls':
+            case 'xlsm':
+            case 'xlsb':
             case 'xlsx':
                 return 'fa-file-excel-o';
             case 'doc':
@@ -49,6 +51,14 @@ class File extends \Kanboard\Core\Base
                 return 'fa-code-o';
             case 'pdf':
                 return 'fa-file-pdf-o';
+            case 'txt':
+                return 'fa-file-txt-o';
+            case 'exe':
+                return 'fa-file-exe-o';
+			case 'mov':
+                return 'fa-file-mov-o';
+            case 'mp4':
+                return 'fa-file-mp4-o';
         }
 
         return 'fa-file-o';

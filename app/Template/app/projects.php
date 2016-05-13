@@ -1,24 +1,24 @@
 <div class="page-header">
-    <h2><?= t('My projects') ?> (<?= $paginator->getTotal() ?>)</h2>
+    <h2 style="font-family:Helvetica, Arial, sans-serif;"><?= t('Projects') ?></h2>
 </div>
 <?php if ($paginator->isEmpty()): ?>
-    <p class="alert"><?= t('Your are not member of any project.') ?></p>
+    <p class="alert"><?= t('You are not member of any project.') ?></p>
 <?php else: ?>
     <table class="table-fixed table-small">
         <tr>
-            <th class="column-5"><?= $paginator->order('Id', 'id') ?></th>
-            <th class="column-3"><?= $paginator->order('<i class="fa fa-lock fa-fw" title="'.t('Private project').'"></i>', 'is_private') ?></th>
-            <th class="column-25"><?= $paginator->order(t('Project'), 'name') ?></th>
-            <th><?= t('Columns') ?></th>
+            <th class="column-5"><?= $paginator->order('ID', 'id') ?></th>
+            <th class="column-3 display-none"><?= $paginator->order('<i class="fa fa-lock fa-fw" title="'.t('').'"></i>', '') ?></th>
+            <th><?= $paginator->order(t('Project'), 'name') ?></th>
+            <th class="column-59"><?= t('Workflow') ?></th>
         </tr>
         <?php foreach ($paginator->getCollection() as $project): ?>
         <tr>
             <td>
-                <?= $this->url->link('#'.$project['id'], 'board', 'show', array('project_id' => $project['id']), false, 'dashboard-table-link') ?>
+                <?= $this->url->link('['.$project['id'].']', 'board', 'show', array('project_id' => $project['id']), false, 'dashboard-table-link') ?>
             </td>
-            <td>
+            <td class="display-none">
                 <?php if ($project['is_private']): ?>
-                    <i class="fa fa-lock fa-fw" title="<?= t('Private project') ?>"></i>
+                    <i class="fa fa-lock fa-fw" title="<?= t('') ?>"></i>
                 <?php endif ?>
             </td>
             <td>

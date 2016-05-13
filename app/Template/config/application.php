@@ -7,8 +7,8 @@
     <?= $this->form->csrf() ?>
 
     <?= $this->form->label(t('Application URL'), 'application_url') ?>
-    <?= $this->form->text('application_url', $values, $errors, array('placeholder="http://example.kanboard.net/"')) ?><br/>
-    <p class="form-help"><?= t('Example: http://example.kanboard.net/ (used by email notifications)') ?></p>
+    <?= $this->form->text('application_url', $values, $errors, array('placeholder="http://example.wheatbin.com/"')) ?><br/>
+    <p class="form-help"><?= t('Example: http://example.wheatbin.com/ (used by email notifications)') ?></p>
 
     <?= $this->form->label(t('Language'), 'application_language') ?>
     <?= $this->form->select('application_language', $languages, $values, $errors) ?><br/>

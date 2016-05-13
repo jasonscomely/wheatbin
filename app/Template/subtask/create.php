@@ -14,8 +14,8 @@
     <?= $this->form->label(t('Assignee'), 'user_id') ?>
     <?= $this->form->select('user_id', $users_list, $values, $errors) ?><br/>
 
-    <?= $this->form->label(t('Original estimate'), 'time_estimated') ?>
-    <?= $this->form->numeric('time_estimated', $values, $errors) ?> <?= t('hours') ?><br/>
+    <?php //<?= $this->form->label(t('Original estimate'), 'time_estimated') ?>
+    <?php //<?= $this->form->numeric('time_estimated', $values, $errors) ?> <?php //<?= t('hours') ?><br/>
 
     <?= $this->form->checkbox('another_subtask', t('Create another sub-task'), 1, isset($values['another_subtask']) && $values['another_subtask'] == 1) ?>
 

@@ -3,17 +3,24 @@
 </div>
 <div class="listing">
     <ul>
+
+     <li>
+             <?= t('') ?>
+            <strong>Wheatbin</strong><?= t(' is a complete project management system that combines Kanban methodology with the Law of the Harvest.')?> 
+        
+</li>
+<hr>
         <li>
             <?= t('Official website:') ?>
-            <a href="http://kanboard.net/" target="_blank" rel="noreferer">http://kanboard.net/</a>
+            <a href="http://wheatbin.com/" target="_blank" rel="noreferer">http://wheatbin.com/</a>
         </li>
         <li>
             <?= t('Application version:') ?>
             <strong><?= APP_VERSION ?></strong>
         </li>
         <li>
-            <?= t('Author:') ?>
-            <strong>Frédéric Guillot</strong> (<a href="https://github.com/fguillot/kanboard/blob/master/CONTRIBUTORS.md" target="_blank"><?= t('contributors') ?></a>)
+            <?= t('Designer:') ?>
+            <strong><a href="http://jasoncomely.com" target="_blank" rel="noreferer">Jason Comely</a></strong>
         </li>
         <li>
             <?= t('License:') ?>
@@ -21,6 +28,24 @@
         </li>
     </ul>
 </div>
+
+
+<div class="page-header">
+   
+</div>
+<div class="listing">
+    <ul>
+        <li>
+
+ 
+Wheatbin software is a fork of <strong><a href="http://kanboard.net" target="_blank" rel="noreferer">Kanboard</a></strong> by <strong><a href="https://github.com/fguillot" target="_blank"><?= t('Frédéric Guillot') ?></a></strong> and <strong><a href="https://github.com/fguillot/kanboard/blob/master/CONTRIBUTORS.md" target="_blank">contributors</a></strong>.
+        </li>
+
+    </ul>
+</div>
+
+
+
 
 <div class="page-header">
     <h2><?= t('Database') ?></h2>
