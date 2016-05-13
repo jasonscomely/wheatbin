@@ -1,4 +1,5 @@
 *.sqlite
+*.sqlite_backup
 *.sqlite-journal
 .buildpath
 .project
@@ -13,6 +14,7 @@ Thumbs.db
 *~
 *.out
 *.log
+error_log
 .vagrant
 config.php
 data/files
