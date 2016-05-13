@@ -25,7 +25,7 @@ Regards,
 [diff]: //github.com/fguillot/kanboard/compare/v1.0.22...wheatbin:master
 
 [logo-wb]: wheatbin-logo.png
-[logo-jc]: JASONCOMELYconcepts-logo.png
+[logo-jc]: JASONCOMELY-275x119.png
 
 [Law of the Harvest]: doc/law-of-the-harvest.markdown
 [motivation]: doc/seed-of-entrepreneurship.markdown
