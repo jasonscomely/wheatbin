@@ -10,7 +10,7 @@
 - Super simple installation
 - Distributed under [MIT License](LICENSE)
 
-Wheatbin makes redesign of Kanboard by including the concept for "[Law of the Harvest]". You can know our [motivation] for this and also do good harvests!
+Wheatbin is a redesign of Kanboard. Wheatbin is project management software that combines Kanban methodology with the [Law of the Harvest].
 
 See the **installation [instructions]**.
 
@@ -18,8 +18,7 @@ For Kanboard's specific issues, go to [upstream] from/or our [fork] please.
 
 For more interesting and useful products, visit [jasoncomely.com][jasoncomely].
 
-Regards,
-
+Regards,  
 [![Jason Comely's logo][logo-jc]][jasoncomely]
 
 
