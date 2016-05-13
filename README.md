@@ -11,7 +11,7 @@ Wheatbin is Project Management Software with a responsive "mobile first" redesig
 
 See the **installation [instructions]**.
 
-For Kanboard's specific issues, go to [upstream] from/or the wheatbin [fork] please.
+For Kanboard specific issues, go to [upstream] from/or the wheatbin [fork] please.
 
 For more interesting and useful products, visit [jasoncomely.com][jasoncomely].
 
