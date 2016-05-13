@@ -1,4 +1,4 @@
-<!----<div class="page-header">
+<!--<div class="page-header">
     <h2 style="font-family:Helvetica, Arial, sans-serif;"><?= t('My subtasks') ?> (<?= $paginator->getTotal() ?>)</h2>
 </div>
 <?php if ($paginator->isEmpty()): ?>
@@ -40,4 +40,4 @@
     </table>
 
     <?= $paginator ?>
-<?php endif ?>------------>
+<?php endif ?>-->

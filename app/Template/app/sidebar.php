@@ -1,10 +1,10 @@
 <div class="sidebar">
 
-    <h2>Actions<!----<?= $this->e($user['name'] ?: $user['username']) ?>-----></h2>
+    <h2>Actions<!--<?= $this->e($user['name'] ?: $user['username']) ?>--></h2>
 	
 	
 	
-	<!---<div class="page-header page-header-mobile">----->
+	<!--<div class="page-header page-header-mobile">-->
         <ul>
             <?php if ($this->user->hasAccess('project', 'create')): ?>
                 <li>
@@ -52,7 +52,7 @@
             </li>
             -->
         </ul>
-    <!---</div>----->
+    <!--</div>-->
 	
 	
 	

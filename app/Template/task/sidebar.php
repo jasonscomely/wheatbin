@@ -70,13 +70,13 @@
         <li <?= $this->app->getRouterController() === 'task' && $this->app->getRouterAction() === 'transitions' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Transitions'), 'task', 'transitions', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
         </li>
-        <!----<li <?= $this->app->getRouterController() === 'task' && $this->app->getRouterAction() === 'analytics' ? 'class="active"' : '' ?>>
+        <!--<li <?= $this->app->getRouterController() === 'task' && $this->app->getRouterAction() === 'analytics' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Analytics'), 'task', 'analytics', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
-        </li>---->
+        </li>-->
         <?php if ($task['time_estimated'] > 0 || $task['time_spent'] > 0): ?>
-       <!------ <li <?= $this->app->getRouterController() === 'task' && $this->app->getRouterAction() === 'timetracking' ? 'class="active"' : '' ?>>
+       <!--<li <?= $this->app->getRouterController() === 'task' && $this->app->getRouterAction() === 'timetracking' ? 'class="active"' : '' ?>>
             <?= $this->url->link(t('Time tracking'), 'task', 'timetracking', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
-        </li>-------->
+        </li>-->
         <?php endif ?>
 
         <?= $this->hook->render('template:task:sidebar:information') ?>

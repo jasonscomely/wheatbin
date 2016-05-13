@@ -26,7 +26,7 @@
             <td>
                 <?= $this->url->link($this->e($task['title']), 'task', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'] ) , null , null , $this->e($task['title']) ) ?>
             </td>
-           <!---- <td>
+           <!-- <td>
                 <?php if (! empty($task['time_spent'])): ?>
                     <strong><?= $this->e($task['time_spent']).'h' ?></strong> <?= t('spent') ?>
                 <?php endif ?>
@@ -34,7 +34,7 @@
                 <?php if (! empty($task['time_estimated'])): ?>
                     <strong><?= $this->e($task['time_estimated']).'h' ?></strong> <?= t('estimated') ?>
                 <?php endif ?>
-            </td>--->
+            </td> -->
             <td>
                 <?php // dt('%e/%B/%Y', $task['date_due']) ?>
                 <!-- Modification starts -->

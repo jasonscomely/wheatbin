@@ -19,7 +19,7 @@
         <?= $this->asset->colorCss() ?>
         <?= $this->asset->css('assets/css/app.css') ?>
         <?= $this->asset->css('assets/css/print.css', true, 'print') ?>
-		<!--- Begin Q3SHAFE --->
+		<!-- Begin Q3SHAFE -->
 <style>
 /* Change bottom line of header */
 header {
@@ -50,7 +50,7 @@ header {
 
 
         <?php // $this->asset->customCss() ?>
-<!--- End Q3SHAFE --->        
+<!-- End Q3SHAFE -->        
 
         <?= $this->hook->asset('css', 'template:layout:css') ?>
         <?= $this->hook->asset('js', 'template:layout:js') ?>

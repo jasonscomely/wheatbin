@@ -1,4 +1,4 @@
-<!--------<div id="subtasks" class="task-show-section">
+<!--<div id="subtasks" class="task-show-section">
 
     <?php if (! empty($subtasks)): ?>
         <div class="page-header">
@@ -104,4 +104,4 @@
     <?php endif ?>
 
 </div>
----------->
+-->
