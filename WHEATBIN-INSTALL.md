@@ -1,4 +1,4 @@
-To install the Wheatbin
+Installing Wheatbin
 -----------------------
 
 1. You must have a web server with PHP installed
