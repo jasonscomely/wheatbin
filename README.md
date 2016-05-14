@@ -2,7 +2,7 @@
 
 Wheatbin is Project Management Software with a responsive "mobile first" redesign. It combines Kanban methodology with the [Law of the Harvest]. 
 
-[Wheatbin] is a software fork of [Kanboard] v1.0.22 by Frédéric Guillot (see the [diff]). It contains all the wholesome goodness you know and love:
+[Wheatbin] is a software fork of [Kanboard] v1.0.22 by Frédéric Guillot (see the [diff]). It's a major overhaul of the UX/IU for a more streamlined workflow. And as with Kanboard, Wheatbin includes:
 
 - Multiple boards with the ability to drag and drop tasks
 - Open source and self-hosted
