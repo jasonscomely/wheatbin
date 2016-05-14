@@ -17,6 +17,5 @@ The <strong>Law of the Harvest</strong> is the philosophy behind Wheatbin. It is
 
 - <strong>We can’t change  last year’s harvest,</strong> but we can look forward with hope to this season’s crops. Don’t focus on past failures. Identify and focus on those things you can control and that are key factors to being successful.
 
-The Law of the Harvest is embedded within the very fabric of life. By consciously applying these laws of nature (Wheatbin can help) you can improve the harvest from the seeds you sow.
-
+The Law of the Harvest is embedded in the fabric of life. By consciously applying these laws of nature (Wheatbin can help) you can improve the harvest from the seeds you sow.
 
