@@ -17,6 +17,6 @@ The Law of the Harvest is a universal precept taught 2000 years ago in the Lotus
 
 - <strong>We can’t change  last year’s harvest,</strong> but we can look forward with hope to this season’s crops. Don’t focus on past failures. Identify and focus on those things you can control and that are key factors to being successful.
 
-The Law of the Harvest is embedded within the very fabric of life. By consciously applying these laws of nature (with the help of Wheatbin) you may better anticipate challenges ahead and improve the harvest from the seeds you sow.
+The Law of the Harvest is embedded within the very fabric of life. By consciously applying these laws of nature (Wheatbin can help) you can improve the harvest from the seeds you sow.
 
 
