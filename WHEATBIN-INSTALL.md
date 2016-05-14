@@ -6,7 +6,7 @@ Installing Wheatbin
 3. Check if the directory data is writeable
 4. With your browser go to `http://yourpersonalserver/wheatbin`
 5. The login/password is **`admin`** / **`wheatbin`**
-6. Bob's your uncle, and be sure to change your password
+6. Bob's your uncle. Be sure to change your password!
 
 The data folder is used to store:
 
