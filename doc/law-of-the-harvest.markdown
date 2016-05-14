@@ -1,7 +1,7 @@
 What is the Law of the Harvest?
 ===============
 
-Law of the Harvest is a term first coined by LDS President Howard W. Hunter. The precept however was taught 2000 years earlier in the Lotus Sutra (a core Buddhist philosophy) and by Jesus of Nazareth.
+The Law of the Harvest is a universal law taught 2000 ago earlier in the Lotus Sutra (a core Buddhist philosophy) and by Jesus of Nazareth. The term was coined in 1966 by LDS President Howard W. Hunter.
 
 This Law is divided into seven smaller laws. All are patterned after nature and apply to practically everything we do:
 
