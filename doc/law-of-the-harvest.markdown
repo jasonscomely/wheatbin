@@ -1,9 +1,7 @@
 What is the Law of the Harvest?
 ===============
 
-The Law of the Harvest is a universal law taught 2000 ago earlier in the Lotus Sutra (a core Buddhist philosophy) and by Jesus of Nazareth. The term was coined in 1966 by LDS President Howard W. Hunter.
-
-This Law is divided into seven smaller laws. All are patterned after nature and apply to practically everything we do:
+The Law of the Harvest is a universal precept taught 2000 years ago in the Lotus Sutra (a core Buddhist philosophy) and by Jesus of Nazareth. This Law is divided into seven smaller laws. All are patterned after nature and apply to practically everything we do:
 
 - We reap what we sow. If you plant sunflower seeds, in a season’s time your garden will be bright with yellow sunflowers. But don’t expect turnips. Likewise, what you focus on is what you become.
 
@@ -20,7 +18,6 @@ This Law is divided into seven smaller laws. All are patterned after nature and 
 - Weeds grow effortlessly and on their  own, but to reap a good harvest often requires vision, persistence and hard work. You’ll  be most successful if you work towards visions that inspire you to keep going, even as weeds of distraction choke your resolve.
 
 - We can’t change  last year’s harvest, but we can look forward with hope to this season’s crops. Don’t focus on past failures. Identify and focus on those things you can control and that are key factors to being successful.
-
 
 The Law of the Harvest is embedded within the very fabric of life. By consciously applying these laws of nature (with the help of Wheatbin) you may better anticipate challenges ahead and improve the harvest from the seeds you sow.
 
