@@ -13,7 +13,7 @@ See the **installation [instructions]**.
 
 For Kanboard specific issues, go to [upstream] from/or the wheatbin [fork] please.
 
-For more interesting and useful products, visit [jasoncomely.com][jasoncomely].
+For more interesting and useful products, visit **[jasoncomely.com][jasoncomely]**.
 
 Regards,  
 [![Jason Comely's logo][logo-jc]][jasoncomely]
