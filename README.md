@@ -1,6 +1,6 @@
 [![WHEATBIN's logo][logo-wb]][Wheatbin]
 
-Wheatbin is Project Management Software that combines Kanban methodology with the **[Law of the Harvest]** philosophy. Wheatbin helps you sow, grow and harvest all your hard work.
+Wheatbin is Project Management Software that combines Kanban with the **[Law of the Harvest]** philosophy. Wheatbin helps you sow, grow and harvest all your hard work.
 
 [Wheatbin] is a software fork of [Kanboard] v1.0.22 by Frédéric Guillot (see the [diff]). It's a <strong>major overhaul of the UX/IU</strong> with a responsive "mobile first" redesign. 
 
