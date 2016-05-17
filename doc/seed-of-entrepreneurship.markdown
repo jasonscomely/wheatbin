@@ -2,7 +2,7 @@ The Seed of Entrepreneurship
 ===============
 
 
-The Law of the Harvest came to my awareness back in the summer of 2013 when I confronted three teenage boys who would loiter in the parking lot outside my apartment window. You see, I work from home, and while the boys did skateboard tricks and smoke cigarettes, they cursed constantly.  
+The **[Law of the Harvest]** came to my awareness back in the summer of 2013 when I confronted three teenage boys who would loiter in the parking lot outside my apartment window. You see, I work from home, and while the boys did skateboard tricks and smoke cigarettes, they cursed constantly.  
 
 Especially the boy who was the ringleader. He was an angry kid and it was distracting to listen to him.
 
@@ -62,5 +62,7 @@ I haven’t heard or seen him since.
 Duane has a hard life ahead of him, but I hope the seed of entrepreneurship that I planted in his mind flourishes, and through hard work, trial and error it will bear good fruit. 
 
 Wheatbin is dedicated to him.
+
+[Law of the Harvest]: doc/law-of-the-harvest.markdown
 
 
