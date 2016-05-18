@@ -19,14 +19,17 @@ See the **installation [instructions]**.
 
 For Kanboard specific issues, go to [upstream] from/or the wheatbin [fork] please.
 
-For more interesting and useful products, visit **[jasoncomely.com][jasoncomely]**.
-
 Regards,  
 [![Jason Comely's logo][logo-jc]][jasoncomely]
 
+<hr>
+For more interesting and useful products, visit **[jasoncomely.com][jasoncomely]**.
+<hr>
+
+
 
 [Wheatbin]: http://www.wheatbin.com
-[download wheatbin.zip here]: https://yadi.sk/d/-iwtV_j0rpWjb
+[download wheatbin.zip here]: https://yadi.sk/d/QTG5jMZmrpY7T
 [Kanboard]: http://kanboard.net
 [jasoncomely]: http://jasoncomely.com
 [diff]: //github.com/fguillot/kanboard/compare/v1.0.22...wheatbin:master
