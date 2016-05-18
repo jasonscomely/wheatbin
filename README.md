@@ -1,5 +1,6 @@
 [![WHEATBIN's logo][logo-wb]][Wheatbin]
 
+<hr>
 **[Download wheatbin.zip here]** if you are experiencing any issues with the repo.
 <hr>
 
