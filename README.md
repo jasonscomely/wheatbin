@@ -2,7 +2,7 @@
 
 Wheatbin is Project Management Software that combines Kanban with the **[Law of the Harvest]** philosophy. Wheatbin helps you sow, grow and harvest all your hard work.
 
-**[Download wheatbin.zip]** as a ZIP file. 
+**[Download wheatbin.zip here]** if you are experiencing any issues with the repo.
 
 [Wheatbin] is a software fork of [Kanboard] v1.0.22 by Frédéric Guillot (see the [diff]). It's a <strong>major overhaul of the UX/IU</strong> with mobile devices being the first consideration in the redesign. 
 
@@ -24,7 +24,7 @@ Regards,
 
 
 [Wheatbin]: http://www.wheatbin.com
-[Download wheatbin.zip]: https://yadi.sk/d/-iwtV_j0rpWjb
+[Download wheatbin.zip here]: https://yadi.sk/d/-iwtV_j0rpWjb
 [Kanboard]: http://kanboard.net
 [jasoncomely]: http://jasoncomely.com
 [diff]: //github.com/fguillot/kanboard/compare/v1.0.22...wheatbin:master
