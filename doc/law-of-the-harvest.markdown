@@ -1,7 +1,7 @@
 What is the Law of the Harvest?
 ===============
 
-The <strong>Law of the Harvest</strong> is the philosophy behind Wheatbin. It is a universal precept taught 2000 years ago in the Lotus Sutra (a core Buddhist philosophy) and by Jesus of Nazareth. This Law is divided into seven smaller laws. All are patterned after nature and apply to practically everything we do:
+The <strong>Law of the Harvest</strong> is the philosophy behind Wheatbin. It is a universal precept taught 2000 years ago in the Lotus Sutra (a core Buddhist philosophy) and in the Bible, Galatians 6:7-10. This Law is divided into seven smaller laws. All are patterned after nature and apply to practically everything we do:
 
 - <strong>We reap what we sow.</strong> If you plant sunflower seeds, in a season’s time your garden will be bright with yellow sunflowers. But don’t expect turnips. Likewise, what you focus on is what you become.
 
