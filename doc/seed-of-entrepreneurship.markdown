@@ -63,6 +63,6 @@ Duane has a hard life ahead of him, but I hope the seed of entrepreneurship that
 
 Wheatbin is dedicated to him.
 
-[Law of the Harvest]: doc/law-of-the-harvest.markdown
+[Law of the Harvest]: law-of-the-harvest.markdown
 
 
