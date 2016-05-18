@@ -20,9 +20,9 @@ See the **installation [instructions]**.
 
 For Kanboard specific issues, go to [upstream] from/or the wheatbin [fork] please.
 
-<hr>
 For more interesting and useful products, visit **[jasoncomely.com][jasoncomely]**.
-<hr>
+
+Regards,  
 [![Jason Comely's logo][logo-jc]][jasoncomely]
 
 
