@@ -1,9 +1,5 @@
 [![WHEATBIN's logo][logo-wb]][Wheatbin]
 
-<hr>
-Please **[download wheatbin.zip here]** if you are experiencing any issues with the repo.
-<hr>
-
 
 Wheatbin is Project Management Software that combines Kanban with the **[Law of the Harvest]** philosophy. Wheatbin helps you sow, grow and harvest all your hard work.
 
