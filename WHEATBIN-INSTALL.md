@@ -7,6 +7,7 @@ Pre-installation instructions
 2. Unzip wheatbin-master.zip
 3. Locate vendor.zip inside the wheatbin-master root directory
 4. Unzip vendor.zip in the wheatbin-master root directory
+5. Rename directory wheatbin-master to wheatbin
 
 To install Wheatbin:
 
@@ -15,7 +16,8 @@ To install Wheatbin:
 3. Check if the directory data is writeable
 4. With your browser go to `http://yourpersonalserver/wheatbin`
 5. The login/password is **`admin`**/**`wheatbin`**
-6. Bob's your uncle. Be sure to change your password!
+
+Be sure to change your password: Main settings > User management
 
 The data folder is used to store:
 
