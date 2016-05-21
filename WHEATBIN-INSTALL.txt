@@ -17,7 +17,7 @@ To install Wheatbin:
 4. With your browser go to http://yourpersonalserver/wheatbin
 5. The login/password is admin/wheatbin
 
-Be sure to change your password: Main settings > User management
+IMPORTANT: Be sure to change your password: Main settings > User management
 
 The data folder is used to store:
 
