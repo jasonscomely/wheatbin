@@ -25,7 +25,6 @@ Regards,
 
 
 [Wheatbin]: http://www.wheatbin.com
-[download wheatbin.zip here]: https://yadi.sk/d/QTG5jMZmrpY7T
 [Kanboard]: http://kanboard.net
 [jasoncomely]: http://jasoncomely.com
 [diff]: //github.com/fguillot/kanboard/compare/v1.0.22...wheatbin:master
