@@ -18,8 +18,7 @@ For Kanboard specific issues, go to [upstream] from/or the wheatbin [fork] pleas
 
 For more interesting and useful products, visit **[jasoncomely.com][jasoncomely]**.
 
-Regards,  
-[![Jason Comely's logo][logo-jc]][jasoncomely]
+Please enjoy.
 
 
 
@@ -29,7 +28,7 @@ Regards,
 [jasoncomely]: http://jasoncomely.com
 [diff]: //github.com/fguillot/kanboard/compare/v1.0.22...wheatbin:master
 
-[logo-wb]: wheatbin-logo.png
+[logo-wb]: WHEATBIN-303X314.png
 [logo-jc]: JASONCOMELYconcepts-logo.png
 
 [Law of the Harvest]: doc/seed-of-entrepreneurship.markdown
