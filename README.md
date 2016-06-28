@@ -15,9 +15,6 @@ And as with Kanboard, Wheatbin includes:
 [![WHEATBIN's task screen][task-wb]][Wheatbin]
 Wheatbin task screen on laptop and Blackberry Passport
 
-[![WHEATBIN's board screen][board-wb]][Wheatbin]
-Wheatbin kanban-style board on laptop and Blackberry Passport
-
 To get started with Wheatbin, see the **installation [instructions]**. 
 
 For more interesting and useful products, visit **[JASON COMELY concepts][jasoncomely]**
