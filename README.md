@@ -33,8 +33,8 @@ Please enjoy.
 [diff]: //github.com/fguillot/kanboard/compare/v1.0.22...wheatbin:master
 
 [logo-wb]: WHEATBIN-303X314.png
-[task-wb]: task-screenshot-WHEATBIN.png
-[board-wb]: board-screenshot-WHEATBIN.png
+[task-wb]: task-WHEATBIN.png
+[board-wb]: board-WHEATBIN.png
 
 [Law of the Harvest]: doc/seed-of-entrepreneurship.markdown
 
