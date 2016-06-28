@@ -12,6 +12,9 @@ And as with Kanboard, Wheatbin includes:
 - Super simple installation
 - Distributed under [MIT License](LICENSE)
 
+
+
+
 See the **installation [instructions]**.
 
 For Kanboard specific issues, go to [upstream] from/or the wheatbin [fork] please.
@@ -29,7 +32,7 @@ Please enjoy.
 [diff]: //github.com/fguillot/kanboard/compare/v1.0.22...wheatbin:master
 
 [logo-wb]: WHEATBIN-303X314.png
-[logo-jc]: JASONCOMELYconcepts-logo.png
+[task-wb]: task-screenshot-WHEATBIN.png
 
 [Law of the Harvest]: doc/seed-of-entrepreneurship.markdown
 
