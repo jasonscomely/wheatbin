@@ -24,7 +24,7 @@ For more interesting and useful products, visit **[jasoncomely.com][jasoncomely]
 
 Please enjoy.
 
-
+**[JASON COMELY concepts][jasoncomely]**
 
 
 [Wheatbin]: http://www.wheatbin.com
