@@ -13,8 +13,10 @@ And as with Kanboard, Wheatbin includes:
 - Distributed under [MIT License](LICENSE)
 
 [![WHEATBIN's task screen][task-wb]][Wheatbin]
+Wheatbin task screen on laptop and Blackberry Passport
 
 [![WHEATBIN's board screen][board-wb]][Wheatbin]
+Wheatbin kanban-style board on laptop and Blackberry Passport
 
 See the **installation [instructions]**.
 
