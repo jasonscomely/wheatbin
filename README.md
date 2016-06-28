@@ -12,8 +12,7 @@ And as with Kanboard, Wheatbin includes:
 - Super simple installation
 - Distributed under [MIT License](LICENSE)
 
-
-
+[![WHEATBIN's screenshot][task-wb]][Wheatbin]
 
 See the **installation [instructions]**.
 
