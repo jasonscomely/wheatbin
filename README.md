@@ -20,11 +20,11 @@ Wheatbin kanban-style board on laptop and Blackberry Passport
 
 To get started with Wheatbin, see the **installation [instructions]**. 
 
-For more interesting and useful products, visit **[jasoncomely.com][jasoncomely]**.
+For more interesting and useful products, visit **[JASON COMELY concepts][jasoncomely]**
 
 Please enjoy.
 
-**[JASON COMELY concepts][jasoncomely]**
+
 
 
 [Wheatbin]: http://www.wheatbin.com
