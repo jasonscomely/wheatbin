@@ -18,7 +18,7 @@ Wheatbin task screen on laptop and Blackberry Passport
 [![WHEATBIN's board screen][board-wb]][Wheatbin]
 Wheatbin kanban-style board on laptop and Blackberry Passport
 
-See the **installation [instructions]**.
+To get started with Wheatbin, see the **installation [instructions]**.
 
 For Kanboard specific issues, go to [upstream] from/or the wheatbin [fork] please.
 
