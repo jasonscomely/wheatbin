@@ -12,7 +12,9 @@ And as with Kanboard, Wheatbin includes:
 - Super simple installation
 - Distributed under [MIT License](LICENSE)
 
-[![WHEATBIN's screenshot][task-wb]][Wheatbin]
+[![WHEATBIN's task screen][task-wb]][Wheatbin]
+
+[![WHEATBIN's board screen][board-wb]][Wheatbin]
 
 See the **installation [instructions]**.
 
@@ -32,6 +34,7 @@ Please enjoy.
 
 [logo-wb]: WHEATBIN-303X314.png
 [task-wb]: task-screenshot-WHEATBIN.png
+[board-wb]: board-screenshot-WHEATBIN.png
 
 [Law of the Harvest]: doc/seed-of-entrepreneurship.markdown
 
