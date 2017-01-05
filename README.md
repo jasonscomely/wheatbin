@@ -16,7 +16,7 @@ And as with Kanboard, Wheatbin includes:
 
 To get started with Wheatbin, see the **installation [instructions]**. 
 
-For more interesting and useful products, visit **[JASON COMELY concepts][jasoncomely]**
+For more interesting and useful products, visit **[JASON COMELY concepts][jasoncomely]** and [sign up][signup] for the newsletter.
 
 Please enjoy.
 
@@ -31,6 +31,7 @@ Please enjoy.
 [logo-wb]: WHEATBIN-303X314.png
 [task-wb]: task-WHEATBIN.png
 [board-wb]: board-WHEATBIN.png
+[signup]: http://rejectiontherapy.us2.list-manage.com/subscribe?u=bc7fdf29a4610b493fd5b2783&id=2f07782ec1
 
 [Law of the Harvest]: doc/seed-of-entrepreneurship.markdown
 
