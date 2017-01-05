@@ -18,7 +18,7 @@ To get started with Wheatbin, see the **installation [instructions]**.
 
 For more interesting and useful products, visit **[JASON COMELY concepts][jasoncomely]** and sign up for the **[newsletter][signup]**.
 
-Please enjoy.
+Enjoy.
 
 
 
