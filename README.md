@@ -14,7 +14,9 @@ And as with Kanboard, Wheatbin includes:
 - Super simple installation
 - Distributed under [MIT License](LICENSE)
 
-To get started with Wheatbin, see the **installation [instructions]**. For more information on the Law of the Harvest philosophy, **The Seven Laws of the Harvest: God’s Proven Plan for Abundant Life** can be purchased at **[Amazon.com][book]**. Please note that it is not an instruction manual for Wheatbin software.
+To get started with Wheatbin, see the **installation [instructions]**. 
+
+For more information on the Law of the Harvest philosophy, **The Seven Laws of the Harvest: God’s Proven Plan for Abundant Life** can be purchased at **[Amazon.com][book]**. Please note that it is not an instruction manual for Wheatbin software.
 
 For more interesting and useful products, visit **[JASON COMELY concepts][jasoncomely]** and sign up for the **[newsletter][signup]**.
 
