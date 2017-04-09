@@ -33,7 +33,7 @@ Enjoy.
 [board-wb]: board-WHEATBIN.png
 [signup]: http://rejectiontherapy.us2.list-manage.com/subscribe?u=bc7fdf29a4610b493fd5b2783&id=2f07782ec1
 
-[Law of the Harvest]: doc/seed-of-entrepreneurship.markdown
+[Law of the Harvest]: http://www.latterdayconservative.com/howard-w-hunter/the-law-of-the-harvest/
 
 [instructions]: WHEATBIN-INSTALL.md
 [upstream]: //github.com/fguillot/kanboard
