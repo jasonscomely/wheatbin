@@ -14,13 +14,11 @@ And as with Kanboard, Wheatbin includes:
 - Super simple installation
 - Distributed under [MIT License](LICENSE)
 
-To get started with Wheatbin, see the **installation [instructions]**. 
+To get started with Wheatbin, see the **installation [instructions]**. **The Seven Laws of the Harvest: God’s Proven Plan for Abundant Life** can be purchased at **[Amazon.com][book]**.
 
 For more interesting and useful products, visit **[JASON COMELY concepts][jasoncomely]** and sign up for the **[newsletter][signup]**.
 
 Enjoy.
-
-P.S. **The Seven Laws of the Harvest: God’s Proven Plan for Abundant Life** can be purchased at **[Amazon.com][book]**.
 
 
 
