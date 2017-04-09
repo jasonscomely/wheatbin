@@ -20,6 +20,8 @@ For more interesting and useful products, visit **[JASON COMELY concepts][jasonc
 
 Enjoy.
 
+P.S. The book **The Seven Laws of the Harvest: God’s Proven Plan for Abundant Life** can be purchased at **[Amazon.com][book]**.
+
 
 
 
@@ -32,6 +34,7 @@ Enjoy.
 [task-wb]: task-WHEATBIN.png
 [board-wb]: board-WHEATBIN.png
 [signup]: http://rejectiontherapy.us2.list-manage.com/subscribe?u=bc7fdf29a4610b493fd5b2783&id=2f07782ec1
+[book]: http://amzn.to/2oRly6B
 
 [Law of the Harvest]: http://www.latterdayconservative.com/howard-w-hunter/the-law-of-the-harvest/
 
